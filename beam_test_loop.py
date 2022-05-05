@@ -19,7 +19,7 @@ import binascii
 import os
 import time
 
-def main():
+def main(row,col,file_loop):
 
     nexys = Nexysio()
 
@@ -42,7 +42,7 @@ def main():
     #
 
     # Write to asicSR
-    asic = Asic(handle)
+    asic = Asic(handle,row,col)
     asic.update_asic()
 
     # Example: Update Config Bit
@@ -154,9 +154,14 @@ def main():
         "MSB\tLSB\tToT\tToT(us)"
         "\n"
     )
-
-    while True:
-        print("Reg: {}".format(int.from_bytes(nexys.read_register(70),"big")))
+    file.write(f"Row: {row}\n")
+    file.write(f"Col: {col}\n")
+    #print(row,col)
+    j=0
+    h=0
+    while j<1000:
+        #print("Reg: {}".format(int.from_bytes(nexys.read_register(70),"big")))
+        j += 1
         if(int.from_bytes(nexys.read_register(70),"big") == 0):
             time.sleep(0.05)
             nexys.write_spi_bytes(20)
@@ -165,16 +170,27 @@ def main():
             file.write(str(binascii.hexlify(readout)))
             file.write("\n")
             #print('a')
-            print(binascii.hexlify(readout))
+            #print(binascii.hexlify(readout))
+            h += 1
 
-            decode.decode_astropix2_hits(decode.hits_from_readoutstream(readout), i, file1)
-            file1.write("\n")
+
+            #decode.decode_astropix2_hits(decode.hits_from_readoutstream(readout), i, file1)
+            #file1.write("\n")
             i +=1
+    file_loop.write(f"{col}\t{row}\t{h}\t{timestr}\n")
     # inj.stop()
-
     # Close connection
     nexys.close()
 
 
 if __name__ == "__main__":
-    main()
+    #row=0
+    #col=0
+    file_loop = open("lognoise.txt", "w")
+    file_loop.write("Col\tRow\tCount\tTime\n")
+
+    for col in range(7,35):
+        for row in range(0,35):
+            main(row,col,file_loop)
+            time.sleep(2)
+    #main(0,0)

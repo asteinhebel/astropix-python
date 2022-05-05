@@ -39,7 +39,7 @@ def main():
     # Configure ASIC
     #
 
-    # Write to asicSR
+    # Write to asic
     asic = Asic(handle)
     asic.update_asic()
 
@@ -117,7 +117,7 @@ def main():
 
     wait_progress(3)
 
-    #decode = Decode()
+    decode = Decode()
 
     
     """ i = 0
@@ -137,16 +137,16 @@ def main():
 
     while True:
         print("Reg: {}".format(int.from_bytes(nexys.read_register(70),"big")))
-        if(int.from_bytes(nexys.read_register(70),"big") == 0):
+        if(int.from_bytes(nexys.read_register(70),"big") == 18):
             time.sleep(0.1)
             nexys.write_spi_bytes(10)
             readout = nexys.read_spi_fifo()
             file.write(str(binascii.hexlify(readout)))
-
+            file.write("\n")
             print(binascii.hexlify(readout))
 
-            #decode.decode_astropix2_hits(decode.hits_from_readoutstream(readout))
-
+            decode.decode_astropix2_hits(decode.hits_from_readoutstream(readout),file)
+            file.write("\n")
     # inj.stop()
 
     # Close connection
