@@ -19,7 +19,7 @@ import binascii
 import os
 import time
 
-def main(row,col,file_loop):
+def main(row,col,file_loop,str_file_loop):
 
     nexys = Nexysio()
 
@@ -159,11 +159,12 @@ def main(row,col,file_loop):
     #print(row,col)
     j=0
     h=0
+
     while j<1000:
         #print("Reg: {}".format(int.from_bytes(nexys.read_register(70),"big")))
         j += 1
         if(int.from_bytes(nexys.read_register(70),"big") == 0):
-            time.sleep(0.05)
+            time.sleep(0.1)
             nexys.write_spi_bytes(20)
             readout = nexys.read_spi_fifo()
             file.write(f"{i}\t")
@@ -177,7 +178,10 @@ def main(row,col,file_loop):
             #decode.decode_astropix2_hits(decode.hits_from_readoutstream(readout), i, file1)
             #file1.write("\n")
             i +=1
-    file_loop.write(f"{col}\t{row}\t{h}\t{timestr}\n")
+    tmp_file=open(str_file_loop,"a+")
+    #file_loop.write(f"{col}\t{row}\t{h}\t{timestr}\n")
+    tmp_file.write(f"{col}\t{row}\t{h}\t{timestr}\n")
+    tmp_file.close()
     # inj.stop()
     # Close connection
     nexys.close()
@@ -186,11 +190,21 @@ def main(row,col,file_loop):
 if __name__ == "__main__":
     #row=0
     #col=0
-    file_loop = open("lognoise.txt", "w")
-    file_loop.write("Col\tRow\tCount\tTime\n")
+    #timestrloop = time.strftime("noise_%Y%m%d-%H%M%S")
+    #file_loop = open("log%s.log" %timestrloop, "w")
+    #file_loop = open("lognoise.txt", "w")
+    #file_loop.write("Col\tRow\tCount\tTime\n")
 
-    for col in range(7,35):
-        for row in range(0,35):
-            main(row,col,file_loop)
+    #for col in range(3,35):
+    for col in range(3,4):
+        timestrloop = time.strftime("%Y%m%d-%H%M%S")
+        filename="lognoise_Col%s_%s.txt" %(col, timestrloop)
+        #file_loop = open("lognoise_Col%s_%s.txt" %(col, timestrloop), "w")
+        file_loop = open(filename,"w")
+        file_loop.write("Col\tRow\tCount\tTime\n")
+        file_loop.close()
+        #for row in range(0,35):
+        for row in range(6,35):
+            main(row,col,file_loop,filename)
             time.sleep(2)
     #main(0,0)
