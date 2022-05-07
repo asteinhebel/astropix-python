@@ -28,47 +28,71 @@ def saveFromInput(saveFile):
 	if savePlt: #save plt stored with plt.gcf()
 		print(f"Saving {saveFile}")
 		plot.savefig(saveFile)
+		
+def constructMasks(counts,high):
+
+	for col in range(len(counts)):
+		bits="0" #Every one should end in 0 
+		#bits="1_11111_11111_11111_11111_11111_11111_1111"
+		for row in range(len(counts[0])):
+			if counts[col][row]>high:
+				bits+="1"#mask
+			else:
+				bits+="0"#leave on
+		#Add '_' delimeters 
+		bits='_'.join(bits[i:i+5] for i in range(0, len(bits), 5))
+		#invert order
+		bits=bits[::-1]
+		print(f"self.recconfig[f'ColConfig{col}'] = 0b00{bits}")
+	return 0
 
 if __name__ == "__main__":
 
 	dataDir="output_bench/"
 	saveto="noiseMap_bench.pdf"
-	
-	
-	rows=[]
-	cols=[]
-	counts=[]
+
+	#create empty full size array
+	counts=[[-100]*35]*35 #filler value
+	arr1000=[]
+	nmbs=['0','1','2','3','4','5','6','7','8','9']
 	
 	os.chdir(dataDir)	
-	for f in glob.glob("*.txt"): #get all txt files in datadir
-		colVal=float(f.split('_')[1][-1])
+	for f in sorted(glob.glob("*.txt")): #get all txt files in datadir in alphabetic order ('sorted' alphabatizes)
+		colname=f.split('_')[1]
+		if colname[-2] in nmbs: #if two digit column
+			colVal=int(colname[-2])*10+int(colname[-1])
+		else:
+			colVal=int(colname[-1])
 		countVals=getRowCounts(f)
-		rowVals=[i+1 for i in range(-1,34)]
-		colVals=np.repeat(colVal,35) #array of same length as rowVals but all with the column number
-		rows.append(rowVals)
-		cols.append(colVals.tolist())
-		counts.append(countVals)
-		
-	#flatten arrays
-	rows=sum(rows,[])
-	cols=sum(cols,[])
-	counts=sum(counts,[])
+		counts[colVal]=countVals
+		for i,c in enumerate(countVals):
+			if c==1000:
+				arr1000.append([colVal,i])
 	
-	#pixel array = 35x35 pixels
-	pl=plt.scatter(cols, rows, c=counts,s=100, cmap='Reds', marker="s")
-	cbar = plt.colorbar(pl)
-	plt.xlabel("Column")
-	plt.ylabel("Row")
-	cbar.set_label('Counts (of 1000)') 
+	totalCols=len(counts)
+	counts_tst=np.reshape(counts,(totalCols,35)).T
+	fig = plt.figure()
+	ax = fig.add_subplot(111)
+	cax=ax.matshow(counts_tst)
+	cbar = plt.colorbar(cax)
+	cbar.set_label('Counts (of 1000)') 	
 	plt.tight_layout() #reduce margin space	
-	#plt.show()
 	
+	#plt.show()
 	saveFromInput(saveto)
 	
-	fullArray=35*6
+	#Create masking strings
+	print("Create Masking Strings")
+	threshold=100
+	constructMasks(counts,threshold)
+	
+	fullArray=35*totalCols
+	counts=sum(counts,[])#flatten list
 	noisy=0
 	for c in counts:
-		if c>300:
-			noisy+=1
-	print(f"Saturated pixels (count==1000): {counts.count(1000)/fullArray*100:.3f}% ({counts.count(1000)} pixels)")
-	print(f"Noisy pixels (count>300): {noisy/fullArray*100:.3f}% ({noisy} pixels)")
+		if c>threshold:
+				noisy+=1
+	
+	print(f"Saturated pixels (count==1000): {len(arr1000)/fullArray*100:.3f}% ({len(arr1000)} pixels)")
+	print(f"Noisy pixels (count>100): {noisy/fullArray*100:.3f}% ({noisy} pixels)")
+	
