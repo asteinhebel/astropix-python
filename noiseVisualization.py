@@ -56,7 +56,7 @@ if __name__ == "__main__":
 	## variables you may want to change
 	#loc="bench"
 	loc="cavern"
-	dataDir=f"output_{loc}/"
+	dataDir=f"noise_{loc}/"
 	saveto=f"noiseMap_{loc}.pdf"
 	threshold=0
 	#########################
