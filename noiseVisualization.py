@@ -33,7 +33,6 @@ def constructMasks(counts,high):
 
 	for col in range(len(counts)):
 		bits="0" #Every one should end in 0 
-		#bits="1_11111_11111_11111_11111_11111_11111_1111"
 		for row in range(len(counts[0])):
 			if counts[col][row]>high:
 				bits+="1"#mask
@@ -48,8 +47,15 @@ def constructMasks(counts,high):
 
 if __name__ == "__main__":
 
-	dataDir="output_bench/"
-	saveto="noiseMap_bench.pdf"
+	#########################
+	## variables you may want to change
+	loc="bench"
+	#loc="cavern"
+	dataDir=f"output_{loc}/"
+	saveto=f"noiseMap_{loc}.pdf"
+	threshold=100
+	#########################
+
 
 	#create empty full size array
 	counts=[[-100]*35]*35 #filler value
@@ -74,6 +80,7 @@ if __name__ == "__main__":
 	fig = plt.figure()
 	ax = fig.add_subplot(111)
 	cax=ax.matshow(counts_tst)
+	ax.invert_yaxis()#Show (0,0) origin on bottom left
 	cbar = plt.colorbar(cax)
 	cbar.set_label('Counts (of 1000)') 	
 	plt.tight_layout() #reduce margin space	
@@ -83,7 +90,6 @@ if __name__ == "__main__":
 	
 	#Create masking strings
 	print("Create Masking Strings")
-	threshold=100
 	constructMasks(counts,threshold)
 	
 	fullArray=35*totalCols
