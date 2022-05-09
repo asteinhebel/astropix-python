@@ -14,7 +14,7 @@ def getRowCounts(f):
 	countVals=[]
 	for line in lines:
 		countVals.append(float(line.split('\t')[2]))
-	
+
 	return countVals
 
 def saveFromInput(saveFile): 
@@ -55,20 +55,21 @@ if __name__ == "__main__":
 	#########################
 	## variables you may want to change
 	#loc="bench"
-	loc="cavern"
+	loc="cavern_retest"
 	dataDir=f"noise_{loc}/"
 	saveto=f"noiseMap_{loc}.pdf"
 	threshold=0
+	maxIt=20
 	#########################
 
 
 	#create empty full size array
 	counts=[[-100]*35]*35 #filler value
-	arr1000=[]
+	arrMax=[]
 	nmbs=['0','1','2','3','4','5','6','7','8','9']
 	
 	os.chdir(dataDir)	
-	for f in sorted(glob.glob("lognoise*.txt")): #get all txt files in datadir in alphabetic order ('sorted' alphabatizes)
+	for f in sorted(glob.glob("log*.txt")): #get all txt files in datadir in alphabetic order ('sorted' alphabatizes)
 		colname=f.split('_')[1]
 		if colname[-2] in nmbs: #if two digit column
 			colVal=int(colname[-2])*10+int(colname[-1])
@@ -77,8 +78,8 @@ if __name__ == "__main__":
 		countVals=getRowCounts(f)
 		counts[colVal]=countVals
 		for i,c in enumerate(countVals):
-			if c==1000:
-				arr1000.append([colVal,i])
+			if c==maxIt:
+				arrMax.append([colVal,i])
 	
 	totalCols=len(counts)
 	counts_tst=np.reshape(counts,(totalCols,35)).T
@@ -87,11 +88,11 @@ if __name__ == "__main__":
 	cax=ax.matshow(counts_tst)
 	ax.invert_yaxis()#Show (0,0) origin on bottom left
 	cbar = plt.colorbar(cax)
-	cbar.set_label('Counts (of 1000)') 	
+	cbar.set_label(f'Counts (of {maxIt})') 	
 	plt.tight_layout() #reduce margin space	
 	
-	plt.show()
-	#saveFromInput(saveto)
+	#plt.show()
+	saveFromInput(saveto)
 	
 	#Create masking strings
 	print("Create Masking Strings")
@@ -108,7 +109,7 @@ if __name__ == "__main__":
 			noisyish+=1
 	
 	print(f"Total Pixels: {fullArray}")
-	print(f"Saturated pixels (count==1000): {len(arr1000)/fullArray*100:.3f}% ({len(arr1000)} pixels)")
+	print(f"Saturated pixels (count=={maxIt}): {len(arrMax)/fullArray*100:.3f}% ({len(arrMax)} pixels)")
 	print(f"Noisy pixels (count>{threshold}): {noisy/fullArray*100:.3f}% ({noisy} pixels)")
 	print(f"Slightly noisy pixels (0<count<{threshold}): {noisyish/fullArray*100:.3f}% ({noisyish} pixels)")
 
