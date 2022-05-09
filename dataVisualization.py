@@ -67,7 +67,7 @@ if __name__ == "__main__":
 	#Plot masked pixels
 	fig = plt.figure()
 	ax = fig.add_subplot(111)
-	cax=ax.matshow(hits)
+	cax=ax.matshow(hits,cmap=plt.cm.YlOrRd)
 	#redisplay y axis to match proper labeling
 	ylabels=[34-2*i for i in range(18)]
 	ax.set_xticks([2*i for i in range(18)])
@@ -98,7 +98,7 @@ if __name__ == "__main__":
 	#Plot activated pixels
 	fig = plt.figure()
 	ax = fig.add_subplot(111)
-	cax=ax.matshow(hits)
+	cax=ax.matshow(hits, cmap=plt.cm.YlOrRd)
 	#redisplay y axis to match proper labeling
 	ylabels=[34-2*i for i in range(18)]
 	ax.set_xticks([2*i for i in range(18)])
