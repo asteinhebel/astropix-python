@@ -3,20 +3,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-def getRowCounts(f):
-
-	fileIn = open(f,'r')
-	lines = fileIn.readlines()
-	#line[0] = header -> remove
-	del lines[0]
-	#columns separated by tabs
-	#Column ~ Row ~ Counts ~ Timestamp
-	countVals=[]
-	for line in lines:
-		countVals.append(float(line.split('\t')[2]))
-
-	return countVals
-
 def saveFromInput(saveFile): 
 	plot=plt.gcf() #get current figure - saves fig in case savePlt==True
 	plt.show() #creates new figure for display
@@ -55,28 +41,23 @@ if __name__ == "__main__":
 	#########################
 	## variables you may want to change
 	#loc="bench"
-	loc="cavern_retest"
+	loc="cavern"
 	dataDir=f"noise_{loc}/"
 	saveto=f"noiseMap_{loc}.pdf"
 	threshold=0
-	maxIt=20
+	maxIt=1000
 	#########################
 
 
 	#create empty full size array
 	counts=[[-100]*35]*35 #filler value
 	arrMax=[]
-	nmbs=['0','1','2','3','4','5','6','7','8','9']
 	
 	os.chdir(dataDir)	
 	for f in sorted(glob.glob("log*.txt")): #get all txt files in datadir in alphabetic order ('sorted' alphabatizes)
-		colname=f.split('_')[1]
-		if colname[-2] in nmbs: #if two digit column
-			colVal=int(colname[-2])*10+int(colname[-1])
-		else:
-			colVal=int(colname[-1])
-		countVals=getRowCounts(f)
-		counts[colVal]=countVals
+		colVal=np.loadtxt(f,usecols=0,skiprows=1,max_rows=2,dtype="int")[0]
+		countVals=np.loadtxt(f,skiprows=1,usecols=2)
+		counts[colVal]=countVals.tolist() 
 		for i,c in enumerate(countVals):
 			if c==maxIt:
 				arrMax.append([colVal,i])
