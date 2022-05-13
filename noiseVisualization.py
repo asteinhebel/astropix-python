@@ -1,6 +1,7 @@
 import glob,os
 import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib import colors
 
 
 def saveFromInput(saveFile): 
@@ -41,29 +42,33 @@ if __name__ == "__main__":
 	#########################
 	## variables you may want to change
 	#loc="bench"
-	loc="cavern"
+	#loc="cavern"
+	loc="GSFCbench"
 	dataDir=f"noise_{loc}/"
 	saveto=f"noiseMap_{loc}.pdf"
 	threshold=0
-	maxIt=1000
+	maxIt=500
 	#########################
 
 
 	#create empty full size array
-	counts=[[-100]*35]*35 #filler value
-	arrMax=[]
+	allPix=35
+	counts = np.ones( (allPix, allPix) )*np.nan
+	expected=np.arange(allPix)
 	
 	os.chdir(dataDir)	
 	for f in sorted(glob.glob("log*.txt")): #get all txt files in datadir in alphabetic order ('sorted' alphabatizes)
 		colVal=np.loadtxt(f,usecols=0,skiprows=1,max_rows=2,dtype="int")[0]
-		countVals=np.loadtxt(f,skiprows=1,usecols=2)
-		counts[colVal]=countVals.tolist() 
-		for i,c in enumerate(countVals):
-			if c==maxIt:
-				arrMax.append([colVal,i])
-	
-	totalCols=len(counts)
-	counts_tst=np.reshape(counts,(totalCols,35)).T
+		countVals=np.loadtxt(f,skiprows=1,usecols=(1,2))
+		#insert np.nan into array pulled from file if there are missing pixels 
+		## should be 35 entries for 35 pixels - if no data, holds np.nan
+		missingPixels=np.setdiff1d(expected,countVals[:,0])
+		pixelIndex= missingPixels - np.arange(len(missingPixels))
+		countVals=np.insert(countVals,pixelIndex,np.nan,axis=0)
+		countVals=countVals.reshape(allPix,2)
+		counts[colVal]=countVals[:,1]
+		
+	counts_tst=np.reshape(counts,(allPix,allPix)).T
 	fig = plt.figure()
 	ax = fig.add_subplot(111)
 	cax=ax.matshow(counts_tst)
@@ -79,20 +84,17 @@ if __name__ == "__main__":
 	print("Create Masking Strings")
 	maskArr=constructMasks(counts,threshold)
 	
-	fullArray=35*totalCols
-	counts=sum(counts,[])#flatten list
-	noisy=0
-	noisyish=0
-	for c in counts:
-		if c>threshold:
-			noisy+=1
-		elif c>0:
-			noisyish+=1
-	
-	print(f"Total Pixels: {fullArray}")
-	print(f"Saturated pixels (count=={maxIt}): {len(arrMax)/fullArray*100:.3f}% ({len(arrMax)} pixels)")
-	print(f"Noisy pixels (count>{threshold}): {noisy/fullArray*100:.3f}% ({noisy} pixels)")
-	print(f"Slightly noisy pixels (0<count<{threshold}): {noisyish/fullArray*100:.3f}% ({noisyish} pixels)")
+	#Count noisy pixels for display in terminal
+	print(f"Total Pixels: {allPix*allPix}")
+	unread=np.count_nonzero(np.isnan(counts))
+	saturated=np.count_nonzero(counts==maxIt)
+	good=np.count_nonzero(counts==0)
+	noisy=(counts>threshold).sum()
+	noisyish=allPix*allPix-noisy-good-unread
+	print(f"Unread pixels: {unread/allPix/allPix*100:.3f}% ({unread} pixels)")
+	print(f"Saturated pixels (count=={maxIt}): {saturated/allPix/allPix*100:.3f}% ({saturated} pixels)")
+	print(f"Noisy pixels (count>{threshold}): {noisy/allPix/allPix*100:.3f}% ({noisy} pixels)")
+	print(f"Slightly noisy pixels (0<count<{threshold}): {noisyish/allPix/allPix*100:.3f}% ({noisyish} pixels)")
 
 	#export array of which pixels are masked
 	filename=f"maskedPixels_{loc}_threshold{threshold}.txt"
