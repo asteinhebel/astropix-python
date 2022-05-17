@@ -122,7 +122,7 @@ class Decode:
 
         return list_hits
 
-    def decode_astropix2_hits(self, list_hits: list):
+    def decode_astropix2_hits_interrupt(self, list_hits: list, i, file):
         """
         Decode 5byte Frames from AstroPix 2
 
@@ -157,5 +157,49 @@ class Decode:
                 f"Location: {location}\tRow/Col: {'Col' if col else 'Row'}\t"
                 f"Timestamp: {timestamp}\t"
                 f"ToT: MSB: {tot_msb}\tLSB: {tot_lsb} Total: {tot_total} ({(tot_total * self.sampleclock_period_ns)/1000.0} us)"
+            )
+
+            file.write(f"{i}\t")
+            file.write( f"{wrong_id}\t {wrong_payload}\t {location}\t{'Col' if col else 'Row'}\t{timestamp}\t {tot_msb}\t{tot_lsb} \t {tot_total} \t {(tot_total * self.sampleclock_period_ns)/1000.0} \n"
+            )
+
+    def decode_astropix2_hits(self, list_hits: list, file):
+        """
+        Decode 5byte Frames from AstroPix 2
+
+        Byte 0: Header      Bits:   7-3: ID
+                                    2-0: Payload
+        Byte 1: Location            7: Col
+                                    6: reserved
+                                    5-0: Row/Col
+        Byte 2: Timestamp
+        Byte 3: ToT MSB             7-4: 4'b0
+                                    3-0: ToT MSB
+        Byte 4: ToT LSB
+
+        :param list_hists: List with all hits
+        """
+
+        for hit in list_hits:
+            id          = int(hit[0]) >> 3
+            payload     = int(hit[0]) & 0b111
+            location    = int(hit[1])  & 0b111111
+            col         = 1 if (int(hit[1]) >> 7 ) & 1 else 0
+            timestamp   = int(hit[2])
+            tot_msb     = int(hit[3]) & 0b1111
+            tot_lsb     = int(hit[4])
+            tot_total   = (tot_msb << 8) + tot_lsb
+
+            wrong_id        = 0 if (id) == 0 else '\x1b[0;31;40m{}\x1b[0m'.format(id)
+            wrong_payload   = 4 if (payload) == 4 else'\x1b[0;31;40m{}\x1b[0m'.format(payload)
+
+            print(
+                f"Header: ChipId: {wrong_id}\tPayload: {wrong_payload}\t"
+                f"Location: {location}\tRow/Col: {'Col' if col else 'Row'}\t"
+                f"Timestamp: {timestamp}\t"
+                f"ToT: MSB: {tot_msb}\tLSB: {tot_lsb} Total: {tot_total} ({(tot_total * self.sampleclock_period_ns)/1000.0} us)"
+            )
+
+            file.write( f"{wrong_id}\t {wrong_payload}\t {location}\t{'Col' if col else 'Row'}\t{timestamp}\t {tot_msb}\t{tot_lsb} \t {tot_total} \t {(tot_total * self.sampleclock_period_ns)/1000.0} \n"
             )
 

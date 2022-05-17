@@ -16,7 +16,7 @@ from utils.utils import wait_progress
 
 import binascii
 
-import os
+import os,sys
 import time
 
 def main():
@@ -54,7 +54,7 @@ def main():
 
     # Configure 8 DAC Voltageboard in Slot 4 with list values
     # 3 = Vcasc2, 4=BL, 7=Vminuspix, 8=Thpix
-    vboard1 = Voltageboard(handle, 4, (8, [0, 0, 1.1, 1, 0, 0, 1, 1.2]))
+    vboard1 = Voltageboard(handle, 4, (8, [0, 0, 1.1, 1, 0, 0, 1, 1.1]))
 
     # Set measured 1V for one-point calibration
     vboard1.vcal = 0.989
@@ -71,8 +71,14 @@ def main():
     # Configure Injectionboard
     #
 
+    try:
+        Vinj=float(sys.argv[1])
+    except:
+        Vinj = 0.3
+    print(f"Injection run with Vinj = {Vinj} V" )
+
     # Set Injection level
-    injvoltage = Voltageboard(handle, 3, (2, [0.4, 0.0]))
+    injvoltage = Voltageboard(handle, 3, (2, [Vinj,0.0]))
     injvoltage.vcal = vboard1.vcal
     injvoltage.vsupply = vboard1.vsupply
     injvoltage.update_vb()
@@ -81,8 +87,10 @@ def main():
 
     # Set Injection Params for 330MHz patgen clock
     inj.period = 100
-    inj.clkdiv = 400
-    inj.initdelay = 10000
+    #inj.clkdiv = 4000
+    #inj.initdelay = 10000
+    inj.clkdiv = 300
+    inj.initdelay = 100
     inj.cycle = 0
     inj.pulsesperset = 1
 
@@ -119,14 +127,15 @@ def main():
 
     decode = Decode()
 
-    
-    """ i = 0
-    while os.path.exists("log/sample%s.log" % i):
-        i += 1
+    #Option to give extra name to output files upon running
+    if len(sys.argv)>2:
+        name=sys.argv[2]+"_"
+    else:
+        name=""
 
-    file = open("log/sample%s.log" % i, "w") """
-    timestr = time.strftime("beam_INJECTION_%Y%m%d-%H%M%S")
-    file = open("log/%s.log" % timestr, "w")
+    #raw AND decoded data file
+    timestr = time.strftime("injection_%Y%m%d-%H%M%S")
+    file = open("logInj/%s%s_%s.log" % (name, Vinj, timestr), "w")
     file.write(f"Voltageboard settings: {vboard1.dacvalues}\n")
     file.write(f"Digital: {asic.digitalconfig}\n")
     file.write(f"Biasblock: {asic.biasconfig}\n")
@@ -135,9 +144,18 @@ def main():
 
     readout = bytearray()
 
+    file.write("\n"
+        "ChipId\tPayload\t"
+        "Locatn\t"
+        "Row/Col\t"
+        "tStamp\t"
+        "MSB\tLSB\tToT\tToT(us)"
+        "\n"
+    )
+
     while True:
-        print("Reg: {}".format(int.from_bytes(nexys.read_register(70),"big")))
-        if(int.from_bytes(nexys.read_register(70),"big") == 18):
+        #print("Reg: {}".format(int.from_bytes(nexys.read_register(70),"big")))
+        if(int.from_bytes(nexys.read_register(70),"big") == 0):
             time.sleep(0.1)
             nexys.write_spi_bytes(10)
             readout = nexys.read_spi_fifo()
@@ -147,7 +165,6 @@ def main():
 
             decode.decode_astropix2_hits(decode.hits_from_readoutstream(readout),file)
             file.write("\n")
-    # inj.stop()
 
     # Close connection
     nexys.close()

@@ -21,7 +21,7 @@ class Astropix2Config:
 class Asic(Nexysio):
     """Configure ASIC"""
 
-    def __init__(self, handle, row, col) -> None:
+    def __init__(self, handle) -> None:
 
         self._handle = handle
 
@@ -94,70 +94,16 @@ class Asic(Nexysio):
         #     'vprec': 30,
         #     'vnrec': 30
         # }
-        bitconfig_col = 0
-        if row==0:bitconfig_col=0b001_11111_11111_11111_11111_11111_11111_11100
-        elif row==1:  bitconfig_col=0b001_11111_11111_11111_11111_11111_11111_11010
-        elif row==2:  bitconfig_col=0b001_11111_11111_11111_11111_11111_11111_10110
-        elif row==3:  bitconfig_col=0b001_11111_11111_11111_11111_11111_11111_01110
-        elif row==4:  bitconfig_col=0b001_11111_11111_11111_11111_11111_11110_11110
-        elif row==5:  bitconfig_col=0b001_11111_11111_11111_11111_11111_11101_11110
-        elif row==6:  bitconfig_col=0b001_11111_11111_11111_11111_11111_11011_11110
-        elif row==7:  bitconfig_col=0b001_11111_11111_11111_11111_11111_10111_11110
-        elif row==8:  bitconfig_col=0b001_11111_11111_11111_11111_11111_01111_11110
-        elif row==9:  bitconfig_col=0b001_11111_11111_11111_11111_11110_11111_11110
-        elif row==10: bitconfig_col=0b001_11111_11111_11111_11111_11101_11111_11110
-        elif row==11: bitconfig_col=0b001_11111_11111_11111_11111_11011_11111_11110
-        elif row==12: bitconfig_col=0b001_11111_11111_11111_11111_10111_11111_11110
-        elif row==13: bitconfig_col=0b001_11111_11111_11111_11111_01111_11111_11110
-        elif row==14: bitconfig_col=0b001_11111_11111_11111_11110_11111_11111_11110
-        elif row==15: bitconfig_col=0b001_11111_11111_11111_11101_11111_11111_11110
-        elif row==16: bitconfig_col=0b001_11111_11111_11111_11011_11111_11111_11110
-        elif row==17: bitconfig_col=0b001_11111_11111_11111_10111_11111_11111_11110
-        elif row==18: bitconfig_col=0b001_11111_11111_11111_01111_11111_11111_11110
-        elif row==19: bitconfig_col=0b001_11111_11111_11110_11111_11111_11111_11110
-        elif row==20: bitconfig_col=0b001_11111_11111_11101_11111_11111_11111_11110
-        elif row==21: bitconfig_col=0b001_11111_11111_11011_11111_11111_11111_11110
-        elif row==22: bitconfig_col=0b001_11111_11111_10111_11111_11111_11111_11110
-        elif row==23: bitconfig_col=0b001_11111_11111_01111_11111_11111_11111_11110
-        elif row==24: bitconfig_col=0b001_11111_11110_11111_11111_11111_11111_11110
-        elif row==25: bitconfig_col=0b001_11111_11101_11111_11111_11111_11111_11110
-        elif row==26: bitconfig_col=0b001_11111_11011_11111_11111_11111_11111_11110
-        elif row==27: bitconfig_col=0b001_11111_10111_11111_11111_11111_11111_11110
-        elif row==28: bitconfig_col=0b001_11111_01111_11111_11111_11111_11111_11110
-        elif row==29: bitconfig_col=0b001_11110_11111_11111_11111_11111_11111_11110
-        elif row==30: bitconfig_col=0b001_11101_11111_11111_11111_11111_11111_11110
-        elif row==31: bitconfig_col=0b001_11011_11111_11111_11111_11111_11111_11110
-        elif row==32: bitconfig_col=0b001_10111_11111_11111_11111_11111_11111_11110
-        elif row==33: bitconfig_col=0b001_01111_11111_11111_11111_11111_11111_11110
-        elif row==34: bitconfig_col=0b000_11111_11111_11111_11111_11111_11111_11110
 
-        #self.recconfig = {'ColConfig0': 0b011_00000_00000_00000_00000_00000_00000_00001}
-        if col==0:
-            self.recconfig = {'ColConfig0': bitconfig_col}
-        else:
-            self.recconfig = {'ColConfig0': 0b001_11111_11111_11111_11111_11111_11111_11110}
-        #self.recconfig = {'ColConfig0': 0b001_11111_11111_11111_11111_11111_11111_11110}
-        #self.recconfig = {'ColConfig0': 0b001_11111_11111_11111_11111_11111_11111_11110}
-        print('row',row,'col',col,bitconfig_col)
+	#Collect digital and analog from pixel (0,0)
+        #bitconfig_col =  0b111_11111_11111_11111_11111_11111_11111_11101 #for injection
+        bitconfig_col =  0b111_11111_11111_11111_11111_11111_11111_11100 #for noise
+        self.recconfig = {'ColConfig0': bitconfig_col}
+
         i = 1
         while i < 35:
-            if i==col:
-                self.recconfig[f'ColConfig{i}'] = bitconfig_col
-            else:
-                self.recconfig[f'ColConfig{i}'] = 0b001_11111_11111_11111_11111_11111_11111_11110
-            #self.recconfig[f'ColConfig{i}'] = 0b001_11111_11111_11111_11111_11111_11111_11110
-            #if i<3:
-            #self.recconfig[f'ColConfig{i}'] = 0b011_00000_00000_00000_00000_00000_00000_00001
-            #else: self.recconfig[f'ColConfig{i}'] = 0b001_11111_11111_11111_11111_11111_11111_11110
-# 4,5,7,14,16,18 noisy. 6,9 less noisy
-            #if i<21 and i!=4 and i!=5 and i!=6 and i!=7 and i!=9 and i!=14 and i!=16 and i!=18 and i!=19 :
-            #            self.recconfig[f'ColConfig{i}'] = 0b011_11111_11111_11111_11111_11111_11111_11101
-            #else:
-            #            self.recconfig[f'ColConfig{i}'] = 0b001_11111_11111_11111_11111_11111_11111_11110
+            self.recconfig[f'ColConfig{i}'] = 0b001_11111_11111_11111_11111_11111_11111_11110
             i += 1
-
-        #self.recconfig = {'ColConfig34': 0b111_11111_11111_11111_11111_11111_11111_11101}
-        #self.recconfig = {'ColConfig1': 0b011_11111_11111_11111_11111_11111_11111_11011}
 
     @staticmethod
     def __int2nbit(value: int, nbits: int) -> BitArray:
