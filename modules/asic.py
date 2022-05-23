@@ -1,3 +1,4 @@
+
 # -*- coding: utf-8 -*-
 """"""
 """
@@ -74,6 +75,7 @@ class Asic(Nexysio):
             'vnrec': 30
         }
         """
+	#old DACs
         self.dacs = {
             'blres': 10,
             'nu1': 0,

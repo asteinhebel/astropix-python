@@ -1,3 +1,4 @@
+
 # -*- coding: utf-8 -*-
 """"""
 """
@@ -60,7 +61,7 @@ def main(row,col,file_loop,str_file_loop):
 
     # Set measured 1V for one-point calibration
     vboard1.vcal = 0.989
-    vboard1.vsupply = 3.3
+    vboard1.vsupply = 2.7# 3.3
 
     # Update voltageboards
     vboard1.update_vb()
