@@ -122,7 +122,7 @@ class Decode:
 
         return list_hits
 
-    def decode_astropix2_hits(self, list_hits: list):
+    def decode_astropix2_hits(self, list_hits: list, i, file):
         """
         Decode 5byte Frames from AstroPix 2
 
@@ -157,5 +157,9 @@ class Decode:
                 f"Location: {location}\tRow/Col: {'Col' if col else 'Row'}\t"
                 f"Timestamp: {timestamp}\t"
                 f"ToT: MSB: {tot_msb}\tLSB: {tot_lsb} Total: {tot_total} ({(tot_total * self.sampleclock_period_ns)/1000.0} us)"
+            )
+
+            file.write(f"{i}\t")
+            file.write( f"{wrong_id}\t {wrong_payload}\t {location}\t{'Col' if col else 'Row'}\t{timestamp}\t {tot_msb}\t{tot_lsb} \t {tot_total} \t {(tot_total * self.sampleclock_period_ns)/1000.0} \n"
             )
 
