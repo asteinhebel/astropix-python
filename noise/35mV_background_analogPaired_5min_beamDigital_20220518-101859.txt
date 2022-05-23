@@ -1,0 +1,57 @@
+Voltageboard settings: [1.035, 1, 0, 0, 1, 1.1, 0, 0]
+Digital: {'interrupt_pushpull': 1, 'En_Inj1': 0, 'En_Inj2': 0, 'En_Inj3': 0, 'En_Inj4': 0, 'En_Inj5': 0, 'En_Inj6': 0, 'En_Inj7': 0, 'En_Inj8': 0, 'En_Inj9': 0, 'En_Inj10': 0, 'En_Inj11': 0, 'En_Inj12': 0, 'En_Inj13': 0, 'En_Inj14': 0, 'En_Inj15': 0, 'En_Inj16': 0, 'En_Inj17': 0, 'En_Inj18': 0, 'ResetB': 0, 'Extrabit0': 1, 'Extrabit1': 1, 'Extrabit2': 1, 'Extrabit3': 1, 'Extrabit4': 1, 'Extrabit5': 1, 'Extrabit6': 1, 'Extrabit7': 1, 'Extrabit8': 0, 'Extrabit9': 0, 'Extrabit10': 0, 'Extrabit11': 0, 'Extrabit12': 0, 'Extrabit13': 0, 'Extrabit14': 0}
+Biasblock: {'DisHiDR': 0, 'q01': 0, 'qon0': 0, 'qon1': 1, 'qon2': 0, 'qon3': 1}
+DAC: {'blres': 0, 'nu1': 0, 'vn1': 20, 'vnfb': 1, 'vnfoll': 10, 'nu5': 0, 'nu6': 0, 'nu7': 0, 'nu8': 0, 'vn2': 0, 'vnfoll2': 1, 'vnbias': 0, 'vpload': 5, 'nu13': 0, 'vncomp': 2, 'vpfoll': 60, 'nu16': 0, 'vprec': 30, 'vnrec': 30}
+Receiver: {'ColConfig0': 274877906940, 'ColConfig1': 68719476734, 'ColConfig2': 68719476734, 'ColConfig3': 68719476734, 'ColConfig4': 68719476734, 'ColConfig5': 68719476734, 'ColConfig6': 68719476734, 'ColConfig7': 68719476734, 'ColConfig8': 68719476734, 'ColConfig9': 68719476734, 'ColConfig10': 68719476734, 'ColConfig11': 68719476734, 'ColConfig12': 68719476734, 'ColConfig13': 68719476734, 'ColConfig14': 68719476734, 'ColConfig15': 68719476734, 'ColConfig16': 68719476734, 'ColConfig17': 68719476734, 'ColConfig18': 68719476734, 'ColConfig19': 68719476734, 'ColConfig20': 68719476734, 'ColConfig21': 68719476734, 'ColConfig22': 68719476734, 'ColConfig23': 68719476734, 'ColConfig24': 68719476734, 'ColConfig25': 68719476734, 'ColConfig26': 68719476734, 'ColConfig27': 68719476734, 'ColConfig28': 68719476734, 'ColConfig29': 68719476734, 'ColConfig30': 68719476734, 'ColConfig31': 68719476734, 'ColConfig32': 68719476734, 'ColConfig33': 68719476734, 'ColConfig34': 68719476734}
+
+NEvent	ChipId	Payload	Locatn	Row/Col	tStamp	MSB	LSB	ToT	ToT(us)
+0	0	 4	 0	Row	108	 10	133 	 2693 	 26.93 
+0	0	 4	 0	Col	108	 2	64 	 576 	 5.76 
+0	0	 4	 0	Row	195	 8	4 	 2052 	 20.52 
+0	0	 4	 0	Col	195	 2	45 	 557 	 5.57 
+
+1	0	 4	 0	Row	230	 9	195 	 2499 	 24.99 
+1	0	 4	 0	Col	230	 9	180 	 2484 	 24.84 
+
+2	0	 4	 0	Row	2	 10	6 	 2566 	 25.66 
+2	0	 4	 0	Col	2	 9	251 	 2555 	 25.55 
+
+3	0	 4	 0	Row	239	 12	32 	 3104 	 31.04 
+3	0	 4	 0	Col	239	 12	20 	 3092 	 30.92 
+
+4	0	 4	 0	Row	148	 9	62 	 2366 	 23.66 
+4	0	 4	 0	Col	148	 9	50 	 2354 	 23.54 
+
+5	0	 4	 0	Row	220	 9	240 	 2544 	 25.44 
+5	0	 4	 0	Col	220	 9	224 	 2528 	 25.28 
+
+6	0	 4	 0	Row	126	 11	205 	 3021 	 30.21 
+6	0	 4	 0	Col	126	 11	194 	 3010 	 30.1 
+
+7	0	 4	 0	Row	99	 6	9 	 1545 	 15.45 
+7	0	 4	 0	Col	99	 5	252 	 1532 	 15.32 
+
+8	0	 4	 0	Row	79	 11	21 	 2837 	 28.37 
+8	0	 4	 0	Col	79	 11	8 	 2824 	 28.24 
+
+9	0	 4	 0	Row	108	 10	60 	 2620 	 26.2 
+9	0	 4	 0	Col	108	 10	45 	 2605 	 26.05 
+
+10	0	 4	 0	Row	1	 10	228 	 2788 	 27.88 
+10	0	 4	 0	Col	1	 10	216 	 2776 	 27.76 
+
+11	0	 4	 0	Row	147	 11	146 	 2962 	 29.62 
+11	0	 4	 0	Col	147	 11	132 	 2948 	 29.48 
+
+12	0	 4	 0	Row	135	 10	134 	 2694 	 26.94 
+12	0	 4	 0	Col	135	 10	116 	 2676 	 26.76 
+
+13	0	 4	 0	Row	120	 10	126 	 2686 	 26.86 
+13	0	 4	 0	Col	120	 10	114 	 2674 	 26.74 
+
+14	0	 4	 0	Row	172	 8	104 	 2152 	 21.52 
+14	0	 4	 0	Col	172	 8	93 	 2141 	 21.41 
+
+15	0	 4	 0	Row	40	 10	5 	 2565 	 25.65 
+15	0	 4	 0	Col	40	 9	248 	 2552 	 25.52 
+
