@@ -160,16 +160,17 @@ def main(row,col,file_loop,str_file_loop):
     j=0
     h=0
 
-    while j<1000:
+    while j<500:
         #print("Reg: {}".format(int.from_bytes(nexys.read_register(70),"big")))
         j += 1
+        
         if(int.from_bytes(nexys.read_register(70),"big") == 0):
             time.sleep(0.1)
             nexys.write_spi_bytes(20)
             readout = nexys.read_spi_fifo()
-            file.write(f"{i}\t")
-            file.write(str(binascii.hexlify(readout)))
-            file.write("\n")
+            ##file.write(f"{i}\t")
+            ##file.write(str(binascii.hexlify(readout)))
+            ##file.write("\n")
             #print('a')
             #print(binascii.hexlify(readout))
             h += 1
@@ -179,7 +180,6 @@ def main(row,col,file_loop,str_file_loop):
             #file1.write("\n")
             i +=1
     tmp_file=open(str_file_loop,"a+")
-    #file_loop.write(f"{col}\t{row}\t{h}\t{timestr}\n")
     tmp_file.write(f"{col}\t{row}\t{h}\t{timestr}\n")
     tmp_file.close()
     # inj.stop()
@@ -195,16 +195,18 @@ if __name__ == "__main__":
     #file_loop = open("lognoise.txt", "w")
     #file_loop.write("Col\tRow\tCount\tTime\n")
 
-    #for col in range(3,35):
-    for col in range(3,4):
+    for col in range(0,35):
+    #for col in range(0,20):
         timestrloop = time.strftime("%Y%m%d-%H%M%S")
         filename="lognoise_Col%s_%s.txt" %(col, timestrloop)
-        #file_loop = open("lognoise_Col%s_%s.txt" %(col, timestrloop), "w")
         file_loop = open(filename,"w")
         file_loop.write("Col\tRow\tCount\tTime\n")
         file_loop.close()
-        #for row in range(0,35):
-        for row in range(6,35):
-            main(row,col,file_loop,filename)
-            time.sleep(2)
+        for row in range(0,35):
+        #for row in range(0,20):
+            try:
+               main(row,col,file_loop,filename)
+            except:
+               pass
+            #time.sleep(1)
     #main(0,0)
