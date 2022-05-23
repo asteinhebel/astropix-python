@@ -16,7 +16,7 @@ from utils.utils import wait_progress
 
 import binascii
 
-import os
+import os,sys
 import time
 
 def main():
@@ -56,11 +56,11 @@ def main():
 
     # Configure 8 DAC Voltageboard in Slot 4 with list values
     # 3 = Vcasc2, 4=BL, 7=Vminuspix, 8=Thpix
-    vboard1 = Voltageboard(handle, 4, (8, [0, 0, 1.1, 1, 0, 0, 1, 1.1]))
+    vboard1 = Voltageboard(handle, 4, (8, [0, 0, 1.1, 1, 0, 0, 1, 1.035]))
 
     # Set measured 1V for one-point calibration
     vboard1.vcal = 0.989
-    vboard1.vsupply = 3.3
+    vboard1.vsupply = 2.7 #3.3
 
     # Update voltageboards
     vboard1.update_vb()
@@ -121,22 +121,26 @@ def main():
 
     decode = Decode()
 
+    #Option to give extra name to output files upon running
+    if len(sys.argv)>1:
+        name=sys.argv[1]+"_"
+    else:
+        name=""
+    
+    dir="noise"
 
-    """ i = 0
-    while os.path.exists("logTestBeam/sample%s.log" % i):
-        i += 1
-
-    file = open("logTestBeam/sample%s.log" % i, "w") """
+    #raw data file
     timestr = time.strftime("beam_%Y%m%d-%H%M%S")
-    file = open("logTestBeam/%s.log" % timestr, "w")
+    file = open("%s/%s%s.log" % (dir,name, timestr), "w")
     file.write(f"Voltageboard settings: {vboard1.dacvalues}\n")
     file.write(f"Digital: {asic.digitalconfig}\n")
     file.write(f"Biasblock: {asic.biasconfig}\n")
     file.write(f"DAC: {asic.dacs}\n")
     file.write(f"Receiver: {asic.recconfig}\n\n")
 
+    #decoded data file
     timestr1 = time.strftime("beamDigital_%Y%m%d-%H%M%S")
-    file1 = open("logTestBeam/%s.txt" % timestr1, "w")
+    file1 = open("%s/%s%s.txt" % (dir,name, timestr1), "w")
     file1.write(f"Voltageboard settings: {vboard1.dacvalues}\n")
     file1.write(f"Digital: {asic.digitalconfig}\n")
     file1.write(f"Biasblock: {asic.biasconfig}\n")
@@ -145,7 +149,7 @@ def main():
 
     readout = bytearray()
 
-    i = 0
+    i = 0 #interrupt index
     file1.write(
         "NEvent\tChipId\tPayload\t"
         "Locatn\t"
@@ -156,8 +160,8 @@ def main():
     )
 
     while True:
-        print("Reg: {}".format(int.from_bytes(nexys.read_register(70),"big")))
-        if(int.from_bytes(nexys.read_register(70),"big") == 0):
+        #print("Reg: {}".format(int.from_bytes(nexys.read_register(70),"big")))
+        if(int.from_bytes(nexys.read_register(70),"big") == 0): #if interrupt signal
             time.sleep(0.05)
             nexys.write_spi_bytes(20)
             readout = nexys.read_spi_fifo()
@@ -168,9 +172,9 @@ def main():
             print(binascii.hexlify(readout))
 
             decode.decode_astropix2_hits(decode.hits_from_readoutstream(readout), i, file1)
+            #decode.decode_astropix2_hits(decode.hits_from_readoutstream(readout))
             file1.write("\n")
             i +=1
-    # inj.stop()
 
     # Close connection
     nexys.close()
