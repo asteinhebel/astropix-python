@@ -75,8 +75,10 @@ def main():
 
     # Set Injection Params for 330MHz patgen clock
     inj.period = 100
-    inj.clkdiv = 4000
-    inj.initdelay = 10000
+    #inj.clkdiv = 4000
+    #inj.initdelay = 10000
+    inj.clkdiv = 300
+    inj.initdelay = 100
     inj.cycle = 0
     inj.pulsesperset = 1
 
@@ -124,7 +126,7 @@ def main():
 
     decode.decode_astropix2_hits(list_hits)
 
-    # inj.stop()
+    inj.stop()
 
     # Close connection
     nexys.close()
