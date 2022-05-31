@@ -138,6 +138,7 @@ def main(row,col,str_file_loop):
 
     j=0
     h=0
+
     loopMax=500
 
     while j<loopMax:
