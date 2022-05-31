@@ -52,6 +52,7 @@ class Asic(Nexysio):
             'qon3': 1,
         }
 
+        #new DACs
         self.dacs = {
             'blres': 0,
             'nu1': 0,
@@ -74,6 +75,7 @@ class Asic(Nexysio):
             'vnrec': 30
         }
 
+        #old DACs
         # self.dacs = {
         #     'blres': 10,
         #     'nu1': 0,
@@ -95,6 +97,7 @@ class Asic(Nexysio):
         #     'vprec': 30,
         #     'vnrec': 30
         # }
+
         bitconfig_col = 0
         if row==0:bitconfig_col=0b001_11111_11111_11111_11111_11111_11111_11100
         elif row==1:  bitconfig_col=0b001_11111_11111_11111_11111_11111_11111_11010
@@ -132,31 +135,18 @@ class Asic(Nexysio):
         elif row==33: bitconfig_col=0b001_01111_11111_11111_11111_11111_11111_11110
         elif row==34: bitconfig_col=0b000_11111_11111_11111_11111_11111_11111_11110
 
-        #self.recconfig = {'ColConfig0': 0b011_00000_00000_00000_00000_00000_00000_00001}
         if col==0:
             self.recconfig = {'ColConfig0': bitconfig_col}
         else:
             self.recconfig = {'ColConfig0': 0b001_11111_11111_11111_11111_11111_11111_11110}
-        print('row',row,'col',col,bitconfig_col)
+        #print('row',row,'col',col,bitconfig_col)
         i = 1
         while i < 35:
             if i==col:
                 self.recconfig[f'ColConfig{i}'] = bitconfig_col
             else:
                 self.recconfig[f'ColConfig{i}'] = 0b001_11111_11111_11111_11111_11111_11111_11110
-            #self.recconfig[f'ColConfig{i}'] = 0b001_11111_11111_11111_11111_11111_11111_11110
-            #if i<3:
-            #self.recconfig[f'ColConfig{i}'] = 0b011_00000_00000_00000_00000_00000_00000_00001
-            #else: self.recconfig[f'ColConfig{i}'] = 0b001_11111_11111_11111_11111_11111_11111_11110
-# 4,5,7,14,16,18 noisy. 6,9 less noisy
-            #if i<21 and i!=4 and i!=5 and i!=6 and i!=7 and i!=9 and i!=14 and i!=16 and i!=18 and i!=19 :
-            #            self.recconfig[f'ColConfig{i}'] = 0b011_11111_11111_11111_11111_11111_11111_11101
-            #else:
-            #            self.recconfig[f'ColConfig{i}'] = 0b001_11111_11111_11111_11111_11111_11111_11110
-            i += 1
-
-        #self.recconfig = {'ColConfig34': 0b111_11111_11111_11111_11111_11111_11111_11101}
-        #self.recconfig = {'ColConfig1': 0b011_11111_11111_11111_11111_11111_11111_11011}
+            i += 1 
 
     @staticmethod
     def __int2nbit(value: int, nbits: int) -> BitArray:
