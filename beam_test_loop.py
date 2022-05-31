@@ -17,7 +17,7 @@ from utils.utils import wait_progress
 
 import binascii
 
-import os,glob
+import os
 import time
 
 def main(row,col,str_file_loop):
@@ -149,8 +149,10 @@ def main(row,col,str_file_loop):
         #just check interrupt signal and record if it was triggered
         #don't store any digital data from these runs - too time consuming
         if(int.from_bytes(nexys.read_register(70),"big") == 0):
-            #time.sleep(5)
             h += 1
+
+        if j%100==0:
+            print(f"On test {j}")
 
     print(f"Pixel ({row},{col}) had {h} / {loopMax} counts")
     tmp_file=open(str_file_loop,"a+")
@@ -163,12 +165,14 @@ def main(row,col,str_file_loop):
 
 if __name__ == "__main__":
 
-    dirName="noiseMap/"
+    dirName="noiseMap_053122_100mV"
+    if not os.path.exists(dirName):
+        os.makedirs(dirName)
 
     for col in range(0,35):
     #for col in range(20,22):
         timestrloop = time.strftime("%Y%m%d-%H%M%S")
-        filename="%slognoise_Col%s_%s.txt" %(dirName, col, timestrloop)
+        filename="%s/lognoise_Col%s_%s.txt" %(dirName, col, timestrloop)
         file_loop = open(filename,"w")
         file_loop.write("Col\tRow\tCount\tTime\n")
         file_loop.close()
