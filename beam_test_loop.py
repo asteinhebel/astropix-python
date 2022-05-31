@@ -17,10 +17,10 @@ from utils.utils import wait_progress
 
 import binascii
 
-import os
+import os,glob
 import time
 
-def main(row,col,file_loop,str_file_loop):
+def main(row,col,str_file_loop):
 
     nexys = Nexysio()
 
@@ -120,14 +120,11 @@ def main(row,col,file_loop,str_file_loop):
 
     wait_progress(3)
 
-    decode = Decode()
+    #not using the decoder - not saving any digital output
+    #decode = Decode()
 
-
-    """ i = 0
-    while os.path.exists("logTestBeam/sample%s.log" % i):
-        i += 1
-
-    file = open("logTestBeam/sample%s.log" % i, "w") """
+    #save voltage information in logTestBeam/ for each file
+    #DO NOT DELETE THIS OR NEXYS WILL NOT CONNECT
     timestr = time.strftime("beam_%Y%m%d-%H%M%S")
     file = open("logTestBeam/%s.log" % timestr, "w")
     file.write(f"Voltageboard settings: {vboard1.dacvalues}\n")
@@ -135,79 +132,49 @@ def main(row,col,file_loop,str_file_loop):
     file.write(f"Biasblock: {asic.biasconfig}\n")
     file.write(f"DAC: {asic.dacs}\n")
     file.write(f"Receiver: {asic.recconfig}\n\n")
-
-    timestr1 = time.strftime("beamDigital_%Y%m%d-%H%M%S")
-    file1 = open("logTestBeam/%s.txt" % timestr1, "w")
-    file1.write(f"Voltageboard settings: {vboard1.dacvalues}\n")
-    file1.write(f"Digital: {asic.digitalconfig}\n")
-    file1.write(f"Biasblock: {asic.biasconfig}\n")
-    file1.write(f"DAC: {asic.dacs}\n")
-    file1.write(f"Receiver: {asic.recconfig}\n\n")
+    file.close()
 
     readout = bytearray()
 
-    i = 0
-    file1.write(
-        "NEvent\tChipId\tPayload\t"
-        "Locatn\t"
-        "Row/Col\t"
-        "tStamp\t"
-        "MSB\tLSB\tToT\tToT(us)"
-        "\n"
-    )
-    file.write(f"Row: {row}\n")
-    file.write(f"Col: {col}\n")
-    #print(row,col)
     j=0
     h=0
+    loopMax=5
 
-    while j<500:
+    while j<loopMax:
         #print("Reg: {}".format(int.from_bytes(nexys.read_register(70),"big")))
         j += 1
+        time.sleep(0.1)
         
+        #just check interrupt signal and record if it was triggered
+        #don't store any digital data from these runs - too time consuming
         if(int.from_bytes(nexys.read_register(70),"big") == 0):
-            time.sleep(0.1)
-            nexys.write_spi_bytes(20)
-            readout = nexys.read_spi_fifo()
-            ##file.write(f"{i}\t")
-            ##file.write(str(binascii.hexlify(readout)))
-            ##file.write("\n")
-            #print('a')
-            #print(binascii.hexlify(readout))
+            #time.sleep(5)
             h += 1
 
-
-            #decode.decode_astropix2_hits(decode.hits_from_readoutstream(readout), i, file1)
-            #file1.write("\n")
-            i +=1
+    print(f"Pixel ({row},{col}) had {h} / {loopMax} counts")
     tmp_file=open(str_file_loop,"a+")
     tmp_file.write(f"{col}\t{row}\t{h}\t{timestr}\n")
     tmp_file.close()
-    # inj.stop()
+
     # Close connection
     nexys.close()
 
 
 if __name__ == "__main__":
-    #row=0
-    #col=0
-    #timestrloop = time.strftime("noise_%Y%m%d-%H%M%S")
-    #file_loop = open("log%s.log" %timestrloop, "w")
-    #file_loop = open("lognoise.txt", "w")
-    #file_loop.write("Col\tRow\tCount\tTime\n")
+
+    dirName="noiseMap/"
 
     for col in range(0,35):
-    #for col in range(0,20):
+    #for col in range(20,22):
         timestrloop = time.strftime("%Y%m%d-%H%M%S")
-        filename="lognoise_Col%s_%s.txt" %(col, timestrloop)
+        filename="%slognoise_Col%s_%s.txt" %(dirName, col, timestrloop)
         file_loop = open(filename,"w")
         file_loop.write("Col\tRow\tCount\tTime\n")
         file_loop.close()
         for row in range(0,35):
-        #for row in range(0,20):
+        #for row in range(20,22):
             try:
-               main(row,col,file_loop,filename)
+               main(row,col,filename)
             except:
                pass
             #time.sleep(1)
-    #main(0,0)
