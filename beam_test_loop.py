@@ -144,12 +144,13 @@ def main(row,col,str_file_loop):
     while j<loopMax:
         #print("Reg: {}".format(int.from_bytes(nexys.read_register(70),"big")))
         j += 1
-        time.sleep(0.1)
+        #time.sleep(0.1)
         
         #just check interrupt signal and record if it was triggered
         #don't store any digital data from these runs - too time consuming
         if(int.from_bytes(nexys.read_register(70),"big") == 0):
             h += 1
+            time.sleep(0.1)
 
         if j%100==0:
             print(f"On test {j}")
@@ -169,16 +170,17 @@ if __name__ == "__main__":
     if not os.path.exists(dirName):
         os.makedirs(dirName)
 
-    for col in range(0,35):
-    #for col in range(20,22):
+    #for col in range(0,35):
+    for col in range(27,35):
         timestrloop = time.strftime("%Y%m%d-%H%M%S")
         filename="%s/lognoise_Col%s_%s.txt" %(dirName, col, timestrloop)
         file_loop = open(filename,"w")
         file_loop.write("Col\tRow\tCount\tTime\n")
         file_loop.close()
         for row in range(0,35):
-        #for row in range(20,22):
+        #for row in range(28,35):
             try:
+               print(f"Column {col}, row {row}")
                main(row,col,filename)
             except:
                pass
