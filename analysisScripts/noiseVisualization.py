@@ -23,7 +23,7 @@ def constructMasks(counts,high):
 	for col in range(len(counts)):
 		bits="0" #Every one should end in 0 
 		for row in range(len(counts[0])):
-			if counts[col][row]>high:
+			if counts[col][row]>high or np.isnan(counts[col][row]):#mask if noisy pixel OR if no data on the pixel
 				bits+="1"#mask
 				maskArr[col][row]=-1
 			else:
@@ -33,7 +33,6 @@ def constructMasks(counts,high):
 		#invert order
 		bits=bits[::-1]
 		print(f"self.recconfig[f'ColConfig{col}'] = 0b00{bits}")
-		#print(f"self.reconfig={{'ColConfig{col}':0b00{bits}}}")
 
 	return maskArr
 
@@ -43,9 +42,11 @@ if __name__ == "__main__":
 	## variables you may want to change
 	#loc="bench"
 	#loc="cavern"
-	loc="GSFCbench"
-	dataDir=f"noise_{loc}/"
-	saveto=f"noiseMap_{loc}.pdf"
+	loc="GSFCbench_50mV"
+	#dataDir=f"noise_{loc}/"
+	#saveto=f"noiseMap_{loc}.pdf"
+	dataDir="noiseMap_060222_50mV/"
+	saveto="noiseMap_50mV.pdf"
 	threshold=0
 	maxIt=500
 	#########################
