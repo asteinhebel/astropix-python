@@ -1,0 +1,577 @@
+Voltageboard settings: [1.05, 1, 0, 0, 1, 1.1, 0, 0]
+Digital: {'interrupt_pushpull': 1, 'En_Inj1': 0, 'En_Inj2': 0, 'En_Inj3': 0, 'En_Inj4': 0, 'En_Inj5': 0, 'En_Inj6': 0, 'En_Inj7': 0, 'En_Inj8': 0, 'En_Inj9': 0, 'En_Inj10': 0, 'En_Inj11': 0, 'En_Inj12': 0, 'En_Inj13': 0, 'En_Inj14': 0, 'En_Inj15': 0, 'En_Inj16': 0, 'En_Inj17': 0, 'En_Inj18': 0, 'ResetB': 0, 'Extrabit0': 1, 'Extrabit1': 1, 'Extrabit2': 1, 'Extrabit3': 1, 'Extrabit4': 1, 'Extrabit5': 1, 'Extrabit6': 1, 'Extrabit7': 1, 'Extrabit8': 0, 'Extrabit9': 0, 'Extrabit10': 0, 'Extrabit11': 0, 'Extrabit12': 0, 'Extrabit13': 0, 'Extrabit14': 0}
+Biasblock: {'DisHiDR': 0, 'q01': 0, 'qon0': 0, 'qon1': 1, 'qon2': 0, 'qon3': 1}
+DAC: {'blres': 0, 'nu1': 0, 'vn1': 20, 'vnfb': 1, 'vnfoll': 10, 'nu5': 0, 'nu6': 0, 'nu7': 0, 'nu8': 0, 'vn2': 0, 'vnfoll2': 1, 'vnbias': 0, 'vpload': 5, 'nu13': 0, 'vncomp': 2, 'vpfoll': 60, 'nu16': 0, 'vprec': 30, 'vnrec': 30}
+Receiver: {'ColConfig0': 274877906941, 'ColConfig1': 68719476734, 'ColConfig2': 68719476734, 'ColConfig3': 68719476734, 'ColConfig4': 68719476734, 'ColConfig5': 68719476734, 'ColConfig6': 68719476734, 'ColConfig7': 68719476734, 'ColConfig8': 68719476734, 'ColConfig9': 68719476734, 'ColConfig10': 68719474686, 'ColConfig11': 68719476734, 'ColConfig12': 68719476734, 'ColConfig13': 68719476734, 'ColConfig14': 68719476734, 'ColConfig15': 68719476734, 'ColConfig16': 68719476734, 'ColConfig17': 68719476734, 'ColConfig18': 68719476734, 'ColConfig19': 68719476734, 'ColConfig20': 68717379582, 'ColConfig21': 68719476734, 'ColConfig22': 68719476734, 'ColConfig23': 68719476734, 'ColConfig24': 68719476734, 'ColConfig25': 68719476734, 'ColConfig26': 68719476734, 'ColConfig27': 68719476734, 'ColConfig28': 68719476734, 'ColConfig29': 68719476734, 'ColConfig30': 68719476734, 'ColConfig31': 68719476734, 'ColConfig32': 68719476734, 'ColConfig33': 68719476734, 'ColConfig34': 68719476734}
+
+ChipId	Payload	Locatn	Row/Col	tStamp	MSB	LSB	ToT	ToT(us)
+b'bcbcbcbcbcbcbcbcbcbc200052a03920503ed01f2028d780c6200152a0122051c6200152a0122051bcc0e03820000000c02050d080902028cc60d920010da0762051d0005f2029ccc092bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+0	0	 4	 0	Row	74	 5	156 	 1436 	 14.36 
+0	0	 4	 10	Row	124	 11	248 	 3064 	 30.64 
+0	0	 4	 20	Row	235	 1	99 	 355 	 3.55 
+0	0	 4	 0	Col	74	 5	72 	 1352 	 13.52 
+0	0	 4	 10	Col	99	 4	128 	 1152 	 11.52 
+0	[0;31;40m9[0m	 [0;31;40m2[0m	 5	Row	72	 4	138 	 1162 	 11.62 
+0	0	 [0;31;40m3[0m	 7	Row	28	 4	0 	 1024 	 10.24 
+0	0	 [0;31;40m0[0m	 0	Row	3	 4	10 	 1034 	 10.34 
+0	[0;31;40m1[0m	 [0;31;40m3[0m	 1	Row	9	 4	20 	 1044 	 10.44 
+0	[0;31;40m6[0m	 [0;31;40m3[0m	 6	Row	155	 4	128 	 1152 	 11.52 
+0	[0;31;40m22[0m	 [0;31;40m0[0m	 5	Row	110	 4	138 	 1162 	 11.62 
+0	[0;31;40m1[0m	 [0;31;40m3[0m	 0	Row	250	 4	148 	 1172 	 11.72 
+0	[0;31;40m6[0m	 [0;31;40m3[0m	 3	Row	73	 13	61 	 3389 	 33.89 
+
+b'bcbcbcbcbcbcbcbcbcbc2000b530d820501220fa2028ac20af2001b5d00120511220aa2029ac200dbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+1	0	 4	 0	Row	173	 12	27 	 3099 	 30.99 
+1	0	 4	 10	Row	72	 4	95 	 1119 	 11.19 
+1	0	 4	 20	Row	53	 4	245 	 1269 	 12.69 
+1	0	 4	 0	Col	173	 11	128 	 2944 	 29.44 
+1	0	 4	 10	Col	72	 4	85 	 1109 	 11.09 
+1	0	 4	 20	Col	53	 4	176 	 1200 	 12.0 
+
+b'bcbcbcbcbcbcbcbcbcbc200055c031202816c0a5200155c038202916c076bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+2	0	 4	 0	Row	170	 3	140 	 908 	 9.08 
+2	0	 4	 20	Row	104	 3	165 	 933 	 9.33 
+2	0	 4	 0	Col	170	 3	28 	 796 	 7.96 
+2	0	 4	 20	Col	104	 3	110 	 878 	 8.78 
+
+b'bcbcbcbcbcbcbcbcbcbc2000e5e0f520289cf0822001e5e01c20299cf0e0bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+3	0	 4	 0	Row	167	 7	175 	 1967 	 19.67 
+3	0	 4	 20	Row	57	 15	65 	 3905 	 39.05 
+3	0	 4	 0	Col	167	 7	56 	 1848 	 18.48 
+3	0	 4	 20	Col	57	 15	7 	 3847 	 38.47 
+
+b'bcbcbcbcbcbcbcbcbcbc2000a52036202844d04a2001a5c08f202944509dbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+4	0	 4	 0	Row	165	 4	108 	 1132 	 11.32 
+4	0	 4	 20	Row	34	 11	82 	 2898 	 28.98 
+4	0	 4	 0	Col	165	 3	241 	 1009 	 10.09 
+4	0	 4	 20	Col	34	 10	185 	 2745 	 27.45 
+
+b'bcbcbcbcbcbcbcbcbcbc200045c02e20289320e920014540f72029932048bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+5	0	 4	 0	Row	162	 3	116 	 884 	 8.84 
+5	0	 4	 20	Row	201	 4	151 	 1175 	 11.75 
+5	0	 4	 0	Col	162	 2	239 	 751 	 7.51 
+5	0	 4	 20	Col	201	 4	18 	 1042 	 10.42 
+
+b'bcbcbcbcbcbcbcbcbcbc2000f8d03a20280f00d22001f8508320290ff05fbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+6	0	 4	 0	Row	31	 11	92 	 2908 	 29.08 
+6	0	 4	 20	Row	240	 0	75 	 75 	 0.75 
+6	0	 4	 0	Col	31	 10	193 	 2753 	 27.53 
+6	0	 4	 20	Col	240	 15	250 	 4090 	 40.9 
+
+b'bcbcbcbcbcbcbcbcbcbc20003870be2028719071200138702020297190d0bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+7	0	 4	 0	Row	28	 14	125 	 3709 	 37.09 
+7	0	 4	 20	Row	142	 9	142 	 2446 	 24.46 
+7	0	 4	 0	Col	28	 14	4 	 3588 	 35.88 
+7	0	 4	 20	Col	142	 9	11 	 2315 	 23.15 
+
+b'bcbcbcbcbcbcbcbcbcbc200098208e20284150e0200198200020294190f5bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+8	0	 4	 0	Row	25	 4	113 	 1137 	 11.37 
+8	0	 4	 20	Row	130	 10	7 	 2567 	 25.67 
+8	0	 4	 0	Col	25	 4	0 	 1024 	 10.24 
+8	0	 4	 20	Col	130	 9	175 	 2479 	 24.79 
+
+b'bcbcbcbcbcbcbcbcbcbc2000e870f12028a740e92001e870e82029a740acbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+9	0	 4	 0	Row	23	 14	143 	 3727 	 37.27 
+9	0	 4	 20	Row	229	 2	151 	 663 	 6.63 
+9	0	 4	 0	Col	23	 14	23 	 3607 	 36.07 
+9	0	 4	 20	Col	229	 2	53 	 565 	 5.65 
+
+b'bcbcbcbcbcbcbcbcbcbc200028006b20289430282001280006202994d0d5bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+10	0	 4	 0	Row	20	 0	214 	 214 	 2.14 
+10	0	 4	 20	Row	41	 12	20 	 3092 	 30.92 
+10	0	 4	 0	Col	20	 0	96 	 96 	 0.96 
+10	0	 4	 20	Col	41	 11	171 	 2987 	 29.87 
+
+b'bcbcbcbcbcbcbcbcbcbc200089700620281b7091200189b00b20291bb057bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+11	0	 4	 0	Row	145	 14	96 	 3680 	 36.8 
+11	0	 4	 20	Row	216	 14	137 	 3721 	 37.21 
+11	0	 4	 0	Col	145	 13	208 	 3536 	 35.36 
+11	0	 4	 20	Col	216	 13	234 	 3562 	 35.62 
+
+b'bcbcbcbcbcbcbcbcbcbc200071302e202830204320017130c0202930206ebcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+12	0	 4	 0	Row	142	 12	116 	 3188 	 31.88 
+12	0	 4	 20	Row	12	 4	194 	 1218 	 12.18 
+12	0	 4	 0	Col	142	 12	3 	 3075 	 30.75 
+12	0	 4	 20	Col	12	 4	118 	 1142 	 11.42 
+
+b'bcbcbcbcbcbcbcbcbcbc2000d140da2028fdd0c52001d180c72029fdd0c2bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+13	0	 4	 0	Row	139	 2	91 	 603 	 6.03 
+13	0	 4	 20	Row	191	 11	163 	 2979 	 29.79 
+13	0	 4	 0	Col	139	 1	227 	 483 	 4.83 
+13	0	 4	 20	Col	191	 11	67 	 2883 	 28.83 
+
+b'bcbcbcbcbcbcbcbcbcbc200091306b20285310f420019130b2202953e02dbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+14	0	 4	 0	Row	137	 12	214 	 3286 	 32.86 
+14	0	 4	 20	Row	202	 8	47 	 2095 	 20.95 
+14	0	 4	 0	Col	137	 12	77 	 3149 	 31.49 
+14	0	 4	 20	Col	202	 7	180 	 1972 	 19.72 
+
+b'bcbcbcbcbcbcbcbcbcbc200060000d20286830b5200160000420296830a2bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc2028bc80a02029bc00ffbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+15	0	 4	 0	Row	6	 0	176 	 176 	 1.76 
+15	0	 4	 20	Row	22	 12	173 	 3245 	 32.45 
+15	0	 4	 0	Col	6	 0	32 	 32 	 0.32 
+15	0	 4	 20	Col	22	 12	69 	 3141 	 31.41 
+15	0	 4	 20	Row	61	 1	5 	 261 	 2.61 
+15	0	 [0;31;40m1[0m	 5	Row	4	 4	61 	 1085 	 10.85 
+15	0	 [0;31;40m0[0m	 63	Col	61	 13	61 	 3389 	 33.89 
+
+b'bcbcbcbcbcbcbcbcbcbc2000c0c0ef20286610292001c0c0d62029661052bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+16	0	 4	 0	Row	3	 3	247 	 1015 	 10.15 
+16	0	 4	 20	Row	102	 8	148 	 2196 	 21.96 
+16	0	 4	 0	Col	3	 3	107 	 875 	 8.75 
+16	0	 4	 20	Col	102	 8	74 	 2122 	 21.22 
+
+b'bcbcbcbcbcbcbcbcbcbc200000408220280d1032200100805b20290d10d0bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+17	0	 4	 0	Row	0	 2	65 	 577 	 5.77 
+17	0	 4	 20	Row	176	 8	76 	 2124 	 21.24 
+17	0	 4	 0	Col	0	 1	218 	 474 	 4.74 
+17	0	 4	 20	Col	176	 8	11 	 2059 	 20.59 
+
+b'bcbcbcbcbcbcbcbcbcbc2000bef06b20280760262001bef09a2029076018bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc20288380732029838013bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+18	0	 4	 0	Row	125	 15	214 	 4054 	 40.54 
+18	0	 4	 20	Row	224	 6	100 	 1636 	 16.36 
+18	0	 4	 0	Col	125	 15	89 	 3929 	 39.29 
+18	0	 4	 20	Col	224	 6	24 	 1560 	 15.6 
+18	0	 4	 20	Row	193	 1	206 	 462 	 4.62 
+18	0	 4	 20	Col	193	 1	200 	 456 	 4.56 
+
+b'bcbcbcbcbcbcbcbcbcbc20005e40a0202842104c20015e8029202942e046bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+19	0	 4	 0	Row	122	 2	5 	 517 	 5.17 
+19	0	 4	 20	Row	66	 8	50 	 2098 	 20.98 
+19	0	 4	 0	Col	122	 1	148 	 404 	 4.04 
+19	0	 4	 20	Col	66	 7	98 	 1890 	 18.9 
+
+b'bcbcbcbcbcbcbcbcbcbc20001e20562028de002120011ec05f2029def0ffbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+20	0	 4	 0	Row	120	 4	106 	 1130 	 11.3 
+20	0	 4	 20	Row	123	 0	132 	 132 	 1.32 
+20	0	 4	 0	Col	120	 3	250 	 1018 	 10.18 
+20	0	 4	 20	Col	123	 15	255 	 4095 	 40.95 
+
+b'bcbcbcbcbcbcbcbcbcbc20002ff0282028a9101c20012f70992029a9e06fbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+21	0	 4	 0	Row	244	 15	20 	 3860 	 38.6 
+21	0	 4	 20	Row	149	 8	56 	 2104 	 21.04 
+21	0	 4	 0	Col	244	 14	153 	 3737 	 37.37 
+21	0	 4	 20	Col	149	 7	246 	 2038 	 20.38 
+
+b'bcbcbcbcbcbcbcbcbcbc20004fc08d202899b03220014fc0b420299930c3bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+22	0	 4	 0	Row	242	 3	177 	 945 	 9.45 
+22	0	 4	 20	Row	153	 13	76 	 3404 	 34.04 
+22	0	 4	 0	Col	242	 3	45 	 813 	 8.13 
+22	0	 4	 20	Col	153	 12	195 	 3267 	 32.67 
+
+b'bcbcbcbcbcbcbcbcbcbc2000f7405d20287990f22001f740e220297910debcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+23	0	 4	 0	Row	239	 2	186 	 698 	 6.98 
+23	0	 4	 20	Row	158	 9	79 	 2383 	 23.83 
+23	0	 4	 0	Col	239	 2	71 	 583 	 5.83 
+23	0	 4	 20	Col	158	 8	123 	 2171 	 21.71 
+
+b'bcbcbcbcbcbcbcbcbcbc2000374073202832c0b3200137408a202932c009bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc20282380bd202923806dbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+24	0	 4	 0	Row	236	 2	206 	 718 	 7.18 
+24	0	 4	 20	Row	76	 3	205 	 973 	 9.73 
+24	0	 4	 0	Col	236	 2	81 	 593 	 5.93 
+24	0	 4	 20	Col	76	 3	144 	 912 	 9.12 
+24	0	 4	 20	Row	196	 1	189 	 445 	 4.45 
+24	0	 4	 20	Col	196	 1	182 	 438 	 4.38 
+
+b'bcbcbcbcbcbcbcbcbcbc20009680fe20286380ac200196002f20296300aebcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+25	0	 4	 0	Row	105	 1	127 	 383 	 3.83 
+25	0	 4	 20	Row	198	 1	53 	 309 	 3.09 
+25	0	 4	 0	Col	105	 0	244 	 244 	 2.44 
+25	0	 4	 20	Col	198	 0	117 	 117 	 1.17 
+
+b'bcbcbcbcbcbcbcbcbcbc20006620302028f9d0d5200166c0392029f9d01ebcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+26	0	 4	 0	Row	102	 4	12 	 1036 	 10.36 
+26	0	 4	 20	Row	159	 11	171 	 2987 	 29.87 
+26	0	 4	 0	Col	102	 3	156 	 924 	 9.24 
+26	0	 4	 20	Col	159	 11	120 	 2936 	 29.36 
+
+b'bcbcbcbcbcbcbcbcbcbc2000c700f72028e470aa2001c700062029e4b0ffbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+27	0	 4	 0	Row	227	 0	239 	 239 	 2.39 
+27	0	 4	 20	Row	39	 14	85 	 3669 	 36.69 
+27	0	 4	 0	Col	227	 0	96 	 96 	 0.96 
+27	0	 4	 20	Col	39	 13	255 	 3583 	 35.83 
+
+b'bcbcbcbcbcbcbcbcbcbc20008780842028bfc00920018700ed2029bfc0bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+28	0	 4	 0	Row	225	 1	33 	 289 	 2.89 
+28	0	 4	 20	Row	253	 3	144 	 912 	 9.12 
+28	0	 4	 0	Col	225	 0	183 	 183 	 1.83 
+28	0	 4	 20	Col	253	 3	61 	 829 	 8.29 
+
+b'bcbcbcbcbcbcbcbcbcbc20007b40c420285a101620017b80f520295ae01bbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+29	0	 4	 0	Row	222	 2	35 	 547 	 5.47 
+29	0	 4	 20	Row	90	 8	104 	 2152 	 21.52 
+29	0	 4	 0	Col	222	 1	175 	 431 	 4.31 
+29	0	 4	 20	Col	90	 7	216 	 2008 	 20.08 
+
+b'bcbcbcbcbcbcbcbcbcbc2000db00a8202837a0c22001dbf0b92029372093bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+30	0	 4	 0	Row	219	 0	21 	 21 	 0.21 
+30	0	 4	 20	Row	236	 5	67 	 1347 	 13.47 
+30	0	 4	 0	Col	219	 15	157 	 3997 	 39.97 
+30	0	 4	 20	Col	236	 4	201 	 1225 	 12.25 
+
+b'bcbcbcbcbcbcbcbcbcbc20009b40002028c2b0bf20019b80712029c2b019bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc20001ab09820011ab060bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+31	0	 4	 0	Row	217	 2	0 	 512 	 5.12 
+31	0	 4	 20	Row	67	 13	253 	 3581 	 35.81 
+31	0	 4	 0	Col	217	 1	142 	 398 	 3.98 
+31	0	 4	 20	Col	67	 13	152 	 3480 	 34.8 
+31	0	 4	 0	Row	88	 13	25 	 3353 	 33.53 
+31	0	 4	 0	Col	88	 13	6 	 3334 	 33.34 
+
+b'bcbcbcbcbcbcbcbcbcbc2000aa00e720288a70532001aa009620298a707abcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+32	0	 4	 0	Row	85	 0	231 	 231 	 2.31 
+32	0	 4	 20	Row	81	 14	202 	 3786 	 37.86 
+32	0	 4	 0	Col	85	 0	105 	 105 	 1.05 
+32	0	 4	 20	Col	81	 14	94 	 3678 	 36.78 
+
+b'bcbcbcbcbcbcbcbcbcbc2000ca20d620281a50492001cac0ff20291a508cbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+33	0	 4	 0	Row	83	 4	107 	 1131 	 11.31 
+33	0	 4	 20	Row	88	 10	146 	 2706 	 27.06 
+33	0	 4	 0	Col	83	 3	255 	 1023 	 10.23 
+33	0	 4	 20	Col	88	 10	49 	 2609 	 26.09 
+
+b'bcbcbcbcbcbcbcbcbcbc20000ab0e1202869c07720010a309f202969c0b6bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+34	0	 4	 0	Row	80	 13	135 	 3463 	 34.63 
+34	0	 4	 20	Row	150	 3	238 	 1006 	 10.06 
+34	0	 4	 0	Col	80	 12	249 	 3321 	 33.21 
+34	0	 4	 20	Col	150	 3	109 	 877 	 8.77 
+
+b'bcbcbcbcbcbcbcbcbcbc2000b3f0902028da70382001b370012029dab06dbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+35	0	 4	 0	Row	205	 15	9 	 3849 	 38.49 
+35	0	 4	 20	Row	91	 14	28 	 3612 	 36.12 
+35	0	 4	 0	Col	205	 14	128 	 3712 	 37.12 
+35	0	 4	 20	Col	91	 13	182 	 3510 	 35.1 
+
+b'bcbcbcbcbcbcbcbcbcbc200053f0872028fe1081200153f0962029fe1014bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+36	0	 4	 0	Row	202	 15	225 	 4065 	 40.65 
+36	0	 4	 20	Row	127	 8	129 	 2177 	 21.77 
+36	0	 4	 0	Col	202	 15	105 	 3945 	 39.45 
+36	0	 4	 20	Col	127	 8	40 	 2088 	 20.88 
+
+b'bcbcbcbcbcbcbcbcbcbc2000e380e620281be0252001e3002720291be012bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+37	0	 4	 0	Row	199	 1	103 	 359 	 3.59 
+37	0	 4	 20	Row	216	 7	164 	 1956 	 19.56 
+37	0	 4	 0	Col	199	 0	228 	 228 	 2.28 
+37	0	 4	 20	Col	216	 7	72 	 1864 	 18.64 
+
+b'bcbcbcbcbcbcbcbcbcbc200022403820282a8077200122805120292a8083bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+38	0	 4	 0	Row	68	 2	28 	 540 	 5.4 
+38	0	 4	 20	Row	84	 1	238 	 494 	 4.94 
+38	0	 4	 0	Col	68	 1	138 	 394 	 3.94 
+38	0	 4	 20	Col	84	 1	193 	 449 	 4.49 
+
+b'bcbcbcbcbcbcbcbcbcbc20004280862028f3e00b20014200e72029f3e0f6bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc202834808e2029348036bcbcbcbcbcbcbcbc'
+39	0	 4	 0	Row	66	 1	97 	 353 	 3.53 
+39	0	 4	 20	Row	207	 7	208 	 2000 	 20.0 
+39	0	 4	 0	Col	66	 0	231 	 231 	 2.31 
+39	0	 4	 20	Col	207	 7	111 	 1903 	 19.03 
+39	0	 4	 20	Row	44	 1	113 	 369 	 3.69 
+39	0	 4	 20	Col	44	 1	108 	 364 	 3.64 
+
+b'bcbcbcbcbcbcbcbcbcbc2000fc30e4202811a0842001fcd0dd20291120a2bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+40	0	 4	 0	Row	63	 12	39 	 3111 	 31.11 
+40	0	 4	 20	Row	136	 5	33 	 1313 	 13.13 
+40	0	 4	 0	Col	63	 11	187 	 3003 	 30.03 
+40	0	 4	 20	Col	136	 4	69 	 1093 	 10.93 
+
+b'bcbcbcbcbcbcbcbcbcbc20003d40d420288f009520013d807920298f00d6bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+41	0	 4	 0	Row	188	 2	43 	 555 	 5.55 
+41	0	 4	 20	Row	241	 0	169 	 169 	 1.69 
+41	0	 4	 0	Col	188	 1	158 	 414 	 4.14 
+41	0	 4	 20	Col	241	 0	107 	 107 	 1.07 
+
+b'bcbcbcbcbcbcbcbcbcbc20009d207c2028f3b0a420019dc0832029f3304ebcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+42	0	 4	 0	Row	185	 4	62 	 1086 	 10.86 
+42	0	 4	 20	Row	207	 13	37 	 3365 	 33.65 
+42	0	 4	 0	Col	185	 3	193 	 961 	 9.61 
+42	0	 4	 20	Col	207	 12	114 	 3186 	 31.86 
+
+b'bcbcbcbcbcbcbcbcbcbc20006d0068202866e02a20016df025202966e048bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+43	0	 4	 0	Row	182	 0	22 	 22 	 0.22 
+43	0	 4	 20	Row	102	 7	84 	 1876 	 18.76 
+43	0	 4	 0	Col	182	 15	164 	 4004 	 40.04 
+43	0	 4	 20	Col	102	 7	18 	 1810 	 18.1 
+
+b'bcbcbcbcbcbcbcbcbcbc20002d40d1202852d0a220012d4048202952509fbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+44	0	 4	 0	Row	180	 2	139 	 651 	 6.51 
+44	0	 4	 20	Row	74	 11	69 	 2885 	 28.85 
+44	0	 4	 0	Col	180	 2	18 	 530 	 5.3 
+44	0	 4	 20	Col	74	 10	249 	 2809 	 28.09 
+
+b'bcbcbcbcbcbcbcbcbcbc20000c70ad202801908720010c70582029019076bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+45	0	 4	 0	Row	48	 14	181 	 3765 	 37.65 
+45	0	 4	 20	Row	128	 9	225 	 2529 	 25.29 
+45	0	 4	 0	Col	48	 14	26 	 3610 	 36.1 
+45	0	 4	 20	Col	128	 9	110 	 2414 	 24.14 
+
+b'bcbcbcbcbcbcbcbcbcbc200074703120283e30b9200174708820293ed03bbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+46	0	 4	 0	Row	46	 14	140 	 3724 	 37.24 
+46	0	 4	 20	Row	124	 12	157 	 3229 	 32.29 
+46	0	 4	 0	Col	46	 14	17 	 3601 	 36.01 
+46	0	 4	 20	Col	124	 11	220 	 3036 	 30.36 
+
+b'bcbcbcbcbcbcbcbcbcbc2000d4a06b20288ae0bd2001d4a0fa20298ae038bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+47	0	 4	 0	Row	43	 5	214 	 1494 	 14.94 
+47	0	 4	 20	Row	81	 7	189 	 1981 	 19.81 
+47	0	 4	 0	Col	43	 5	95 	 1375 	 13.75 
+47	0	 4	 20	Col	81	 7	28 	 1820 	 18.2 
+
+b'bcbcbcbcbcbcbcbcbcbc200015f02a2028d12057200115703d2029d120b9bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+48	0	 4	 0	Row	168	 15	84 	 3924 	 39.24 
+48	0	 4	 20	Row	139	 4	234 	 1258 	 12.58 
+48	0	 4	 0	Col	168	 14	188 	 3772 	 37.72 
+48	0	 4	 20	Col	139	 4	157 	 1181 	 11.81 
+
+b'bcbcbcbcbcbcbcbcbcbc2000a540ad2028c2004f2001a5401c2029c20092bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+49	0	 4	 0	Row	165	 2	181 	 693 	 6.93 
+49	0	 4	 20	Row	67	 0	242 	 242 	 2.42 
+49	0	 4	 0	Col	165	 2	56 	 568 	 5.68 
+49	0	 4	 20	Col	67	 0	73 	 73 	 0.73 
+
+b'bcbcbcbcbcbcbcbcbcbc2000c500f92028ed00d42001c500cc2029edf002bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+50	0	 4	 0	Row	163	 0	159 	 159 	 1.59 
+50	0	 4	 20	Row	183	 0	43 	 43 	 0.43 
+50	0	 4	 0	Col	163	 0	51 	 51 	 0.51 
+50	0	 4	 20	Col	183	 15	64 	 3904 	 39.04 
+
+b'bcbcbcbcbcbcbcbcbcbc200005c00f202839d0f5200105c09e202939d074bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+51	0	 4	 0	Row	160	 3	240 	 1008 	 10.08 
+51	0	 4	 20	Row	156	 11	175 	 2991 	 29.91 
+51	0	 4	 0	Col	160	 3	121 	 889 	 8.89 
+51	0	 4	 20	Col	156	 11	46 	 2862 	 28.62 
+
+b'bcbcbcbcbcbcbcbcbcbc2000b81041202890b0972001b8e03b202990b0e6bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+52	0	 4	 0	Row	29	 8	130 	 2178 	 21.78 
+52	0	 4	 20	Row	9	 13	233 	 3561 	 35.61 
+52	0	 4	 0	Col	29	 7	220 	 2012 	 20.12 
+52	0	 4	 20	Col	9	 13	103 	 3431 	 34.31 
+
+b'bcbcbcbcbcbcbcbcbcbc200058f05720287b9067200158f08620297b9032bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+53	0	 4	 0	Row	26	 15	234 	 4074 	 40.74 
+53	0	 4	 20	Row	222	 9	230 	 2534 	 25.34 
+53	0	 4	 0	Col	26	 15	97 	 3937 	 39.37 
+53	0	 4	 20	Col	222	 9	76 	 2380 	 23.8 
+
+b'bcbcbcbcbcbcbcbcbcbc2000e8c00620280f60ca2001e8400f20290fa09fbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+54	0	 4	 0	Row	23	 3	96 	 864 	 8.64 
+54	0	 4	 20	Row	240	 6	83 	 1619 	 16.19 
+54	0	 4	 0	Col	23	 2	240 	 752 	 7.52 
+54	0	 4	 20	Col	240	 5	249 	 1529 	 15.29 
+
+b'bcbcbcbcbcbcbcbcbcbc200029f08220280770a820012970d3202907b02dbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+55	0	 4	 0	Row	148	 15	65 	 3905 	 39.05 
+55	0	 4	 20	Row	224	 14	21 	 3605 	 36.05 
+55	0	 4	 0	Col	148	 14	203 	 3787 	 37.87 
+55	0	 4	 20	Col	224	 13	180 	 3508 	 35.08 
+
+b'bcbcbcbcbcbcbcbcbcbc200089c0b420284250ff20018940c5202942500abcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+56	0	 4	 0	Row	145	 3	45 	 813 	 8.13 
+56	0	 4	 20	Row	66	 10	255 	 2815 	 28.15 
+56	0	 4	 0	Col	145	 2	163 	 675 	 6.75 
+56	0	 4	 20	Col	66	 10	80 	 2640 	 26.4 
+
+b'bcbcbcbcbcbcbcbcbcbc20007070b3202858e0ae200170701c202958e0e0bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc2028bc801a2029bc802abcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+57	0	 4	 0	Row	14	 14	205 	 3789 	 37.89 
+57	0	 4	 20	Row	26	 7	117 	 1909 	 19.09 
+57	0	 4	 0	Col	14	 14	56 	 3640 	 36.4 
+57	0	 4	 20	Col	26	 7	7 	 1799 	 17.99 
+57	0	 4	 20	Row	61	 1	88 	 344 	 3.44 
+57	0	 [0;31;40m1[0m	 24	Row	4	 4	61 	 1085 	 10.85 
+57	0	 [0;31;40m1[0m	 20	Row	61	 13	61 	 3389 	 33.89 
+
+b'bcbcbcbcbcbcbcbcbcbc200030f0ad20282dc058200130f09420292d4079bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+58	0	 4	 0	Row	12	 15	181 	 4021 	 40.21 
+58	0	 4	 20	Row	180	 3	26 	 794 	 7.94 
+58	0	 4	 0	Col	12	 15	41 	 3881 	 38.81 
+58	0	 4	 20	Col	180	 2	158 	 670 	 6.7 
+
+b'bcbcbcbcbcbcbcbcbcbc20009020c820286bd0c7200190c0e920296bd096bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+59	0	 4	 0	Row	9	 4	19 	 1043 	 10.43 
+59	0	 4	 20	Row	214	 11	227 	 3043 	 30.43 
+59	0	 4	 0	Col	9	 3	151 	 919 	 9.19 
+59	0	 4	 20	Col	214	 11	105 	 2921 	 29.21 
+
+b'bcbcbcbcbcbcbcbcbcbc200060f06a2028a7006920016070e320292700d4bcbcbcbcbcbcbcbcbcbcbcbc200061303a20016130c2bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+60	0	 4	 0	Row	6	 15	86 	 3926 	 39.26 
+60	0	 4	 20	Row	229	 0	150 	 150 	 1.5 
+60	0	 4	 0	Col	6	 14	199 	 3783 	 37.83 
+60	0	 4	 20	Col	228	 0	43 	 43 	 0.43 
+60	0	 4	 0	Row	134	 12	92 	 3164 	 31.64 
+60	0	 4	 0	Col	134	 12	67 	 3139 	 31.39 
+
+b'bcbcbcbcbcbcbcbcbcbc2000c1f048202819800d2001c170d5202919002fbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+61	0	 4	 0	Row	131	 15	18 	 3858 	 38.58 
+61	0	 4	 20	Row	152	 1	176 	 432 	 4.32 
+61	0	 4	 0	Col	131	 14	171 	 3755 	 37.55 
+61	0	 4	 20	Col	152	 0	244 	 244 	 2.44 
+
+b'bcbcbcbcbcbcbcbcbcbc20000170652028be209a20010170f42029bec0e3bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+62	0	 4	 0	Row	128	 14	166 	 3750 	 37.5 
+62	0	 4	 20	Row	125	 4	89 	 1113 	 11.13 
+62	0	 4	 0	Col	128	 14	47 	 3631 	 36.31 
+62	0	 4	 20	Col	125	 3	199 	 967 	 9.67 
+
+b'bcbcbcbcbcbcbcbcbcbc20007e706d202879508f20017e70c220297950b9bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+63	0	 4	 0	Row	126	 14	182 	 3766 	 37.66 
+63	0	 4	 20	Row	158	 10	241 	 2801 	 28.01 
+63	0	 4	 0	Col	126	 14	67 	 3651 	 36.51 
+63	0	 4	 20	Col	158	 10	157 	 2717 	 27.17 
+
+b'bcbcbcbcbcbcbcbcbcbc20005ff0002028f6200b20015f70962029f62021bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+64	0	 4	 0	Row	250	 15	0 	 3840 	 38.4 
+64	0	 4	 20	Row	111	 4	208 	 1232 	 12.32 
+64	0	 4	 0	Col	250	 14	105 	 3689 	 36.89 
+64	0	 4	 20	Col	111	 4	132 	 1156 	 11.56 
+
+b'bcbcbcbcbcbcbcbcbcbc20001f009e2028dca0bb20011f00202029dca0a5bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+65	0	 4	 0	Row	248	 0	121 	 121 	 1.21 
+65	0	 4	 20	Row	59	 5	221 	 1501 	 15.01 
+65	0	 4	 0	Col	248	 0	4 	 4 	 0.04 
+65	0	 4	 20	Col	59	 5	165 	 1445 	 14.45 
+
+b'bcbcbcbcbcbcbcbcbcbc2000af20c1202821f0292001af2084202921f05abcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+66	0	 4	 0	Row	245	 4	131 	 1155 	 11.55 
+66	0	 4	 20	Row	132	 15	148 	 3988 	 39.88 
+66	0	 4	 0	Col	245	 4	33 	 1057 	 10.57 
+66	0	 4	 20	Col	132	 15	90 	 3930 	 39.3 
+
+b'bcbcbcbcbcbcbcbcbcbc20004ed03f2028abe06720014ed0162029abe025bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+67	0	 4	 0	Row	114	 11	252 	 3068 	 30.68 
+67	0	 4	 20	Row	213	 7	230 	 2022 	 20.22 
+67	0	 4	 0	Col	114	 11	104 	 2920 	 29.2 
+67	0	 4	 20	Col	213	 7	164 	 1956 	 19.56 
+
+b'bcbcbcbcbcbcbcbcbcbc2000f6c0c32028a1d0732001f6c0822029a1d0d6bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+68	0	 4	 0	Row	111	 3	195 	 963 	 9.63 
+68	0	 4	 20	Row	133	 11	206 	 3022 	 30.22 
+68	0	 4	 0	Col	111	 3	65 	 833 	 8.33 
+68	0	 4	 20	Col	133	 11	107 	 2923 	 29.23 
+
+b'bcbcbcbcbcbcbcbcbcbc2000b7c0662028ec607d2001b640372029ec60d2bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+69	0	 4	 0	Row	237	 3	102 	 870 	 8.7 
+69	0	 4	 20	Row	55	 6	190 	 1726 	 17.26 
+69	0	 4	 0	Col	109	 2	236 	 748 	 7.48 
+69	0	 4	 20	Col	55	 6	75 	 1611 	 16.11 
+
+b'bcbcbcbcbcbcbcbcbcbc200097301d202858309420019730dc202958d0a1bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+70	0	 4	 0	Row	233	 12	184 	 3256 	 32.56 
+70	0	 4	 20	Row	26	 12	41 	 3113 	 31.13 
+70	0	 4	 0	Col	233	 12	59 	 3131 	 31.31 
+70	0	 4	 20	Col	26	 11	133 	 2949 	 29.49 
+
+b'bcbcbcbcbcbcbcbcbcbc2000e770e420282f60d52001e7b01920292f60e2bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+71	0	 4	 0	Row	231	 14	39 	 3623 	 36.23 
+71	0	 4	 20	Row	244	 6	171 	 1707 	 17.07 
+71	0	 4	 0	Col	231	 13	152 	 3480 	 34.8 
+71	0	 4	 20	Col	244	 6	71 	 1607 	 16.07 
+
+b'bcbcbcbcbcbcbcbcbcbc200027c0372028055001200127c0412029059087bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+72	0	 4	 0	Row	228	 3	236 	 1004 	 10.04 
+72	0	 4	 20	Row	160	 10	128 	 2688 	 26.88 
+72	0	 4	 0	Col	228	 3	130 	 898 	 8.98 
+72	0	 4	 20	Col	160	 9	225 	 2529 	 25.29 
+
+b'bcbcbcbcbcbcbcbcbcbc20008600a2202803a0ea200186f03d2029032065bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+73	0	 4	 0	Row	97	 0	69 	 69 	 0.69 
+73	0	 4	 20	Row	192	 5	87 	 1367 	 13.67 
+73	0	 4	 0	Col	97	 15	188 	 4028 	 40.28 
+73	0	 4	 20	Col	192	 4	166 	 1190 	 11.9 
+
+b'bcbcbcbcbcbcbcbcbcbc20007a20b3202896408d20017a20aa2029964018bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+74	0	 4	 0	Row	94	 4	205 	 1229 	 12.29 
+74	0	 4	 20	Row	105	 2	177 	 689 	 6.89 
+74	0	 4	 0	Col	94	 4	85 	 1109 	 11.09 
+74	0	 4	 20	Col	105	 2	24 	 536 	 5.36 
+
+b'bcbcbcbcbcbcbcbcbcbc2000da00532028baf0982001da008a2029ba703dbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+75	0	 4	 0	Row	91	 0	202 	 202 	 2.02 
+75	0	 4	 20	Row	93	 15	25 	 3865 	 38.65 
+75	0	 4	 0	Col	91	 0	81 	 81 	 0.81 
+75	0	 4	 20	Col	93	 14	188 	 3772 	 37.72 
+
+b'bcbcbcbcbcbcbcbcbcbc20009a70922028ca902320019ab0f32029ca90febcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc20001bb02f'
+76	0	 4	 0	Row	89	 14	73 	 3657 	 36.57 
+76	0	 4	 20	Row	83	 9	196 	 2500 	 25.0 
+76	0	 4	 0	Col	89	 13	207 	 3535 	 35.35 
+76	0	 4	 20	Col	83	 9	127 	 2431 	 24.31 
+
+b'bcbcbc20001bb02fbcbc20006ba036205040801e20280a402a20016b202f205140803620290a4020bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+77	0	 4	 0	Row	216	 13	244 	 3572 	 35.72 
+77	0	 4	 0	Row	214	 5	108 	 1388 	 13.88 
+77	0	 4	 10	Row	2	 1	120 	 376 	 3.76 
+77	0	 4	 20	Row	80	 2	84 	 596 	 5.96 
+77	0	 4	 0	Col	214	 4	244 	 1268 	 12.68 
+77	0	 4	 10	Col	2	 1	108 	 364 	 3.64 
+77	0	 4	 20	Col	80	 2	4 	 516 	 5.16 
+
+b'bcbcbcbcbcbcbcbcbcbc2000cb0025202828b01e2001cb00ac20292830d7bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+78	0	 4	 0	Row	211	 0	164 	 164 	 1.64 
+78	0	 4	 20	Row	20	 13	120 	 3448 	 34.48 
+78	0	 4	 0	Col	211	 0	53 	 53 	 0.53 
+78	0	 4	 20	Col	20	 12	235 	 3307 	 33.07 
+
+b'bcbcbcbcbcbcbcbcbcbc20000b80402028aa004f20010b00692029aa00b6bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+79	0	 4	 0	Row	208	 1	2 	 258 	 2.58 
+79	0	 4	 20	Row	85	 0	242 	 242 	 2.42 
+79	0	 4	 0	Col	208	 0	150 	 150 	 1.5 
+79	0	 4	 20	Col	85	 0	109 	 109 	 1.09 
+
+b'bcbcbcbcbcbcbcbcbcbc2000b270a9202856802d2001b2b0ff2029968064bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+80	0	 4	 0	Row	77	 14	149 	 3733 	 37.33 
+80	0	 4	 20	Row	106	 1	180 	 436 	 4.36 
+80	0	 4	 0	Col	77	 13	255 	 3583 	 35.83 
+80	0	 4	 20	Col	105	 1	38 	 294 	 2.94 
+
+b'bcbcbcbcbcbcbcbcbcbc20005240672028f89087200152409a2029f8902ebcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+81	0	 4	 0	Row	74	 2	230 	 742 	 7.42 
+81	0	 4	 20	Row	31	 9	225 	 2529 	 25.29 
+81	0	 4	 0	Col	74	 2	89 	 601 	 6.01 
+81	0	 4	 20	Col	31	 9	116 	 2420 	 24.2 
+
+b'bcbcbcbcbcbcbcbcbcbc200012f09e20281590bc200112f000202915107bbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+82	0	 4	 0	Row	72	 15	121 	 3961 	 39.61 
+82	0	 4	 20	Row	168	 9	61 	 2365 	 23.65 
+82	0	 4	 0	Col	72	 15	0 	 3840 	 38.4 
+82	0	 4	 20	Col	168	 8	222 	 2270 	 22.7 
+
+b'bcbcbcbcbcbcbcbcbcbc2000a28005202812c0082001a280ec2029124003bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc2000237055202884808e20012370312029848016bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+83	0	 4	 0	Row	69	 1	160 	 416 	 4.16 
+83	0	 4	 20	Row	72	 3	16 	 784 	 7.84 
+83	0	 4	 0	Col	69	 1	55 	 311 	 3.11 
+83	0	 4	 20	Col	72	 2	192 	 704 	 7.04 
+83	0	 4	 0	Row	196	 14	170 	 3754 	 37.54 
+83	0	 4	 20	Row	33	 1	113 	 369 	 3.69 
+83	0	 4	 0	Col	196	 14	140 	 3724 	 37.24 
+83	0	 4	 20	Col	33	 1	104 	 360 	 3.6 
+
+b'bcbcbcbcbcbcbcbcbcbc20004360c92028bb70b820014360582029bbb0abbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc202866801420296680c4bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+84	0	 4	 0	Row	194	 6	147 	 1683 	 16.83 
+84	0	 4	 20	Row	221	 14	29 	 3613 	 36.13 
+84	0	 4	 0	Col	194	 6	26 	 1562 	 15.62 
+84	0	 4	 20	Col	221	 13	213 	 3541 	 35.41 
+84	0	 4	 20	Row	102	 1	40 	 296 	 2.96 
+84	0	 4	 20	Col	102	 1	35 	 291 	 2.91 
+
+b'bcbcbcbcbcbcbcbcbcbc2000fd20f62028d540c12001fdc03f2029d540f4bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+85	0	 4	 0	Row	191	 4	111 	 1135 	 11.35 
+85	0	 4	 20	Row	171	 2	131 	 643 	 6.43 
+85	0	 4	 0	Col	191	 3	252 	 1020 	 10.2 
+85	0	 4	 20	Col	171	 2	47 	 559 	 5.59 
+
+b'bcbcbcbcbcbcbcbcbcbc20003d704620287eb07920013db09720297eb00ebcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+86	0	 4	 0	Row	188	 14	98 	 3682 	 36.82 
+86	0	 4	 20	Row	126	 13	158 	 3486 	 34.86 
+86	0	 4	 0	Col	188	 13	233 	 3561 	 35.61 
+86	0	 4	 20	Col	126	 13	112 	 3440 	 34.4 
+
+b'bcbcbcbcbcbcbcbcbcbc20005d205020283440bf20015dc0292029344013bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+87	0	 4	 0	Row	186	 4	10 	 1034 	 10.34 
+87	0	 4	 20	Row	44	 2	253 	 765 	 7.65 
+87	0	 4	 0	Col	186	 3	148 	 916 	 9.16 
+87	0	 4	 20	Col	44	 2	200 	 712 	 7.12 
+
+b'bcbcbcbcbcbcbcbcbcbc2000ecb05d2028f3d04a2001ecb0ec2029f3508fbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+88	0	 4	 0	Row	55	 13	186 	 3514 	 35.14 
+88	0	 4	 20	Row	207	 11	82 	 2898 	 28.98 
+88	0	 4	 0	Col	55	 13	55 	 3383 	 33.83 
+88	0	 4	 20	Col	207	 10	241 	 2801 	 28.01 
+
