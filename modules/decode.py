@@ -101,7 +101,7 @@ class Decode:
         list_hits = []
 
         if len(matches) > 1:  # if no hits, there is one tuple (0:end)
-            for index, match in enumerate(matches[:-1]):  #e xclude last item
+            for index, match in enumerate(matches[:-1]):  # exclude last item
                 logger.info(f"Hit: {binascii.hexlify(readout[match[1]:(match[1] + 5)])}")
                 match2 = 5 + match[1]
 
@@ -123,7 +123,7 @@ class Decode:
 
         return list_hits
 
-    def decode_astropix2_hits(self, list_hits: list, i, file):
+    def decode_astropix2_hits(self, list_hits: list, i, file, print_only:bool = True):
         """
         Decode 5byte Frames from AstroPix 2
 
@@ -131,15 +131,22 @@ class Decode:
                                     2-0: Payload
         Byte 1: Location            7: Col
                                     6: reserved
-                                    5-0: Row/Col
+                                    w/Col
         Byte 2: Timestamp
         Byte 3: ToT MSB             7-4: 4'b0
                                     3-0: ToT MSB
         Byte 4: ToT LSB
 
         :param list_hists: List with all hits
-        """
 
+        Argument: print_only is default True and maintains compatibility. 
+        When set to False though, this causes the program to return a list of 
+        lists, one for each reading, in the followinf format:
+        [location, {"Col"/"Rwo"}, timestamp, tot_msb, tot_lsb, tot_total, tot_in_ns]
+        
+        """
+        # Outlist used for returning values 
+        outlist = []
         for hit in list_hits:
             id          = int(hit[0]) >> 3
             payload     = int(hit[0]) & 0b111
@@ -163,4 +170,9 @@ class Decode:
             file.write(f"{i}\t")
             file.write( f"{wrong_id}\t {wrong_payload}\t {location}\t{'Col' if col else 'Row'}\t{timestamp}\t {tot_msb}\t{tot_lsb} \t {tot_total} \t {(tot_total * self.sampleclock_period_ns)/1000.0} \n"
             )
+            ### THIS IS NEW CODE Autumn on Jun 14 2022. Added in an option             
+            if not print_only:
+                colrow = 'Col' if col else "Row"
+                outlist.append([location, colrow, timestamp, tot_msb, tot_lsb, tot_total, ((tot_total * self.sampleclock_period_ns)/1000.0)])
+        if not print_only: return outlist
 
