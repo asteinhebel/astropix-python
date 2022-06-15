@@ -1,16 +1,18 @@
 import matplotlib.pyplot as plt
+import os
 
 class HitPlotter:
     """
     Class for 2-D visualization of astroPix hits in real time.
     """
 
-    def __init__(self, nPix = (40,40), d=0.5):
+    def __init__(self, nPix = (40,40), d=0.5, outdir=None):
         """
         Class for 2-D visualization of astroPix hits in real time.
 
         nPix: number of pixels in the array (int for square arrays or tuple)
         d: Width of bars for strip visualization.
+        outdir: If not None, save problematic events as pdf images into this directory.
         """
 
         if isinstance(nPix, int):
@@ -18,8 +20,12 @@ class HitPlotter:
         else:
             self.nPix = nPix
         self.d = d
+        self.outdir = outdir
         plt.gcf().set_size_inches(7,7, forward=True)
         plt.axes().set_aspect('equal')
+        
+        if outdir is not None and not os.path.isdir(self.outdir):
+            os.makedirs(self.outdir)
 
 
     def plot_event(self, row, col, eventID=None):
@@ -40,7 +46,7 @@ class HitPlotter:
         plt.clf()
         ax = plt.gca()
 
-        plt.axis([-1, self.nPix[1], self.nPix[0], -1])
+        plt.axis([-1, self.nPix[1], -1, self.nPix[0]])
 
         if (len(col) == 1) and (len(row) == 1):
             theColor="green"
@@ -69,5 +75,8 @@ class HitPlotter:
         plt.ylabel("Row")
         plt.tight_layout()
         plt.pause(1e-6)
+        
+        if self.outdir is not None and theColor in ["orange", "red"]:
+            plt.savefig(f"{self.outdir}/event_{eventID}.pdf")
 
     

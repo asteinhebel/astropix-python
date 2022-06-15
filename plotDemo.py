@@ -4,7 +4,7 @@ import time
 import hitplotter 
 
 nPix = 40
-p = hitplotter.HitPlotter(nPix)
+p = hitplotter.HitPlotter(nPix, outdir="./test")
     
 for i in range(30):
 
