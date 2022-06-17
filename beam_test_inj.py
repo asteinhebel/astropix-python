@@ -158,7 +158,7 @@ def main(args):
     i = 0 #interrupt index
     file1.write(f"NEvent{delim}ChipId{delim}Payload{delim}"
         f"Locatn{delim}Row/Col{delim}tStamp{delim}"
-        f"MSB{delim}LSB{delim}ToT{delim}ToT(us)\n"
+        f"MSB{delim}LSB{delim}ToT{delim}ToT(us){delim}RealTime\n"
     )
 
 
@@ -167,13 +167,14 @@ def main(args):
         #print("Reg: {}".format(int.from_bytes(nexys.read_register(70),"big")))
         if(int.from_bytes(nexys.read_register(70),"big") == 0):
             time.sleep(0.1)
+            timestmp=time.time()
             nexys.write_spi_bytes(10)
             readout = nexys.read_spi_fifo()
             file.write(str(binascii.hexlify(readout)))
             file.write("\n")
             print(binascii.hexlify(readout))
 
-            decode.decode_astropix2_hits(decode.hits_from_readoutstream(readout),i,file1, csv=args.saveAsCSV)
+            decode.decode_astropix2_hits(decode.hits_from_readoutstream(readout),i,file1,timestmp,csv=args.saveAsCSV)
             file.write("\n")
 
             i+=1

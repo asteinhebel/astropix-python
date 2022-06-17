@@ -127,7 +127,7 @@ class Decode:
 
         return list_hits
 
-    def decode_astropix2_hits(self, list_hits: list, i, file, print_only:bool = True, csv:bool = False):
+    def decode_astropix2_hits(self, list_hits: list, i, file, realTime, print_only:bool = True, csv:bool = False):
         """
         Decode 5byte Frames from AstroPix 2
 
@@ -168,13 +168,13 @@ class Decode:
                 f"Header: ChipId: {wrong_id}\tPayload: {wrong_payload}\t"
                 f"Location: {location}\tRow/Col: {'Col' if col else 'Row'}\t"
                 f"Timestamp: {timestamp}\t"
-                f"ToT: MSB: {tot_msb}\tLSB: {tot_lsb} Total: {tot_total} ({(tot_total * self.sampleclock_period_ns)/1000.0} us)"
+                f"ToT: MSB: {tot_msb}\tLSB: {tot_lsb} Total: {tot_total} ({(tot_total * self.sampleclock_period_ns)/1000.0} us) \t Real time (s from epoch): {realTime}"
             )
 
             if csv:
-                file.write(f"{i},{wrong_id}, {wrong_payload}, {location},{'Col' if col else 'Row'},{timestamp}, {tot_msb},{tot_lsb} , {tot_total} , {(tot_total * self.sampleclock_period_ns)/1000.0} \n")
+                file.write(f"{i},{wrong_id}, {wrong_payload}, {location},{'Col' if col else 'Row'},{timestamp}, {tot_msb},{tot_lsb} , {tot_total} , {(tot_total * self.sampleclock_period_ns)/1000.0},{realTime} \n")
             else:
-                file.write(f"{i}\t{wrong_id}\t {wrong_payload}\t {location}\t{'Col' if col else 'Row'}\t{timestamp}\t {tot_msb}\t{tot_lsb} \t {tot_total} \t {(tot_total * self.sampleclock_period_ns)/1000.0} \n")
+                file.write(f"{i}\t{wrong_id}\t {wrong_payload}\t {location}\t{'Col' if col else 'Row'}\t{timestamp}\t {tot_msb}\t{tot_lsb} \t {tot_total} \t {(tot_total * self.sampleclock_period_ns)/1000.0}\t{realTime} \n")
          
             ### THIS IS NEW CODE Autumn on Jun 14 2022. Added in an option             
             if not print_only:

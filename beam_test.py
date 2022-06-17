@@ -157,7 +157,7 @@ def main(args):
     i = 0 #interrupt index
     file1.write(f"NEvent{delim}ChipId{delim}Payload{delim}"
         f"Locatn{delim}Row/Col{delim}tStamp{delim}"
-        f"MSB{delim}LSB{delim}ToT{delim}ToT(us)\n"
+        f"MSB{delim}LSB{delim}ToT{delim}ToT(us){delim}RealTime\n"
     )
 
     #set up the real-time plot
@@ -168,15 +168,16 @@ def main(args):
         #print("Reg: {}".format(int.from_bytes(nexys.read_register(70),"big")))
         if(int.from_bytes(nexys.read_register(70),"big") == 0): #if interrupt signal
             time.sleep(0.05)
+            timestmp=time.time()
+            print(timestmp)
             nexys.write_spi_bytes(20)
             readout = nexys.read_spi_fifo()
             file.write(f"{i}\t")
             file.write(str(binascii.hexlify(readout)))
             file.write("\n")
-            #print('a')
             print(binascii.hexlify(readout))
 
-            decList=decode.decode_astropix2_hits(decode.hits_from_readoutstream(readout), i, file1, False, args.saveAsCSV) #last arg (bool) = "print_only", if False then return list of deocded info
+            decList=decode.decode_astropix2_hits(decode.hits_from_readoutstream(readout), i, file1, timestmp, False, args.saveAsCSV) #last arg (bool) = "print_only", if False then return list of deocded info
             file1.write("\n")
 
             if args.showhits:
