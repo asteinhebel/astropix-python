@@ -172,7 +172,8 @@ class Decode:
             )
             ### THIS IS NEW CODE Autumn on Jun 14 2022. Added in an option             
             if not print_only:
-                colrow = 'Col' if col else "Row"
+                #colrow = 'Col' if col else "Row"
+                colrow = 1 if col else 0 #1 if column, 0 if row
                 outlist.append([location, colrow, timestamp, tot_msb, tot_lsb, tot_total, ((tot_total * self.sampleclock_period_ns)/1000.0)])
         if not print_only: return outlist
 
