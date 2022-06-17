@@ -22,6 +22,7 @@ import time
 
 import hitplotter
 import argparse
+import numpy as np
 
 def main(args):
 
@@ -176,13 +177,19 @@ def main(args):
             #print('a')
             print(binascii.hexlify(readout))
 
-            decode.decode_astropix2_hits(decode.hits_from_readoutstream(readout), i, file1)
-            #decode.decode_astropix2_hits(decode.hits_from_readoutstream(readout))
+            decList=decode.decode_astropix2_hits(decode.hits_from_readoutstream(readout), i, file1, False) #last arg (bool) = "print_only", if False then return list of deocded info
             file1.write("\n")
-            
-            rows = [] #placeholder for list of rows hit
-            columns = [] #placeholder for list of columns hit
-            plotter.plot_event( rows, columns, i)
+
+            if args.showhits:
+                rows,columns=[],[]
+                if len(decList)>1:#safeguard against bad readouts without recorded decodable hits
+                    #Isolate row and column information from array returned from decoder
+                    decList=np.array(decList)
+                    decList=decList[np.argsort(decList[:,1])]#sort by row/col (1st col)
+                    colIndex=np.argmax(decList[:,1]>0)#isolate where row entries end
+                    rows = [x for x in decList[:colIndex,0]] #location in 0th col
+                    columns = [x for x in decList[colIndex:,0]] 
+                plotter.plot_event( rows, columns, i)
 
             i +=1
 
