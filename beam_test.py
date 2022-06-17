@@ -142,23 +142,22 @@ def main(args):
 
     #decoded data file
     timestr1 = time.strftime("beamDigital_%Y%m%d-%H%M%S")
-    file1 = open("%s/%s%s.txt" % (dir,name, timestr1), "w")
-    file1.write(f"Voltageboard settings: {vboard1.dacvalues}\n")
-    file1.write(f"Digital: {asic.digitalconfig}\n")
-    file1.write(f"Biasblock: {asic.biasconfig}\n")
-    file1.write(f"DAC: {asic.dacs}\n")
-    file1.write(f"Receiver: {asic.recconfig}\n\n")
+    fileTyp = 'csv' if args.saveAsCSV else 'txt'
+    delim = ',' if args.saveAsCSV else '\t'
+    file1 = open("%s/%s%s.%s" % (dir,name, timestr1,fileTyp), "w")
+    if not args.saveAsCSV:
+        file1.write(f"Voltageboard settings: {vboard1.dacvalues}\n")
+        file1.write(f"Digital: {asic.digitalconfig}\n")
+        file1.write(f"Biasblock: {asic.biasconfig}\n")
+        file1.write(f"DAC: {asic.dacs}\n")
+        file1.write(f"Receiver: {asic.recconfig}\n\n")
 
     readout = bytearray()
 
     i = 0 #interrupt index
-    file1.write(
-        "NEvent\tChipId\tPayload\t"
-        "Locatn\t"
-        "Row/Col\t"
-        "tStamp\t"
-        "MSB\tLSB\tToT\tToT(us)"
-        "\n"
+    file1.write(f"NEvent{delim}ChipId{delim}Payload{delim}"
+        f"Locatn{delim}Row/Col{delim}tStamp{delim}"
+        f"MSB{delim}LSB{delim}ToT{delim}ToT(us)\n"
     )
 
     #set up the real-time plot
@@ -177,7 +176,7 @@ def main(args):
             #print('a')
             print(binascii.hexlify(readout))
 
-            decList=decode.decode_astropix2_hits(decode.hits_from_readoutstream(readout), i, file1, False) #last arg (bool) = "print_only", if False then return list of deocded info
+            decList=decode.decode_astropix2_hits(decode.hits_from_readoutstream(readout), i, file1, False, args.saveAsCSV) #last arg (bool) = "print_only", if False then return list of deocded info
             file1.write("\n")
 
             if args.showhits:
@@ -208,6 +207,9 @@ if __name__ == "__main__":
                     help='Display hits in real time during data taking')
     parser.add_argument('-o', '--outdir', default=None, required=False,
                     help='output directory for real-time plots. If None, do not save plots. Events with exactly one row and one column hit are not saved.')
+    parser.add_argument('-c', '--saveAsCSV', action='store_true', 
+                    default=False, required=False, 
+                    help='save output files as CSV. If False, save as txt')
 
     args = parser.parse_args()
     
