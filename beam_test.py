@@ -182,13 +182,13 @@ def main(args):
 
             if args.showhits:
                 rows,columns=[],[]
-                if len(decList)>1:#safeguard against bad readouts without recorded decodable hits
+                if len(decList)>0:#safeguard against bad readouts without recorded decodable hits
                     #Isolate row and column information from array returned from decoder
                     decList=np.array(decList)
-                    decList=decList[np.argsort(decList[:,1])]#sort by row/col (1st col)
-                    colIndex=np.argmax(decList[:,1]>0)#isolate where row entries end
-                    rows = [x for x in decList[:colIndex,0]] #location in 0th col
-                    columns = [x for x in decList[colIndex:,0]] 
+                    location = np.array(decList[:,0])
+                    rowOrCol = np.array(decList[:,1])
+                    rows = [location[i] for i in range(len(rowOrCol)) if not rowOrCol[i]]
+                    columns = [location[i] for i in range(len(rowOrCol)) if rowOrCol[i]]
                 plotter.plot_event( rows, columns, i)
 
             i +=1
