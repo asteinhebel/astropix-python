@@ -187,8 +187,8 @@ def main(args):
                     decList=np.array(decList)
                     location = np.array(decList[:,0])
                     rowOrCol = np.array(decList[:,1])
-                    rows = [location[i] for i in range(len(rowOrCol)) if not rowOrCol[i]]
-                    columns = [location[i] for i in range(len(rowOrCol)) if rowOrCol[i]]
+                    rows = location[rowOrCol==0]
+                    columns = location[rowOrCol==1]
                 plotter.plot_event( rows, columns, i)
 
             i +=1
