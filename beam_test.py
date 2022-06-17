@@ -20,7 +20,11 @@ import binascii
 import os,sys
 import time
 
-def main():
+import hitplotter
+import argparse
+import numpy as np
+
+def main(args):
 
     nexys = Nexysio()
 
@@ -121,12 +125,9 @@ def main():
     wait_progress(3)
 
     decode = Decode()
-
-    #Option to give extra name to output files upon running
-    if len(sys.argv)>1:
-        name=sys.argv[1]+"_"
-    else:
-        name=""
+    
+    name = '' if (args.name == '') else  args.name+"_"
+    
     
     dir="noise"
 
@@ -160,6 +161,10 @@ def main():
         "\n"
     )
 
+    #set up the real-time plot
+    #to save some of the event plots, change outdir to the name of the directory to save the plots in.
+    plotter = hitplotter.HitPlotter(35, outdir=args.outdir)
+    
     while True:
         #print("Reg: {}".format(int.from_bytes(nexys.read_register(70),"big")))
         if(int.from_bytes(nexys.read_register(70),"big") == 0): #if interrupt signal
@@ -172,9 +177,20 @@ def main():
             #print('a')
             print(binascii.hexlify(readout))
 
-            decode.decode_astropix2_hits(decode.hits_from_readoutstream(readout), i, file1)
-            #decode.decode_astropix2_hits(decode.hits_from_readoutstream(readout))
+            decList=decode.decode_astropix2_hits(decode.hits_from_readoutstream(readout), i, file1, False) #last arg (bool) = "print_only", if False then return list of deocded info
             file1.write("\n")
+
+            if args.showhits:
+                rows,columns=[],[]
+                if len(decList)>0:#safeguard against bad readouts without recorded decodable hits
+                    #Isolate row and column information from array returned from decoder
+                    decList=np.array(decList)
+                    location = np.array(decList[:,0])
+                    rowOrCol = np.array(decList[:,1])
+                    rows = location[rowOrCol==0]
+                    columns = location[rowOrCol==1]
+                plotter.plot_event( rows, columns, i)
+
             i +=1
 
     # Close connection
@@ -182,5 +198,17 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
 
+
+    parser = argparse.ArgumentParser(description='Take AstroPix data during testbeam')
+    parser.add_argument('-n', '--name', default='', required=False,
+                    help='Option to give extra name to output files upon running')
+    parser.add_argument('-s', '--showhits', action='store_true',
+                    default=False, required=False,
+                    help='Display hits in real time during data taking')
+    parser.add_argument('-o', '--outdir', default=None, required=False,
+                    help='output directory for real-time plots. If None, do not save plots. Events with exactly one row and one column hit are not saved.')
+
+    args = parser.parse_args()
+    
+    main(args)
