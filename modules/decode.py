@@ -49,31 +49,35 @@ class Decode:
         """
         matches = []
 
-        # Look for start seq
-        start = re.search(start_seq, readout)
-        if start is not None:
-            matches.append((start.start(), start.end() - 1))
+        try:
+            # Look for start seq
+            start = re.search(start_seq, readout)
+            if start is not None:
+                matches.append((start.start(), start.end() - 1))
 
-        # Find idle seqs and append to list
-        for index, match in enumerate(re.finditer(idle_seq, readout)):
-            match_start = match.start()
-            match_end = match.end() - 1
+            # Find idle seqs and append to list
+            for index, match in enumerate(re.finditer(idle_seq, readout)):
+                match_start = match.start()
+                match_end = match.end() - 1
 
-            if len(matches) > 0:
-                match_start = matches[index][1] + math.ceil((match_start - matches[index][1]) / 5) * 5
+                if len(matches) > 0:
+                    match_start = matches[index][1] + math.ceil((match_start - matches[index][1]) / 5) * 5
 
-            matches.append((match_start, match_end))
+                matches.append((match_start, match_end))
 
-        # Look for stop seq
-        stop = re.search(end_seq, readout[(matches[-1][1]):])
-        if stop is not None:
-            matches.append((matches[-1][1]+stop.start(), matches[-1][1]+stop.end()))
+            # Look for stop seq
+            stop = re.search(end_seq, readout[(matches[-1][1]):])
+            if stop is not None:
+                matches.append((matches[-1][1]+stop.start(), matches[-1][1]+stop.end()))
 
-        # remove probably redundant first match
-        if len(matches) > 1:
-            if matches[0][1] == matches[1][1]:
-                del matches[1]
-
+            # remove probably redundant first match
+            if len(matches) > 1:
+                if matches[0][1] == matches[1][1]:
+                    del matches[1]
+                    
+        except Exception as e:
+            logger.error(f"Invalid byte string: {e}")
+        
         logger.info(f"Matches: {matches}")
 
         return matches
