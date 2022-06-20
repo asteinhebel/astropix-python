@@ -49,31 +49,35 @@ class Decode:
         """
         matches = []
 
-        # Look for start seq
-        start = re.search(start_seq, readout)
-        if start is not None:
-            matches.append((start.start(), start.end() - 1))
+        try:
+            # Look for start seq
+            start = re.search(start_seq, readout)
+            if start is not None:
+                matches.append((start.start(), start.end() - 1))
 
-        # Find idle seqs and append to list
-        for index, match in enumerate(re.finditer(idle_seq, readout)):
-            match_start = match.start()
-            match_end = match.end() - 1
+            # Find idle seqs and append to list
+            for index, match in enumerate(re.finditer(idle_seq, readout)):
+                match_start = match.start()
+                match_end = match.end() - 1
 
-            if len(matches) > 0:
-                match_start = matches[index][1] + math.ceil((match_start - matches[index][1]) / 5) * 5
+                if len(matches) > 0:
+                    match_start = matches[index][1] + math.ceil((match_start - matches[index][1]) / 5) * 5
 
-            matches.append((match_start, match_end))
+                matches.append((match_start, match_end))
 
-        # Look for stop seq
-        stop = re.search(end_seq, readout[(matches[-1][1]):])
-        if stop is not None:
-            matches.append((matches[-1][1]+stop.start(), matches[-1][1]+stop.end()))
+            # Look for stop seq
+            stop = re.search(end_seq, readout[(matches[-1][1]):])
+            if stop is not None:
+                matches.append((matches[-1][1]+stop.start(), matches[-1][1]+stop.end()))
 
-        # remove probably redundant first match
-        if len(matches) > 1:
-            if matches[0][1] == matches[1][1]:
-                del matches[1]
-
+            # remove probably redundant first match
+            if len(matches) > 1:
+                if matches[0][1] == matches[1][1]:
+                    del matches[1]
+                    
+        except Exception as e:
+            logger.error(f"Invalid byte string: {e}")
+        
         logger.info(f"Matches: {matches}")
 
         return matches
@@ -101,7 +105,7 @@ class Decode:
         list_hits = []
 
         if len(matches) > 1:  # if no hits, there is one tuple (0:end)
-            for index, match in enumerate(matches[:-1]):  #e xclude last item
+            for index, match in enumerate(matches[:-1]):  # exclude last item
                 logger.info(f"Hit: {binascii.hexlify(readout[match[1]:(match[1] + 5)])}")
                 match2 = 5 + match[1]
 
@@ -123,7 +127,7 @@ class Decode:
 
         return list_hits
 
-    def decode_astropix2_hits(self, list_hits: list, i, file):
+    def decode_astropix2_hits(self, list_hits: list, i, file, print_only:bool = True):
         """
         Decode 5byte Frames from AstroPix 2
 
@@ -131,15 +135,22 @@ class Decode:
                                     2-0: Payload
         Byte 1: Location            7: Col
                                     6: reserved
-                                    5-0: Row/Col
+                                    w/Col
         Byte 2: Timestamp
         Byte 3: ToT MSB             7-4: 4'b0
                                     3-0: ToT MSB
         Byte 4: ToT LSB
 
         :param list_hists: List with all hits
-        """
 
+        Argument: print_only is default True and maintains compatibility. 
+        When set to False though, this causes the program to return a list of 
+        lists, one for each reading, in the followinf format:
+        [location, {"Col"/"Rwo"}, timestamp, tot_msb, tot_lsb, tot_total, tot_in_ns]
+        
+        """
+        # Outlist used for returning values 
+        outlist = []
         for hit in list_hits:
             id          = int(hit[0]) >> 3
             payload     = int(hit[0]) & 0b111
@@ -163,4 +174,10 @@ class Decode:
             file.write(f"{i}\t")
             file.write( f"{wrong_id}\t {wrong_payload}\t {location}\t{'Col' if col else 'Row'}\t{timestamp}\t {tot_msb}\t{tot_lsb} \t {tot_total} \t {(tot_total * self.sampleclock_period_ns)/1000.0} \n"
             )
+            ### THIS IS NEW CODE Autumn on Jun 14 2022. Added in an option             
+            if not print_only:
+                #colrow = 'Col' if col else "Row"
+                colrow = 1 if col else 0 #1 if column, 0 if row
+                outlist.append([location, colrow, timestamp, tot_msb, tot_lsb, tot_total, ((tot_total * self.sampleclock_period_ns)/1000.0)])
+        if not print_only: return outlist
 

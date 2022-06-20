@@ -125,7 +125,8 @@ class Asic(Nexysio):
 
 	#Implement pixel mask from output of noiseVisualiation.py (after running noise scan)
         #50mV noise scan
-        bitconfig_col =  0b111_11110_01011_11101_10111_00111_11110_10001 
+        bitconfig_col =  0b111_11110_11011_11101_10111_00111_11110_10001
+        #bitconfig_col =  0b111_11110_01011_11101_10111_00111_11110_10001 
         self.recconfig = {'ColConfig0': bitconfig_col}
         self.recconfig[f'ColConfig1'] = 0b001_01001_11111_00110_01011_11111_11111_11110
         self.recconfig[f'ColConfig2'] = 0b001_10011_10110_01101_10101_11111_00110_01110

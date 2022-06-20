@@ -153,6 +153,7 @@ class Asic(Nexysio):
         self.recconfig[f'ColConfig25'] = 0b000_10010_00110_10010_00010_00000_00001_00010
         self.recconfig[f'ColConfig26'] = 0b000_00000_01111_11111_11111_11111_11111_11110
         self.recconfig[f'ColConfig27'] = 0b000_00000_00010_00000_10000_11010_00000_00000
+        #self.recconfig[f'ColConfig27'] = 0b000_01000_00010_00000_10000_11010_00000_00000
         self.recconfig[f'ColConfig28'] = 0b001_00000_00001_00010_10000_10000_00010_00000
         self.recconfig[f'ColConfig29'] = 0b000_01000_00100_00000_00000_10000_00000_00000
         self.recconfig[f'ColConfig30'] = 0b000_00010_01001_01000_00000_00000_01010_00000
