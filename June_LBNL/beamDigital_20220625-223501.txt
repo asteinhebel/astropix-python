@@ -1,0 +1,11 @@
+Voltageboard settings: [1.175, 1, 0, 0, 1, 1.1, 0, 0]
+Digital: {'interrupt_pushpull': 1, 'En_Inj1': 0, 'En_Inj2': 0, 'En_Inj3': 0, 'En_Inj4': 0, 'En_Inj5': 0, 'En_Inj6': 0, 'En_Inj7': 0, 'En_Inj8': 0, 'En_Inj9': 0, 'En_Inj10': 0, 'En_Inj11': 0, 'En_Inj12': 0, 'En_Inj13': 0, 'En_Inj14': 0, 'En_Inj15': 0, 'En_Inj16': 0, 'En_Inj17': 0, 'En_Inj18': 0, 'ResetB': 0, 'Extrabit0': 1, 'Extrabit1': 1, 'Extrabit2': 1, 'Extrabit3': 1, 'Extrabit4': 1, 'Extrabit5': 1, 'Extrabit6': 1, 'Extrabit7': 1, 'Extrabit8': 0, 'Extrabit9': 0, 'Extrabit10': 0, 'Extrabit11': 0, 'Extrabit12': 0, 'Extrabit13': 0, 'Extrabit14': 0}
+Biasblock: {'DisHiDR': 0, 'q01': 0, 'qon0': 0, 'qon1': 1, 'qon2': 0, 'qon3': 1}
+DAC: {'blres': 0, 'nu1': 0, 'vn1': 20, 'vnfb': 1, 'vnfoll': 10, 'nu5': 0, 'nu6': 0, 'nu7': 0, 'nu8': 0, 'vn2': 0, 'vnfoll2': 1, 'vnbias': 0, 'vpload': 5, 'nu13': 0, 'vncomp': 2, 'vpfoll': 60, 'nu16': 0, 'vprec': 30, 'vnrec': 30}
+Receiver: {'ColConfig0': 270599733504, 'ColConfig1': 34443630736, 'ColConfig2': 209871192, 'ColConfig3': 29192431682, 'ColConfig4': 6535354432, 'ColConfig5': 104640560, 'ColConfig6': 4836145152, 'ColConfig7': 21478314528, 'ColConfig8': 43223640544, 'ColConfig9': 18457573440, 'ColConfig10': 55859615824, 'ColConfig11': 17742430816, 'ColConfig12': 34594848800, 'ColConfig13': 39914115092, 'ColConfig14': 11162798276, 'ColConfig15': 11712136112, 'ColConfig16': 20032469032, 'ColConfig17': 20669683716, 'ColConfig18': 41357181250, 'ColConfig19': 2168371320, 'ColConfig20': 43933273108, 'ColConfig21': 1861955700, 'ColConfig22': 22559615192, 'ColConfig23': 768630808, 'ColConfig24': 52916705716, 'ColConfig25': 1686076580, 'ColConfig26': 56098181544, 'ColConfig27': 60974708024, 'ColConfig28': 16068831080, 'ColConfig29': 52987712408, 'ColConfig30': 39030686344, 'ColConfig31': 31302901964, 'ColConfig32': 35458021250, 'ColConfig33': 34781451710, 'ColConfig34': 44093858836}
+
+NEvent	ChipId	Payload	Locatn	Row/Col	tStamp	MSB	LSB	ToT	ToT(us)	RealTime
+
+
+
+
