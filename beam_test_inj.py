@@ -56,7 +56,7 @@ def main(args):
 
     # Configure 8 DAC Voltageboard in Slot 4 with list values
     # 3 = Vcasc2, 4=BL, 7=Vminuspix, 8=Thpix
-    vboard1 = Voltageboard(handle, 4, (8, [0, 0, 1.1, 1, 0, 0, 1, 1.08]))
+    vboard1 = Voltageboard(handle, 4, (8, [0, 0, 1.1, 1, 0, 0, 1, 1.125]))
 
     # Set measured 1V for one-point calibration
     vboard1.vcal = 0.989
@@ -163,21 +163,25 @@ def main(args):
 
 
     i=0
-    while True:
-        #print("Reg: {}".format(int.from_bytes(nexys.read_register(70),"big")))
-        if(int.from_bytes(nexys.read_register(70),"big") == 0):
-            time.sleep(0.1)
-            timestmp=time.time()
-            nexys.write_spi_bytes(10)
-            readout = nexys.read_spi_fifo()
-            file.write(str(binascii.hexlify(readout)))
-            file.write("\n")
-            print(binascii.hexlify(readout))
+    try:
+        while True:
+            #print("Reg: {}".format(int.from_bytes(nexys.read_register(70),"big")))
+            if(int.from_bytes(nexys.read_register(70),"big") == 0):
+                time.sleep(0.1)
+                timestmp=time.time()
+                nexys.write_spi_bytes(10)
+                readout = nexys.read_spi_fifo()
+                file.write(str(binascii.hexlify(readout)))
+                file.write("\n")
+                print(binascii.hexlify(readout))
 
-            decode.decode_astropix2_hits(decode.hits_from_readoutstream(readout),i,file1,timestmp,csv=args.saveAsCSV)
-            file.write("\n")
+                decode.decode_astropix2_hits(decode.hits_from_readoutstream(readout),i,file1,timestmp,csv=args.saveAsCSV)
+                file.write("\n")
 
-            i+=1
+                i+=1
+    except KeyboardInterrupt:
+        # nexys.chip_reset()
+        inj.stop()
 
     # Close connection
     nexys.close()
