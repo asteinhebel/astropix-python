@@ -56,7 +56,7 @@ def main(args):
 
     # Configure 8 DAC Voltageboard in Slot 4 with list values
     # 3 = Vcasc2, 4=BL, 7=Vminuspix, 8=Thpix
-    vboard1 = Voltageboard(handle, 4, (8, [0, 0, 1.1, 1, 0, 0, 1, 1.125]))
+    vboard1 = Voltageboard(handle, 4, (8, [0, 0, 1.1, 1, 0, 0, 1, 1.08]))
 
     # Set measured 1V for one-point calibration
     vboard1.vcal = 0.989
