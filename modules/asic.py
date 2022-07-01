@@ -101,6 +101,8 @@ class Asic(Nexysio):
 
 	#Collect digital and analog from pixel (0,0)
         bitconfig_col =  0b111_11111_11111_11111_11111_11111_11111_11101 #for injection
+        #bitconfig_col =  0b111_10111_11111_11111_10111_11111_11111_11011 #for testing
+
         #bitconfig_col =  0b111_11111_11111_11111_11111_11111_11111_11100 #for noise
         self.recconfig = {'ColConfig0': bitconfig_col}
 

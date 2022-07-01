@@ -42,11 +42,11 @@ if __name__ == "__main__":
 	## variables you may want to change
 	#loc="bench"
 	#loc="cavern"
-	loc="GSFCbench_50mV"
+	loc="GSFCbench_75mV"
 	#dataDir=f"noise_{loc}/"
 	#saveto=f"noiseMap_{loc}.pdf"
-	dataDir="noiseMap_060222_50mV/"
-	saveto="noiseMap_50mV.pdf"
+	dataDir="June_LBNL/noiseMap_06_22_2022_601_75mV_lbnlTestFinal/"
+	saveto="noiseMap_75mV.pdf"
 	threshold=0
 	maxIt=500
 	#########################

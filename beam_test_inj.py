@@ -19,8 +19,9 @@ import binascii
 
 import os,sys
 import time
+import argparse
 
-def main():
+def main(args):
 
     nexys = Nexysio()
 
@@ -73,7 +74,7 @@ def main():
     #
 
     try:
-        Vinj=float(sys.argv[1])
+        Vinj=float(args.voltage)
     except:
         Vinj = 0.3
     print(f"Injection run with Vinj = {Vinj} V" )
@@ -128,51 +129,75 @@ def main():
 
     decode = Decode()
 
-    #Option to give extra name to output files upon running
-    if len(sys.argv)>2:
-        name=sys.argv[2]+"_"
-    else:
-        name=""
+    dir='logInj'
+    name = '' if (args.name == '') else  args.name+"_"
 
-    #raw AND decoded data file
-    timestr = time.strftime("injection_%Y%m%d-%H%M%S")
-    file = open("logInj/%s%s_%s.log" % (name, Vinj, timestr), "w")
+    #raw data file
+    timestr = time.strftime("beam_%Y%m%d-%H%M%S")
+    file = open("%s/%s%s.log" % (dir,name, timestr), "w")
     file.write(f"Voltageboard settings: {vboard1.dacvalues}\n")
     file.write(f"Digital: {asic.digitalconfig}\n")
     file.write(f"Biasblock: {asic.biasconfig}\n")
     file.write(f"DAC: {asic.dacs}\n")
-    file.write(f"Receiver: {asic.recconfig}\n")
+    file.write(f"Receiver: {asic.recconfig}\n\n")
+
+    #decoded data file
+    timestr1 = time.strftime("beamDigital_%Y%m%d-%H%M%S")
+    fileTyp = 'csv' if args.saveAsCSV else 'txt'
+    delim = ',' if args.saveAsCSV else '\t'
+    file1 = open("%s/%s%s.%s" % (dir,name, timestr1,fileTyp), "w")
+    if not args.saveAsCSV:
+        file1.write(f"Voltageboard settings: {vboard1.dacvalues}\n")
+        file1.write(f"Digital: {asic.digitalconfig}\n")
+        file1.write(f"Biasblock: {asic.biasconfig}\n")
+        file1.write(f"DAC: {asic.dacs}\n")
+        file1.write(f"Receiver: {asic.recconfig}\n\n")
 
     readout = bytearray()
 
-    file.write("\n"
-        "ChipId\tPayload\t"
-        "Locatn\t"
-        "Row/Col\t"
-        "tStamp\t"
-        "MSB\tLSB\tToT\tToT(us)"
-        "\n"
+    i = 0 #interrupt index
+    file1.write(f"NEvent{delim}ChipId{delim}Payload{delim}"
+        f"Locatn{delim}Row/Col{delim}tStamp{delim}"
+        f"MSB{delim}LSB{delim}ToT{delim}ToT(us){delim}RealTime\n"
     )
 
+
     i=0
-    while True:
-        #print("Reg: {}".format(int.from_bytes(nexys.read_register(70),"big")))
-        if(int.from_bytes(nexys.read_register(70),"big") == 0):
-            time.sleep(0.1)
-            nexys.write_spi_bytes(10)
-            readout = nexys.read_spi_fifo()
-            file.write(str(binascii.hexlify(readout)))
-            file.write("\n")
-            print(binascii.hexlify(readout))
+    try:
+        while True:
+            #print("Reg: {}".format(int.from_bytes(nexys.read_register(70),"big")))
+            if(int.from_bytes(nexys.read_register(70),"big") == 0):
+                time.sleep(0.1)
+                timestmp=time.time()
+                nexys.write_spi_bytes(10)
+                readout = nexys.read_spi_fifo()
+                file.write(str(binascii.hexlify(readout)))
+                file.write("\n")
+                print(binascii.hexlify(readout))
 
-            decode.decode_astropix2_hits(decode.hits_from_readoutstream(readout),i,file)
-            file.write("\n")
+                decode.decode_astropix2_hits(decode.hits_from_readoutstream(readout),i,file1,timestmp,csv=args.saveAsCSV)
+                file.write("\n")
 
-            i+=1
+                i+=1
+    except KeyboardInterrupt:
+        # nexys.chip_reset()
+        inj.stop()
 
     # Close connection
     nexys.close()
 
 
 if __name__ == "__main__":
-    main()
+
+    parser = argparse.ArgumentParser(description='Take AstroPix data during injections')
+    parser.add_argument('-n', '--name', default='', required=False,
+                    help='Option to give extra name to output files upon running')
+    parser.add_argument('-v', '--voltage', default='0.3', required=False,
+                    help='Voltage value (in V) of desired injection')
+    parser.add_argument('-c', '--saveAsCSV', action='store_true', 
+                    default=False, required=False, 
+                    help='save output files as CSV. If False, save as txt')
+
+    args = parser.parse_args()
+    
+    main(args)

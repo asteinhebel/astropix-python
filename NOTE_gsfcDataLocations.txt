@@ -1,0 +1,15 @@
+Data from GSFC collection is stored in different places
+
+
+ANALOG DATA (read out from oscilloscope with AstroPix_v2)
+Organized by date of data collection
+https://github.com/c235labtop/astropixOut_tmp/tree/master/v2
+
+POWER SUPPLY MONITORING
+Mainly collected during beam tests at LBNL, organized by date of beam test
+HV present for all, LV present when possible
+https://github.com/c235labtop/astropixOut_tmp/tree/master/ps
+
+DIGITAL DATA
+Organized by type of data collected (noise, injection, source, noise map) and date
+https://github.com/asteinhebel/astropix-python/tree/main
