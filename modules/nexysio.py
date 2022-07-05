@@ -14,6 +14,7 @@ import binascii
 
 from modules.spi import Spi
 from modules.setup_logger import logger
+import time
 
 READ_ADRESS     = 0x00
 WRITE_ADRESS    = 0x01
@@ -333,3 +334,44 @@ class Nexysio(Spi):
 
         # concatenate header+data
         return b''.join([header, data])
+
+    def get_configregister(self):
+        return int.from_bytes(self.read_register(0), 'big')
+        
+    def chip_reset(self) -> None:
+        """
+        Reset SPI
+        Set res_n to 0 for 1s
+        res_n is connected to FTDI Reg0: Bit: 4
+        """
+        # Set Reset bits 1
+        configregister = self.set_bit(self.get_configregister(), 4)
+        print("set reset bits to 1")
+        self.write_register(0, configregister, True)
+        time.sleep(1)
+        # Set Reset bits and readback bit 0
+        configregister = self.clear_bit(self.get_configregister(), 4)
+        self.write_register(0, configregister, True)
+
+    def testReset(self):
+        # Function to test the reset command
+        configregister = self.set_bit(self.get_configregister(), 4)
+        print("set reset bits to 1")
+        self.write_register(0, configregister, True)
+
+        #Now it will try to read out a hitstream!
+        try:
+            self.write_spi_bytes(20)
+            readout = self.read_spi_fifo()
+            print("Read out idlebytes, or somthing")
+
+        except:
+            print("Woops, somthing didn't work, which is what we wanted")
+
+        # put it back to the way it should be
+        configregister = self.clear_bit(self.get_configregister(), 4)
+        self.write_register(0, configregister, True)
+        print("set back to zero")
+        self.write_spi_bytes(20)
+        readout = self.read_spi_fifo()
+        print("Read out idlebytes, or somthing")

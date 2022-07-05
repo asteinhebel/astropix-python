@@ -61,7 +61,7 @@ def main(args):
 
     # Configure 8 DAC Voltageboard in Slot 4 with list values
     # 3 = Vcasc2, 4=BL, 7=Vminuspix, 8=Thpix
-    vboard1 = Voltageboard(handle, 4, (8, [0, 0, 1.1, 1, 0, 0, 1, 1.035]))
+    vboard1 = Voltageboard(handle, 4, (8, [0, 0, 1.1, 1, 0, 0, 1, 1.1]))
 
     # Set measured 1V for one-point calibration
     vboard1.vcal = 0.989
@@ -126,10 +126,13 @@ def main(args):
 
     decode = Decode()
     
+    
     name = '' if (args.name == '') else  args.name+"_"
+  
     
-    
-    dir="noise"
+    #dir="noise"
+    dir = "June_LBNL"
+    #dir="source"
 
     #raw data file
     timestr = time.strftime("beam_%Y%m%d-%H%M%S")
@@ -142,60 +145,69 @@ def main(args):
 
     #decoded data file
     timestr1 = time.strftime("beamDigital_%Y%m%d-%H%M%S")
-    file1 = open("%s/%s%s.txt" % (dir,name, timestr1), "w")
-    file1.write(f"Voltageboard settings: {vboard1.dacvalues}\n")
-    file1.write(f"Digital: {asic.digitalconfig}\n")
-    file1.write(f"Biasblock: {asic.biasconfig}\n")
-    file1.write(f"DAC: {asic.dacs}\n")
-    file1.write(f"Receiver: {asic.recconfig}\n\n")
+    fileTyp = 'csv' if args.saveAsCSV else 'txt'
+    delim = ',' if args.saveAsCSV else '\t'
+    file1 = open("%s/%s%s.%s" % (dir,name, timestr1,fileTyp), "w")
+    if not args.saveAsCSV:
+        file1.write(f"Voltageboard settings: {vboard1.dacvalues}\n")
+        file1.write(f"Digital: {asic.digitalconfig}\n")
+        file1.write(f"Biasblock: {asic.biasconfig}\n")
+        file1.write(f"DAC: {asic.dacs}\n")
+        file1.write(f"Receiver: {asic.recconfig}\n\n")
 
     readout = bytearray()
 
     i = 0 #interrupt index
-    file1.write(
-        "NEvent\tChipId\tPayload\t"
-        "Locatn\t"
-        "Row/Col\t"
-        "tStamp\t"
-        "MSB\tLSB\tToT\tToT(us)"
-        "\n"
+    file1.write(f"NEvent{delim}ChipId{delim}Payload{delim}"
+        f"Locatn{delim}Row/Col{delim}tStamp{delim}"
+        f"MSB{delim}LSB{delim}ToT{delim}ToT(us){delim}RealTime\n"
     )
 
     #set up the real-time plot
     #to save some of the event plots, change outdir to the name of the directory to save the plots in.
     plotter = hitplotter.HitPlotter(35, outdir=args.outdir)
+
+    # This reads out the hits register if the interupt is present
+    # By doing this the FPGA dump is ignored
+
+    if(int.from_bytes(nexys.read_register(70),"big") == 0): #if interrupt signal
+        time.sleep(0.05)
+        timestmp=time.time()
+        nexys.write_spi_bytes(20)
+        readout = nexys.read_spi_fifo()
     
-    while True:
-        #print("Reg: {}".format(int.from_bytes(nexys.read_register(70),"big")))
-        if(int.from_bytes(nexys.read_register(70),"big") == 0): #if interrupt signal
-            time.sleep(0.05)
-            nexys.write_spi_bytes(20)
-            readout = nexys.read_spi_fifo()
-            file.write(f"{i}\t")
-            file.write(str(binascii.hexlify(readout)))
-            file.write("\n")
-            #print('a')
-            print(binascii.hexlify(readout))
 
-            decList=decode.decode_astropix2_hits(decode.hits_from_readoutstream(readout), i, file1, False) #last arg (bool) = "print_only", if False then return list of deocded info
-            file1.write("\n")
+    try:
+        while True:
+            #print("Reg: {}".format(int.from_bytes(nexys.read_register(70),"big")))
+            if(int.from_bytes(nexys.read_register(70),"big") == 0): #if interrupt signal
+                time.sleep(0.05)
+                timestmp=time.time()
+                nexys.write_spi_bytes(20)
+                readout = nexys.read_spi_fifo()
+                file.write(f"{i}\t")
+                file.write(str(binascii.hexlify(readout)))
+                file.write("\n")
+                print(binascii.hexlify(readout))
 
-            if args.showhits:
-                rows,columns=[],[]
-                if len(decList)>0:#safeguard against bad readouts without recorded decodable hits
-                    #Isolate row and column information from array returned from decoder
-                    decList=np.array(decList)
-                    location = np.array(decList[:,0])
-                    rowOrCol = np.array(decList[:,1])
-                    rows = location[rowOrCol==0]
-                    columns = location[rowOrCol==1]
-                plotter.plot_event( rows, columns, i)
+                decList=decode.decode_astropix2_hits(decode.hits_from_readoutstream(readout), i, file1, timestmp, False, args.saveAsCSV) #last arg (bool) = "print_only", if False then return list of deocded info
+                file1.write("\n")
 
-            i +=1
+                if args.showhits:
+                    rows,columns=[],[]
+                    if len(decList)>0:#safeguard against bad readouts without recorded decodable hits
+                        #Isolate row and column information from array returned from decoder
+                        decList=np.array(decList)
+                        location = np.array(decList[:,0])
+                        rowOrCol = np.array(decList[:,1])
+                        rows = location[rowOrCol==0]
+                        columns = location[rowOrCol==1]
+                    plotter.plot_event( rows, columns, i)
 
-    # Close connection
-    nexys.close()
-
+                i +=1
+    except KeyboardInterrupt:
+        # Close connection cleanly
+        nexys.close()
 
 if __name__ == "__main__":
 
@@ -208,6 +220,9 @@ if __name__ == "__main__":
                     help='Display hits in real time during data taking')
     parser.add_argument('-o', '--outdir', default=None, required=False,
                     help='output directory for real-time plots. If None, do not save plots. Events with exactly one row and one column hit are not saved.')
+    parser.add_argument('-c', '--saveAsCSV', action='store_true', 
+                    default=False, required=False, 
+                    help='save output files as CSV. If False, save as txt')
 
     args = parser.parse_args()
     

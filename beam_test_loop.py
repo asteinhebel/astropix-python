@@ -57,7 +57,7 @@ def main(row,col,str_file_loop):
 
     # Configure 8 DAC Voltageboard in Slot 4 with list values
     # 3 = Vcasc2, 4=BL, 7=Vminuspix, 8=Thpix
-    vboard1 = Voltageboard(handle, 4, (8, [0, 0, 1.1, 1, 0, 0, 1, 1.1]))
+    vboard1 = Voltageboard(handle, 4, (8, [0, 0, 1.1, 1, 0, 0, 1, 1.075]))
 
     # Set measured 1V for one-point calibration
     vboard1.vcal = 0.989
@@ -118,7 +118,8 @@ def main(row,col,str_file_loop):
     #inj.start()
     inj.stop()
 
-    wait_progress(3)
+    wait_progress(1)
+    #wait_progress(3)
 
     #not using the decoder - not saving any digital output
     #decode = Decode()
@@ -139,7 +140,7 @@ def main(row,col,str_file_loop):
     j=0
     h=0
 
-    loopMax=500
+    loopMax=5
 
     while j<loopMax:
         #print("Reg: {}".format(int.from_bytes(nexys.read_register(70),"big")))
@@ -166,12 +167,12 @@ def main(row,col,str_file_loop):
 
 if __name__ == "__main__":
 
-    dirName="noiseMap_053122_100mV"
+    dirName="June_LBNL/noiseMap_06_22_2022_601_75mV_lbnlTestFinal"
     if not os.path.exists(dirName):
         os.makedirs(dirName)
 
-    #for col in range(0,35):
-    for col in range(27,35):
+    #for col in range(0,1):
+    for col in range(0,35):
         timestrloop = time.strftime("%Y%m%d-%H%M%S")
         filename="%s/lognoise_Col%s_%s.txt" %(dirName, col, timestrloop)
         file_loop = open(filename,"w")
