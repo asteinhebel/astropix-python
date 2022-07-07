@@ -152,17 +152,30 @@ class Decode:
         # Outlist used for returning values 
         outlist = []
         for hit in list_hits:
-            id          = int(hit[0]) >> 3
-            payload     = int(hit[0]) & 0b111
-            location    = int(hit[1])  & 0b111111
-            col         = 1 if (int(hit[1]) >> 7 ) & 1 else 0
-            timestamp   = int(hit[2])
-            tot_msb     = int(hit[3]) & 0b1111
-            tot_lsb     = int(hit[4])
-            tot_total   = (tot_msb << 8) + tot_lsb
+            try:
+                id          = int(hit[0]) >> 3
+                payload     = int(hit[0]) & 0b111
+                location    = int(hit[1])  & 0b111111
+                col         = 1 if (int(hit[1]) >> 7 ) & 1 else 0
+                timestamp   = int(hit[2])
+                tot_msb     = int(hit[3]) & 0b1111
+                tot_lsb     = int(hit[4])
+                tot_total   = (tot_msb << 8) + tot_lsb
 
-            wrong_id        = 0 if (id) == 0 else '\x1b[0;31;40m{}\x1b[0m'.format(id)
-            wrong_payload   = 4 if (payload) == 4 else'\x1b[0;31;40m{}\x1b[0m'.format(payload)
+                wrong_id        = 0 if (id) == 0 else '\x1b[0;31;40m{}\x1b[0m'.format(id)
+                wrong_payload   = 4 if (payload) == 4 else'\x1b[0;31;40m{}\x1b[0m'.format(payload)
+            except Exception as e:
+                logger.error(f"Decoder failure: {e}\n All decoded entries = -1 \n")   
+                id          = -1
+                payload     = -1
+                location    = -1
+                col         = -1
+                timestamp   = -1
+                tot_msb     = -1
+                tot_lsb     = -1
+                tot_total   = -1
+                wrong_id        = '\x1b[0;31;40m{}\x1b[0m'.format(id)
+                wrong_payload   = '\x1b[0;31;40m{}\x1b[0m'.format(payload)
 
             print(
                 f"Header: ChipId: {wrong_id}\tPayload: {wrong_payload}\t"
@@ -172,9 +185,9 @@ class Decode:
             )
 
             if csv:
-                file.write(f"{i},{wrong_id}, {wrong_payload}, {location},{'Col' if col else 'Row'},{timestamp}, {tot_msb},{tot_lsb} , {tot_total} , {(tot_total * self.sampleclock_period_ns)/1000.0},{realTime} \n")
+                file.write(f"{i},{id}, {payload}, {location},{'Col' if col else 'Row'},{timestamp}, {tot_msb},{tot_lsb} , {tot_total} , {(tot_total * self.sampleclock_period_ns)/1000.0},{realTime} \n")
             else:
-                file.write(f"{i}\t{wrong_id}\t {wrong_payload}\t {location}\t{'Col' if col else 'Row'}\t{timestamp}\t {tot_msb}\t{tot_lsb} \t {tot_total} \t {(tot_total * self.sampleclock_period_ns)/1000.0}\t{realTime} \n")
+                file.write(f"{i}\t{id}\t {payload}\t {location}\t{'Col' if col else 'Row'}\t{timestamp}\t {tot_msb}\t{tot_lsb} \t {tot_total} \t {(tot_total * self.sampleclock_period_ns)/1000.0}\t{realTime} \n")
          
             ### THIS IS NEW CODE Autumn on Jun 14 2022. Added in an option             
             if not print_only:
