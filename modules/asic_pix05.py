@@ -99,14 +99,16 @@ class Asic(Nexysio):
         }
         """
 
-	#Collect digital and analog from pixel (0,0)
-        bitconfig_col =  0b111_11111_11111_11111_11111_11111_11111_11101 #for injection
-        #bitconfig_col =  0b111_10111_11111_11111_10111_11111_11111_11011 #for testing
-
-        #bitconfig_col =  0b111_11111_11111_11111_11111_11111_11111_11100 #for noise
+	#Collect digital from pixel (0,5)
+        bitconfig_col =  0b111_11111_11111_11111_11111_11111_11111_11111
         self.recconfig = {'ColConfig0': bitconfig_col}
 
         i = 1
+        while i < 5:
+            self.recconfig[f'ColConfig{i}'] = 0b001_11111_11111_11111_11111_11111_11111_11110
+            i += 1
+        self.recconfig[f'ColConfig5'] = 0b111_11111_11111_11111_11111_11111_11111_11101
+        i = 6
         while i < 35:
             self.recconfig[f'ColConfig{i}'] = 0b001_11111_11111_11111_11111_11111_11111_11110
             i += 1
