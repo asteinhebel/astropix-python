@@ -99,16 +99,11 @@ class Asic(Nexysio):
         }
         """
 
-	#Collect digital from pixel (0,5)
-        bitconfig_col =  0b111_11111_11111_11111_11111_11111_11111_11111
+	#Collect digital from pixel (5,0)
+        bitconfig_col =  0b111_11111_11111_11111_11111_11111_11101_11111
         self.recconfig = {'ColConfig0': bitconfig_col}
 
         i = 1
-        while i < 5:
-            self.recconfig[f'ColConfig{i}'] = 0b001_11111_11111_11111_11111_11111_11111_11110
-            i += 1
-        self.recconfig[f'ColConfig5'] = 0b111_11111_11111_11111_11111_11111_11111_11101
-        i = 6
         while i < 35:
             self.recconfig[f'ColConfig{i}'] = 0b001_11111_11111_11111_11111_11111_11111_11110
             i += 1

@@ -99,19 +99,17 @@ class Asic(Nexysio):
         }
         """
 
-	#Collect digital from pixel (0,5)
+	#Collect digital from pixel (34,34)
         bitconfig_col =  0b111_11111_11111_11111_11111_11111_11111_11111
         self.recconfig = {'ColConfig0': bitconfig_col}
 
         i = 1
-        while i < 5:
+        while i < 34:
             self.recconfig[f'ColConfig{i}'] = 0b001_11111_11111_11111_11111_11111_11111_11110
             i += 1
-        self.recconfig[f'ColConfig5'] = 0b111_11111_11111_11111_11111_11111_11111_11101
-        i = 6
-        while i < 35:
-            self.recconfig[f'ColConfig{i}'] = 0b001_11111_11111_11111_11111_11111_11111_11110
-            i += 1
+        
+        self.recconfig[f'ColConfig34'] = 0b110_11111_11111_11111_11111_11111_11111_11111
+
 
     @staticmethod
     def __int2nbit(value: int, nbits: int) -> BitArray:
