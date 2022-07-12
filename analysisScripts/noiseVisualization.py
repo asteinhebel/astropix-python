@@ -45,7 +45,7 @@ if __name__ == "__main__":
 	loc="GSFCbench_75mV"
 	#dataDir=f"noise_{loc}/"
 	#saveto=f"noiseMap_{loc}.pdf"
-	dataDir="June_LBNL/noiseMap_06_22_2022_601_75mV_lbnlTestFinal/"
+	dataDir="noiseMap_06_29_22_602_75mV_chip602"
 	saveto="noiseMap_75mV.pdf"
 	threshold=0
 	maxIt=500

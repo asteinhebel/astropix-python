@@ -61,7 +61,7 @@ def main(args):
 
     # Configure 8 DAC Voltageboard in Slot 4 with list values
     # 3 = Vcasc2, 4=BL, 7=Vminuspix, 8=Thpix
-    vboard1 = Voltageboard(handle, 4, (8, [0, 0, 1.1, 1, 0, 0, 1, 1.1]))
+    vboard1 = Voltageboard(handle, 4, (8, [0, 0, 1.1, 1, 0, 0, 1, 1.12]))
 
     # Set measured 1V for one-point calibration
     vboard1.vcal = 0.989
@@ -128,11 +128,9 @@ def main(args):
     
     
     name = '' if (args.name == '') else  args.name+"_"
-  
-    
-    #dir="noise"
-    dir = "June_LBNL"
-    #dir="source"
+    dir = "noise" if (args.dir == '') else args.dir
+    if not os.path.exists(dir):
+        os.makedirs(dir)
 
     #raw data file
     timestr = time.strftime("beam_%Y%m%d-%H%M%S")
@@ -223,6 +221,8 @@ if __name__ == "__main__":
     parser.add_argument('-c', '--saveAsCSV', action='store_true', 
                     default=False, required=False, 
                     help='save output files as CSV. If False, save as txt')
+    parser.add_argument('-d', '--dir', default=None, required=False,
+                    help='output directory for digital data files. If None, defaults to ./noise/')
 
     args = parser.parse_args()
     
