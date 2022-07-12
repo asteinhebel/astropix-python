@@ -4,7 +4,7 @@ import pandas as pd
 ## Removes header
 ## If bitstream saved, removes bitstream 
 ## Save output as csv to local dir
-def reduceFile(f, outDir="./"):
+def reduceFile(f, outDir="./csv/"):
 	fileName=f.split('/')[-1][:-3]
 	outFileName=outDir+fileName+"csv"
 	
