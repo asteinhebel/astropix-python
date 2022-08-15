@@ -16,8 +16,8 @@ from scipy.optimize import curve_fit
 def Gauss(x, A, mu, sigma):
     return A*np.exp(-(x-mu)**2/(2.0*sigma**2))
     
-def fitHist(data,label):
-	hist=plt.hist(data,40, alpha=0.3, label=label)
+def fitHist(data,label,nmbBins):
+	hist=plt.hist(data, nmbBins, alpha=0.3, label=label)
 	ydata=hist[0]
 	binCenters=hist[1]+((hist[1][1]-hist[1][0])/2)
 	binCenters=binCenters[:-1]
@@ -31,10 +31,14 @@ def fitHist(data,label):
 def main(args):
 
 	#get input files and labels out of input file
-	with open(args.inputF) as f:
-		lines = np.loadtxt(f, dtype='str')
-		filesIn = lines[:,0]
-		labels = lines [:,2] #also acts as keys for dictionary
+	try:
+		with open(args.inputF) as f:
+			lines = np.loadtxt(f, dtype='str')
+			filesIn = lines[:,0]
+			labels = lines [:,2] #also acts as keys for dictionary
+	except FileNotFoundError:
+		filesIn = [args.inputF]
+		labels = [""]
 
 	# dictionary to store all dataframes
 	dfDict = {} 
@@ -48,9 +52,11 @@ def main(args):
 
 	#plots involving ToT
 	#plot and fit ToT for all input files
+	nmbBins=int(40.96/args.binSize)
+	
 	mean=[]
 	for key in dfDict.keys():
-		hist, fit = fitHist(dfDict[key]['ToT(us)_row'].append(dfDict[key]['ToT(us)_col']),key+" "+args.legend)
+		hist, fit = fitHist(dfDict[key]['ToT(us)_row'].append(dfDict[key]['ToT(us)_col']),key+" "+args.legend, nmbBins)
 		mean.append(fit[1])
 		xspace=np.linspace(hist[1][0],hist[1][-1], len(hist[1])*10)
 		if args.scanInj:
@@ -67,7 +73,7 @@ def main(args):
 			plt.title(key)
 			plt.xlabel('row ToT duration [us]')
 			plt.ylabel('column ToT duration [us]')
-			x=np.arange(40)
+			x=np.arange(40.96)
 			plt.plot(x, 'b')
 			plt.show()
 	
@@ -84,9 +90,9 @@ def main(args):
 			print(dfDict[key].loc[outliers])
 	
 			plt.clf()
-			plt.hist(dfDict[key]['ToT(us)_row'].append(dfDict[key]['ToT(us)_col']),40,fc=(0,0,1,1), label="All")
-			plt.hist(dfDict[key]['ToT(us)_row'],40,fc=(1,0,0,0.5),label="Row")
-			plt.hist(dfDict[key]['ToT(us)_col'],40,fc=(0,1,0,0.5),label="Col")
+			plt.hist(dfDict[key]['ToT(us)_row'].append(dfDict[key]['ToT(us)_col']),nmbBins,fc=(0,0,1,1), label="All")
+			plt.hist(dfDict[key]['ToT(us)_row'],nmbBins,fc=(1,0,0,0.5),label="Row")
+			plt.hist(dfDict[key]['ToT(us)_col'],nmbBins,fc=(0,1,0,0.5),label="Col")
 			plt.xlabel('ToT (us)')
 			plt.ylabel('Counts')
 			plt.legend(loc="best")
@@ -122,15 +128,17 @@ if __name__ == "__main__":
 
 	parser = argparse.ArgumentParser(description='Plot Digital Data')
 	parser.add_argument('-i', '--inputF', default='', required=True,
-        help='Input .txt containing location of data files to compare AND a label for each file semicolon deliminated, separated by new lines')
+        help='Input .txt containing location of data files to compare AND a label for each file semicolon deliminated OR command line path to single file, separated by new lines')
 	parser.add_argument('-s', '--scanInj', action='store_true', default=False, required=False, 
         help='Plot average ToT at each point along injection scan. Default: False')
 	parser.add_argument('-t', '--timestmp', action='store_true', default=False, required=False, 
         help='Plot Overlaid plots of timestamp values. Default: False')
 	parser.add_argument('-o', '--totOverlay', action='store_true', default=False, required=False, 
         help='Plot Overlaid plots ToT. Default: False')
-	parser.add_argument('-b', '--basicPlots', action='store_true', default=False, required=False, 
+	parser.add_argument('-p', '--basicPlots', action='store_true', default=False, required=False, 
         help='Plot ToT and row vs col hit plots for eaach input. Default: False')
+	parser.add_argument('-b','--binSize', action='store', default = 1.0, type=float,
+        help = 'Bin size for ToT plotting (in us). Default: 1us')
 	parser.add_argument('-l', '--legend', default='', required=False,
         help='Additional input for legend (ex units)')
 
