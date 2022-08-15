@@ -20,8 +20,9 @@ def reduceFile(f, outDir="./csv/"):
 	return outFileName
 
 #pull dataframe from CSV and read ToT information
-def getDF(f):
-	df=pd.read_csv(f) 
+#ASSUMES A SINGLE PIXEL IS ENABLED
+def getDF(f, clean=False, pix=[0,0]):
+	df=pd.read_csv(f)
 	#Drop any hit from count 0 - FPGA dump
 	df=df[df['NEvent']!=0]
 	#put matching row and column info in one line
@@ -30,8 +31,8 @@ def getDF(f):
 	df = df_row.merge( df_col, how="outer", on = ["tStamp","NEvent"], suffixes = ["_row", "_col"] )
 	#Drop duplicates
 	df.drop_duplicates(subset=["tStamp", "NEvent"], keep=False, inplace=True, ignore_index=True)
-	#Remove entries if any pixel other than (0,0) is measured - only (0,0) is enabled
-	df=df[df['Locatn_row']==0]
-	df=df[df['Locatn_col']==0]
-	print(df.describe().T)
+	#Remove entries if any pixel other than pix is measured - only one pixel enabled at a time
+	df=df[df['Locatn_row']==pix[0]]
+	df=df[df['Locatn_col']==pix[1]]
+	#print(df.describe().T)
 	return df.reset_index()
