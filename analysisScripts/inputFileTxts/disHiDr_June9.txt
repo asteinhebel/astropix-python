@@ -1,0 +1,4 @@
+chip1_2min_DisHiDr0_analogPaired_0.3_injection_20220609-130531.csv ; 0.3V_0
+chip1_2min_DisHiDr1_analogPaired_0.3_injection_20220609-131435.csv ; 0.3V_1
+chip1_2min_DisHiDr0_analogPaired_1.0_injection_20220609-130749.csv ; 1.0V_0
+chip1_2min_DisHiDr1_analogPaired_1.0_injection_20220609-131027.csv ; 1.0V_1

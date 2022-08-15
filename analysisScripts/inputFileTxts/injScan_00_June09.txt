@@ -1,0 +1,14 @@
+logInj/chip2_2min_analogPaired_0.2_injection_20220609-153604.log ; 0.2
+logInj/chip2_2min_analogPaired_00_0.3_injection_20220609-102112.log ; 0.3
+logInj/chip2_2min_analogPaired_0.4_injection_20220609-153348.log ; 0.4
+logInj/chip2_2min_analogPaired_0.5_injection_20220609-153130.log ; 0.5
+logInj/chip2_2min_analogPaired_00_0.6_injection_20220609-102327.log ; 0.6
+logInj/chip2_2min_analogPaired_0.7_injection_20220609-152912.log ; 0.7
+logInj/chip2_2min_analogPaired_0.8_injection_20220609-152656.log ; 0.8
+logInj/chip2_2min_analogPaired_00_0.9_injection_20220609-102554.log ; 0.9
+logInj/chip2_2min_analogPaired_1.0_injection_20220609-152435.log ; 1.0
+logInj/chip2_2min_analogPaired_1.1_injection_20220609-152221.log ; 1.1
+logInj/chip2_2min_analogPaired_00_1.2_injection_20220609-102829.log ; 1.2
+logInj/chip2_2min_analogPaired_1.3_injection_20220609-152005.log ; 1.3
+logInj/chip2_2min_analogPaired_1.4_injection_20220609-151746.log ; 1.4
+logInj/chip2_2min_analogPaired_1.5_injection_20220609-151529.log ; 1.5

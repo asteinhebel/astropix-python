@@ -1,0 +1,6 @@
+logInj/chip1_2min_DisHiDr0_clkDiv10_analogPaired_0.3_injection_20220609-140916.log ; 10
+logInj/chip1_2min_DisHiDr0_clkDiv50_analogPaired_0.3_injection_20220609-140650.log ; 50
+logInj/chip1_2min_DisHiDr0_clkDiv100_analogPaired_0.3_injection_20220609-135612.log ; 100
+logInj/chip1_2min_DisHiDr0_clkDiv150_analogPaired_0.3_injection_20220609-134908.log ; 150
+logInj/chip1_2min_DisHiDr0_clkDiv200_analogPaired_0.3_injection_20220609-134641.log ; 200
+logInj/chip1_2min_DisHiDr0_analogPaired_0.3_injection_20220609-130531.log ; 255
