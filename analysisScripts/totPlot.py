@@ -121,7 +121,9 @@ def main(args):
 		plt.legend(loc='best')
 		plt.show()
 
-
+#################################################################
+# call main
+#################################################################
 if __name__ == "__main__":
 
 	dirPath=os. getcwd()[:-15] #go one directory above the current one where only scripts are held
