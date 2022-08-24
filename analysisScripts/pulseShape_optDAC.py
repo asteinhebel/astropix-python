@@ -60,7 +60,7 @@ def get_baseline_plt(filename, labels, pixDir):
 	#STD - sqrt(variance)
 	#Expect mean of baseline at 0 (baseline subtracted)
 	varArr=[np.var(trace, ddof=1) for trace in baseline] 
-	rmsArr=[np.std(trace,ddof=1) for trace in baseline] 
+	rmsArr=[np.std(trace, ddof=1) for trace in baseline] 
 	xVar=np.linspace(0,max(varArr),50)
 	xRms=np.linspace(0,max(rmsArr),50)
 
@@ -72,6 +72,7 @@ def get_baseline_plt(filename, labels, pixDir):
 
 	plt.xlabel('Std Dev of DC baseline')
 	plt.ylabel('Counts')
+	plt.title(args.title)
 	plt.legend(loc='best')
 	plot=plt.gcf() #get current figure - saves fig in case savePlt==True
 	plt.show() #creates new figure for display
@@ -83,6 +84,7 @@ def get_baseline_plt(filename, labels, pixDir):
 
 	plt.xlabel('Variance of DC baseline')
 	plt.ylabel('Counts')
+	plt.title(args.title)
 	plt.legend(loc='best')
 	plot=plt.gcf() #get current figure - saves fig in case savePlt==True
 	plt.show() #creates new figure for display
