@@ -36,7 +36,7 @@ def main(args):
 			lines = np.loadtxt(f, dtype='str')
 			filesIn = lines[:,0]
 			labels = lines [:,2] #also acts as keys for dictionary
-	except FileNotFoundError:
+	except (FileNotFoundError, ValueError):
 		filesIn = [args.inputF]
 		labels = [""]
 
@@ -44,11 +44,10 @@ def main(args):
 	dfDict = {} 
 	for i,f in enumerate(filesIn):
 		if f[-3:] == "csv":
-			dfDict[labels[i]] = ddh.getDF("csv/"+f)
+			dfDict[labels[i]] = ddh.getDF_singlePix(f, args.pixel)
 		else: #is log and need to generate csv
 			fi=ddh.reduceFile(dirPath+f)
-			dfDict[labels[i]] = ddh.getDF(fi)	
-			
+			dfDict[labels[i]] = ddh.getDF_singlePix(fi, args.pixel)	
 
 	#plots involving ToT
 	#plot and fit ToT for all input files
@@ -129,20 +128,22 @@ if __name__ == "__main__":
 	dirPath=os. getcwd()[:-15] #go one directory above the current one where only scripts are held
 
 	parser = argparse.ArgumentParser(description='Plot Digital Data')
-	parser.add_argument('-i', '--inputF', default='', required=True,
+	parser.add_argument('-f', '--inputF', default='', required=True,
         help='Input .txt containing location of data files to compare AND a label for each file semicolon deliminated OR command line path to single file, separated by new lines')
-	parser.add_argument('-s', '--scanInj', action='store_true', default=False, required=False, 
+	parser.add_argument('-i', '--scanInj', action='store_true', default=False, required=False, 
         help='Plot average ToT at each point along injection scan. Default: False')
 	parser.add_argument('-t', '--timestmp', action='store_true', default=False, required=False, 
         help='Plot Overlaid plots of timestamp values. Default: False')
 	parser.add_argument('-o', '--totOverlay', action='store_true', default=False, required=False, 
         help='Plot Overlaid plots ToT. Default: False')
-	parser.add_argument('-p', '--basicPlots', action='store_true', default=False, required=False, 
+	parser.add_argument('-b', '--basicPlots', action='store_true', default=False, required=False, 
         help='Plot ToT and row vs col hit plots for eaach input. Default: False')
-	parser.add_argument('-b','--binSize', action='store', default = 1.0, type=float,
+	parser.add_argument('-s','--binSize', action='store', default = 1.0, type=float,
         help = 'Bin size for ToT plotting (in us). Default: 1us')
 	parser.add_argument('-l', '--legend', default='', required=False,
         help='Additional input for legend (ex units)')
+	parser.add_argument('-p', '--pixel', action='store', default=[0,0], type=int, nargs=2, 
+    	help =  'Digital pixel to consider [row,col]. Default: [0,0]')
 
 	parser.add_argument
 	args = parser.parse_args()
