@@ -21,13 +21,13 @@ def reduceFile(f, outDir="./csv/"):
 
 #pull dataframe from CSV and read ToT information
 #ASSUMES A SINGLE PIXEL IS ENABLED
-def getDF_singlePix(f, pix):
+def getDF_singlePix(f, pix=[0,0]):
 	df=pd.read_csv(f)
 	#Drop any hit from count 0 - FPGA dump
 	try:
 		df=df[df['NEvent']!=0]
 	except KeyError: #more modern files change the variable names, no FPGA dump
-		df.rename(columns={"readout": "NEvent", "timestamp": "tStamp","location": "Locatn","tot_us": "ToT(us)", "isCol":"Row/Col"},inplace=True)	
+		df.rename(columns={"readout": "NEvent", "timestamp": "tStamp","location": "Locatn","tot_us": "ToT(us)", "isCol":"Row/Col", "hittime":"RealTime"},inplace=True)	
 		#convert boolean column to Row/Col structure
 		df['Row/Col'] = df['Row/Col'].replace({True: 'Col', False: 'Row'})
 	#put matching row and column info in one line
