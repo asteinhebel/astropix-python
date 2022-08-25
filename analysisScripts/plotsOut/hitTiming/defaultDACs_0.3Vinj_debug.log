@@ -1,0 +1,121 @@
+INFO:Note: NumExpr detected 12 cores but "NUMEXPR_MAX_THREADS" not set, so enforcing safe limit of 8.
+INFO:NumExpr defaulting to 8 threads.
+INFO:490 analog hits, 1023 digital paired hits
+INFO:Analog hit rate = 4.261; digital hit rate = 8.531
+INFO:digital array is longer than analog array
+DEBUG:analog: length=490
+0        0.276313
+1        0.556008
+2        0.741668
+3        1.020859
+4        1.248845
+          ...    
+485    114.079770
+486    114.358669
+487    114.542773
+488    114.773858
+489    115.009773
+Name: Time_scale, Length: 490, dtype: float64
+DEBUG:digital: length=1023
+0         0.000000
+1         0.091832
+2         0.247030
+3         0.387667
+4         0.464021
+           ...    
+1018    119.515835
+1019    119.615329
+1020    119.692883
+1021    119.766703
+1022    119.918675
+Name: Time_scale, Length: 1023, dtype: float64
+INFO:Optimizing the time window for matching
+DEBUG:random: length=1023
+0        98.394927
+1        19.562971
+2        53.842550
+3        16.400694
+4        28.354713
+           ...    
+1018     69.261186
+1019     63.446430
+1020    102.123804
+1021     21.174881
+1022     13.612355
+Length: 1023, dtype: float64
+DEBUG:456 / 490 analog hits (93.061%) are unmatched in RANDOM DIST with window = 0.005
+DEBUG:417 / 490 analog hits (85.102%) are unmatched in RANDOM DIST with window = 0.010
+DEBUG:377 / 490 analog hits (76.939%) are unmatched in RANDOM DIST with window = 0.015
+DEBUG:348 / 490 analog hits (71.020%) are unmatched in RANDOM DIST with window = 0.020
+DEBUG:323 / 490 analog hits (65.918%) are unmatched in RANDOM DIST with window = 0.025
+DEBUG:301 / 490 analog hits (61.429%) are unmatched in RANDOM DIST with window = 0.030
+DEBUG:274 / 490 analog hits (55.918%) are unmatched in RANDOM DIST with window = 0.035
+DEBUG:252 / 490 analog hits (51.429%) are unmatched in RANDOM DIST with window = 0.040
+DEBUG:235 / 490 analog hits (47.959%) are unmatched in RANDOM DIST with window = 0.045
+DEBUG:221 / 490 analog hits (45.102%) are unmatched in RANDOM DIST with window = 0.050
+DEBUG:202 / 490 analog hits (41.224%) are unmatched in RANDOM DIST with window = 0.055
+DEBUG:189 / 490 analog hits (38.571%) are unmatched in RANDOM DIST with window = 0.060
+DEBUG:171 / 490 analog hits (34.898%) are unmatched in RANDOM DIST with window = 0.065
+DEBUG:153 / 490 analog hits (31.224%) are unmatched in RANDOM DIST with window = 0.070
+DEBUG:135 / 490 analog hits (27.551%) are unmatched in RANDOM DIST with window = 0.075
+DEBUG:123 / 490 analog hits (25.102%) are unmatched in RANDOM DIST with window = 0.080
+DEBUG:110 / 490 analog hits (22.449%) are unmatched in RANDOM DIST with window = 0.085
+DEBUG:104 / 490 analog hits (21.224%) are unmatched in RANDOM DIST with window = 0.090
+DEBUG:95 / 490 analog hits (19.388%) are unmatched in RANDOM DIST with window = 0.095
+DEBUG:84 / 490 analog hits (17.143%) are unmatched in RANDOM DIST with window = 0.100
+DEBUG:82 / 490 analog hits (16.735%) are unmatched in RANDOM DIST with window = 0.105
+DEBUG:76 / 490 analog hits (15.510%) are unmatched in RANDOM DIST with window = 0.110
+DEBUG:62 / 490 analog hits (12.653%) are unmatched in RANDOM DIST with window = 0.115
+DEBUG:53 / 490 analog hits (10.816%) are unmatched in RANDOM DIST with window = 0.120
+DEBUG:437 / 490 analog hits (89.184%) are unmatched in digital with window = 0.005
+DEBUG:970 / 1023 digital hits (94.819%) are unmatched in analog
+DEBUG:407 / 490 analog hits (83.061%) are unmatched in digital with window = 0.010
+DEBUG:940 / 1023 digital hits (91.887%) are unmatched in analog
+DEBUG:385 / 490 analog hits (78.571%) are unmatched in digital with window = 0.015
+DEBUG:918 / 1023 digital hits (89.736%) are unmatched in analog
+DEBUG:349 / 490 analog hits (71.224%) are unmatched in digital with window = 0.020
+DEBUG:882 / 1023 digital hits (86.217%) are unmatched in analog
+DEBUG:306 / 490 analog hits (62.449%) are unmatched in digital with window = 0.025
+DEBUG:839 / 1023 digital hits (82.014%) are unmatched in analog
+DEBUG:270 / 490 analog hits (55.102%) are unmatched in digital with window = 0.030
+DEBUG:803 / 1023 digital hits (78.495%) are unmatched in analog
+DEBUG:235 / 490 analog hits (47.959%) are unmatched in digital with window = 0.035
+DEBUG:768 / 1023 digital hits (75.073%) are unmatched in analog
+DEBUG:188 / 490 analog hits (38.367%) are unmatched in digital with window = 0.040
+DEBUG:721 / 1023 digital hits (70.479%) are unmatched in analog
+DEBUG:153 / 490 analog hits (31.224%) are unmatched in digital with window = 0.045
+DEBUG:686 / 1023 digital hits (67.058%) are unmatched in analog
+DEBUG:111 / 490 analog hits (22.653%) are unmatched in digital with window = 0.050
+DEBUG:644 / 1023 digital hits (62.952%) are unmatched in analog
+DEBUG:82 / 490 analog hits (16.735%) are unmatched in digital with window = 0.055
+DEBUG:615 / 1023 digital hits (60.117%) are unmatched in analog
+DEBUG:65 / 490 analog hits (13.265%) are unmatched in digital with window = 0.060
+DEBUG:598 / 1023 digital hits (58.456%) are unmatched in analog
+DEBUG:45 / 490 analog hits (9.184%) are unmatched in digital with window = 0.065
+DEBUG:578 / 1023 digital hits (56.500%) are unmatched in analog
+DEBUG:34 / 490 analog hits (6.939%) are unmatched in digital with window = 0.070
+DEBUG:567 / 1023 digital hits (55.425%) are unmatched in analog
+DEBUG:18 / 490 analog hits (3.673%) are unmatched in digital with window = 0.075
+DEBUG:551 / 1023 digital hits (53.861%) are unmatched in analog
+DEBUG:2 / 490 analog hits (0.408%) are unmatched in digital with window = 0.080
+DEBUG:535 / 1023 digital hits (52.297%) are unmatched in analog
+DEBUG:0 / 490 analog hits (0.000%) are unmatched in digital with window = 0.085
+DEBUG:533 / 1023 digital hits (52.102%) are unmatched in analog
+DEBUG:0 / 490 analog hits (0.000%) are unmatched in digital with window = 0.090
+DEBUG:533 / 1023 digital hits (52.102%) are unmatched in analog
+DEBUG:0 / 490 analog hits (0.000%) are unmatched in digital with window = 0.095
+DEBUG:533 / 1023 digital hits (52.102%) are unmatched in analog
+DEBUG:0 / 490 analog hits (0.000%) are unmatched in digital with window = 0.100
+DEBUG:533 / 1023 digital hits (52.102%) are unmatched in analog
+DEBUG:0 / 490 analog hits (0.000%) are unmatched in digital with window = 0.105
+DEBUG:533 / 1023 digital hits (52.102%) are unmatched in analog
+DEBUG:0 / 490 analog hits (0.000%) are unmatched in digital with window = 0.110
+DEBUG:533 / 1023 digital hits (52.102%) are unmatched in analog
+DEBUG:0 / 490 analog hits (0.000%) are unmatched in digital with window = 0.115
+DEBUG:533 / 1023 digital hits (52.102%) are unmatched in analog
+DEBUG:0 / 490 analog hits (0.000%) are unmatched in digital with window = 0.120
+DEBUG:533 / 1023 digital hits (52.102%) are unmatched in analog
+INFO:Saving plotsOut/hitTiming/defaultDACs_0.3Vinj_matchingDeltaT.png
+INFO:Saving plotsOut/hitTiming/defaultDACs_0.3Vinj_timingWindowOpt.png
+INFO:Leftover digital events = 533 (52.10)%
+DEBUG:Optimal window value: 0.090 s

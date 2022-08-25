@@ -31,9 +31,10 @@ def find_coincidence(searchArray, val, window=0.05):
 	
 	#Check whether potential match values are within the window of coincidence
 	#if the index of the potential match from the search array is within the defined window of the test value, return array index of the match. If match is not in the window, return None
-	matched_i = searchArray.index[searchArray.tolist().index(potential_match)] if abs(val-potential_match)<window else None
+	deltaT = abs(val-potential_match) if abs(val-potential_match)<window else np.NaN
+	matched_i = searchArray.index[searchArray.tolist().index(potential_match)] if abs(val-potential_match)<window else np.NaN
 	
-	return matched_i
+	return matched_i, deltaT
 	
 def make_hist(x, arrays, labels, titles):
 	plt.clf()
@@ -44,13 +45,90 @@ def make_hist(x, arrays, labels, titles):
 	plt.xlabel(titles[1])
 	plt.ylabel(titles[2])
 	plt.show()
+	
+def optimize_window(moreHits, lessHits, moreStr, lessStr, showPlot):
+	logging.info("Optimizing the time window for matching")
+	
+	#Initialize random distribution for comparison - same length as longer array
+	randHits = pd.Series(np.random.uniform(0,max(moreHits),len(moreHits)))
+	plt.hist(randHits,np.arange(0,max(moreHits),0.5))
+	plt.xlabel('Random ToT values [us]')
+	if showPlot: plt.show()
+	plt.clf()
+	logging.debug(f"random: length={len(randHits)}\n{randHits}")
+	
+	#Calculate rates
+	lessRate = len(lessHits) / lessHits.iloc[-1]
+	moreRate = len(moreHits) / moreHits.iloc[-1]
 
+	#Optimize window by comparing to random distribution
+	wind=[0.005*i for i in range(1,25)]
+	randProp=[]
+	tstArr=lessHits#lessHits
+	for w in wind:
+		#With each element of random array, see if there is an element of the longer array within the window (w)	
+		pairs_rand = np.array([find_coincidence(randHits, j, window=w) for j in lessHits])
+		matched_i_rand = pairs_rand[:,0]
+		deltaT_rand = pairs_rand[:,1]
+		unmatched_rand = np.count_nonzero(np.isnan(matched_i_rand)) #number of unmatched events\
+		logging.debug(f"{unmatched_rand} / {len(lessHits)} {lessStr} hits ({unmatched_rand/len(lessHits)*100:.3f}%) are unmatched in RANDOM DIST with window = {w:.3f}")
+		randProp.append((len(lessHits)-unmatched_rand)) #stores number of matched hits at each window
+
+	measProp=[]
+	for w in wind:
+		#With each element of smaller array, see if there is an element of the longer array within the window (w)	
+		#matched_i = [find_coincidence(moreHits, j, window=w) for j in lessHits] #array of same length as lessHits - index of matched_i matches with index of lessHits that is paired with the held index of moreHits
+		pairs = np.array([find_coincidence(moreHits, j, window=w) for j in lessHits])
+		matched_i = pairs[:,0]
+		deltaT = pairs[:,1]
+		
+		#### NEED TO HANDLE DUPLICATIONS - MULTIPLE ELEMENTS MATCHED TO SAME
+
+		nomatch_m = list(set(np.arange(len(moreHits))) - set(matched_i)) #elements in moreHits without a match
+		nomatch_l = [i for i, val in enumerate(matched_i) if val == None]#elements in lessHits without a match
+		unmatched = np.count_nonzero(np.isnan(matched_i))
+		logging.debug(f"{unmatched} / {len(lessHits)} {lessStr} hits ({unmatched/len(lessHits)*100:.3f}%) are unmatched in {moreStr} with window = {w:.3f}")
+		logging.debug(f"{len(nomatch_m)} / {len(moreHits)} {moreStr} hits ({len(nomatch_m)/len(moreHits)*100:.3f}%) are unmatched in {lessStr}")
+		measProp.append((len(lessHits)-unmatched) ) #stores number of matched hits at each window
+		
+	#Plot deltaT values between lessHits array and closest match in moreHits or randHits array
+	xbins = np.arange(0, 0.12, 0.12/25) #25 bins
+	hist_rand = plt.hist(deltaT_rand, xbins, alpha=0.4, density=True, label=f'{lessStr} in random')
+	hist = plt.hist(deltaT, xbins, facecolor='r', alpha=0.4, density=True, label=f'{lessStr} in {moreStr}')
+	plt.xlabel(f'Time between {lessStr} hit and paired {moreStr}/random hit [s]')
+	plt.ylabel('Normalized Counts')
+	plt.legend(loc='best')
+	plt.savefig(f"{saveDir}{nm}_matchingDeltaT.png")
+	logging.info(f"Saving {saveDir}{nm}_matchingDeltaT.png")
+	if showPlot: plt.show()
+
+	plt.clf()
+	measPerc=[i/len(lessHits)*100. for i in measProp]
+	randPerc=[i/len(randHits)*100. for i in randProp]
+	plt.scatter(wind,measPerc,label="meas", s=75)
+	plt.scatter(wind,randPerc,label="rand", alpha=0.7)
+	plt.legend(loc="best")
+	plt.ylabel(f"% of {lessStr} hits with a {moreStr}/random match")
+	plt.xlabel("window [s]")
+	plt.savefig(f"{saveDir}{nm}_timingWindowOpt.png")
+	logging.info(f"Saving {saveDir}{nm}_timingWindowOpt.png")
+	if showPlot: plt.show()
+	
+	logging.info(f"Leftover {moreStr} events = {len(moreHits)-max(measProp)} ({(len(moreHits)-max(measProp))/len(moreHits)*100:.2f})%")
+
+	#Find optimal window value - matching of measured data is 100% but random array is <100%
+	#Get index of first value of 100% matching in measured data array
+	optIndex = np.searchsorted(measPerc, 100) +1 # Go one index higher just to be safe
+	optVal = wind[optIndex] if randPerc[optIndex]<100 else wind[optIndex+1]
+	logging.debug(f"Optimal window value: {optVal:.3f} s")
+
+	return optVal
 
 #################################################################
 # main
 #################################################################
 
-def main():
+def main(args):
 
 	#make into DFs
 	digiDF = ddh.getDF_singlePix(digiIn) #removes bad events and returns DF
@@ -79,71 +157,31 @@ def main():
 	#identify whether anlaog or digital has less hits 
 	if len(anaDF)<=len(digiDF):
 		lessHits = anaDF['Time_scale']
-		less_str = "analog"
+		lessStr = "analog"
 		lessDF = anaDF
 		moreHits = digiDF['Time_scale']
-		more_str = "digital"
+		moreStr = "digital"
 		moreDF = digiDF
 	else:
 		lessHits = digiDF['Time_scale']
-		less_str = "digital"
+		lessStr = "digital"
 		lessDF = digiDF
 		moreHits = anaDF['Time_scale']
-		more_str = "analog"
+		moreStr = "analog"
 		moreDF = anaDF
-	logging.info(f"{more_str} array is longer than {less_str} array")
+	logging.info(f"{moreStr} array is longer than {lessStr} array")
 	
-	randHits = pd.Series(np.random.uniform(0,max(lessHits),len(lessHits)))
-	plt.hist(randHits,np.arange(0,max(lessHits),0.5))
-	plt.xlabel('Random ToT values [us]')
-	#plt.show()
-	plt.clf()
 	
 	logging.debug(f"analog: length={len(anaDF['Time_scale'])}\n{anaDF['Time_scale']}")
 	logging.debug(f"digital: length={len(digiDF['Time_scale'])}\n{digiDF['Time_scale']}")
-	logging.debug(f"random: length={len(randHits)}\n{randHits}")
-
-	#Optimize window by comparing to random distribution
-	wind=[0.025*i for i in range(25)]
-	randProp=[]
-	for w in wind:
-		#With each element of random array, see if there is an element of the longer array within the window (w)	
-		matched_i_rand =  [find_coincidence(randHits, j, window=w) for j in lessHits]
-		unmatched_rand = matched_i_rand.count(None)
-		logging.debug(f"{unmatched_rand} / {len(lessHits)} {less_str} hits ({unmatched_rand/len(lessHits)*100:.3f}%) are unmatched in RANDOM DIST with window={w:.2f}")
-		logging.debug(f"Matched entries / (window * hit rate) = {len(lessHits)-unmatched_rand} / ( {w:.2f} * {anaRate:.3f} ) = {(len(lessHits)-unmatched_rand) / ( w * anaRate ) :.3f}")
-		#randProp.append((len(lessHits)-unmatched_rand) / ( w * anaRate ) )
-		randProp.append((len(lessHits)-unmatched_rand)) #stores number of matched hits at each window
-
-	measProp=[]
-	for w in wind:
-		#With each element of smaller array, see if there is an element of the longer array within the window (w)	
-		matched_i = [find_coincidence(moreHits, j, window=w) for j in lessHits] #array of same length as lessHits - index of matched_i matches with index of lessHits that is paired with the held index of moreHits
-
-		#### NEED TO HANDLE DUPLICATIONS - MULTIPLE ELEMENTS MATCHED TO SAME
-
-		#With the digital 0.713s readout gap, potential coincidence could be claimed up to 0.7s...
-		nomatch_m = list(set(np.arange(len(moreHits))) - set(matched_i)) #elements in moreHits without a match
-		nomatch_l = [i for i, val in enumerate(matched_i) if val == None]#elements in lessHits without a match
-		logging.debug(f"{matched_i.count(None)} / {len(lessHits)} {less_str} hits ({matched_i.count(None)/len(lessHits)*100:.3f}%) are unmatched in {more_str}")
-		logging.debug(f"{len(nomatch_m)} / {len(moreHits)} {more_str} hits ({len(nomatch_m)/len(moreHits)*100:.3f}%) are unmatched in {less_str}")
-		#measProp.append((len(lessHits)-matched_i.count(None)) / ( w * anaRate ) )
-		measProp.append((len(lessHits)-matched_i.count(None)) ) #stores number of matched hits at each window
-
-	measPerc=[i/len(lessHits)*100. for i in measProp]
-	randPerc=[i/len(randHits)*100. for i in randProp]
-	plt.scatter(wind,measPerc,label="meas", s=75)
-	plt.scatter(wind,randPerc,label="rand", alpha=0.7)
-	plt.legend(loc="best")
-	plt.ylabel(f"% of {less_str}/random hits with a {more_str} match")
-	plt.xlabel("window [s]")
-	plt.savefig(f"{saveDir}{nm}_timingWindowOpt.png")
-	logging.info(f"Saving {saveDir}{nm}_timingWindowOpt.png")
-	plt.show()
 	
-	logging.info(f"Leftover {more_str} events = {len(moreHits)-max(measProp)} ({(len(moreHits)-max(measProp))/len(moreHits)*100:.2f})%")
-
-	#Optimized window value = 0.15s - still get 100% of short array matched but only ~60% of random array so outperforming just a random matching
+	if args.optimizeWindow:
+		w = optimize_window(moreHits, lessHits, moreStr, lessStr, args.showPlots)
+	else:
+		w = 0.125 #default optimal window
+	
+	#Isolate paired events and store them in a csv
+	
 
 	"""
 	###################################
@@ -166,8 +204,8 @@ def main():
 
 
 	#plot ToT, real time of unmatched hits
-	make_hist(xtot, [moreDF['ToT'][nomatch_m],lessDF['ToT'][nomatch_l]], [more_str,less_str], ['Unmatched Hits (digital row)', 'ToT [us]', 'Counts'])
-	make_hist(xtime, [moreDF['Time_scale'][nomatch_m],lessDF['Time_scale'][nomatch_l]], [more_str,less_str], ['Unmatched Hits', 'Time of trigger (from first recording) [s]', 'Counts'])
+	make_hist(xtot, [moreDF['ToT'][nomatch_m],lessDF['ToT'][nomatch_l]], [moreStr,lessStr], ['Unmatched Hits (digital row)', 'ToT [us]', 'Counts'])
+	make_hist(xtime, [moreDF['Time_scale'][nomatch_m],lessDF['Time_scale'][nomatch_l]], [moreStr,lessStr], ['Unmatched Hits', 'Time of trigger (from first recording) [s]', 'Counts'])
 	"""
 	
 #################################################################
@@ -176,7 +214,12 @@ def main():
 if __name__ == "__main__":
 	
 	parser = argparse.ArgumentParser(description='Plot Digital Data')
-	parser.add_argument('-d', '--debug', action='store_true', default=False, required=False, help='Display debug printouts. Default: False')
+	parser.add_argument('-d', '--debug', action='store_true', default=False, required=False, 
+		help='Display debug printouts. Default: False')
+	parser.add_argument('-w', '--optimizeWindow', action='store_true', default=False, required=False, 
+		help='Calculate and plot window optimization compared to random distribution. Default: False')
+	parser.add_argument('-p', '--showPlots', action='store_true', default=False, required=False, 
+		help='Display plots to terminal. Saves all plots always. Default: False')
 	parser.add_argument
 	args = parser.parse_args()
 
@@ -190,6 +233,8 @@ if __name__ == "__main__":
 	#nm = "optimizedDACs_0.3Vinj"
 	
 	#2min 0.3V injection, 100ms latency, default DACs, pixel 00, -60V bias, vprec60
+	#digital latency ~ 100ms
+	#analog latency ~ 200-500ms (2021 11 30)
 	digiIn = "../logInj/dacScan/pixelr0c0/vprec_test/vprec_60_vnfoll2_1_vnfb_1_20220823-113731.csv"
 	anaIn = "../logInj/dacScan/pixelr0c0/vprec_test/short_chip602_vprec60_vnfoll21_vnfb1_0.3Vinj_2min.h5py"
 	nm = "defaultDACs_0.3Vinj"
@@ -203,11 +248,9 @@ if __name__ == "__main__":
 	logging.captureWarnings(True)
 	#handlers allows for terminal printout and file writing at the same time
 	logging.basicConfig(format='%(levelname)s:%(message)s',level=loglev,
-		handlers=[logging.FileHandler(f"{saveDir}{nm}{logstr}.log"),logging.StreamHandler()])
+		handlers=[logging.FileHandler(f"{saveDir}{nm}{logstr}.log",mode='w'),logging.StreamHandler()])
 
-	main()
+	main(args)
 	
 	
-
-	## window opt choice - move all code away there
 	## remove possibility for duplicate matches in moreHits - only match each event in moreHits with a single events in lessHits max
