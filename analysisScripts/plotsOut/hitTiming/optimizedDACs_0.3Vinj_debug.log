@@ -31,42 +31,42 @@ DEBUG:digital: length=1019
 Name: Time_scale, Length: 1019, dtype: float64
 INFO:Optimizing the time window for matching
 DEBUG:random: length=1019
-0        71.419813
-1        15.549922
-2       117.572790
-3        73.698621
-4        60.079443
+0        88.433153
+1       100.471197
+2        22.446053
+3        70.274144
+4        36.992545
            ...    
-1014     69.273884
-1015     51.278438
-1016    103.952049
-1017     65.535707
-1018     92.942125
+1014     14.846292
+1015     80.244404
+1016    105.189351
+1017     16.691559
+1018     25.533905
 Length: 1019, dtype: float64
-DEBUG:448 / 485 analog hits (92.371%) are unmatched in RANDOM DIST with window = 0.005
-DEBUG:416 / 485 analog hits (85.773%) are unmatched in RANDOM DIST with window = 0.010
-DEBUG:382 / 485 analog hits (78.763%) are unmatched in RANDOM DIST with window = 0.015
-DEBUG:352 / 485 analog hits (72.577%) are unmatched in RANDOM DIST with window = 0.020
-DEBUG:326 / 485 analog hits (67.216%) are unmatched in RANDOM DIST with window = 0.025
-DEBUG:291 / 485 analog hits (60.000%) are unmatched in RANDOM DIST with window = 0.030
-DEBUG:272 / 485 analog hits (56.082%) are unmatched in RANDOM DIST with window = 0.035
-DEBUG:252 / 485 analog hits (51.959%) are unmatched in RANDOM DIST with window = 0.040
-DEBUG:231 / 485 analog hits (47.629%) are unmatched in RANDOM DIST with window = 0.045
-DEBUG:211 / 485 analog hits (43.505%) are unmatched in RANDOM DIST with window = 0.050
-DEBUG:192 / 485 analog hits (39.588%) are unmatched in RANDOM DIST with window = 0.055
-DEBUG:176 / 485 analog hits (36.289%) are unmatched in RANDOM DIST with window = 0.060
-DEBUG:158 / 485 analog hits (32.577%) are unmatched in RANDOM DIST with window = 0.065
+DEBUG:431 / 485 analog hits (88.866%) are unmatched in RANDOM DIST with window = 0.005
+DEBUG:396 / 485 analog hits (81.649%) are unmatched in RANDOM DIST with window = 0.010
+DEBUG:367 / 485 analog hits (75.670%) are unmatched in RANDOM DIST with window = 0.015
+DEBUG:345 / 485 analog hits (71.134%) are unmatched in RANDOM DIST with window = 0.020
+DEBUG:314 / 485 analog hits (64.742%) are unmatched in RANDOM DIST with window = 0.025
+DEBUG:279 / 485 analog hits (57.526%) are unmatched in RANDOM DIST with window = 0.030
+DEBUG:254 / 485 analog hits (52.371%) are unmatched in RANDOM DIST with window = 0.035
+DEBUG:241 / 485 analog hits (49.691%) are unmatched in RANDOM DIST with window = 0.040
+DEBUG:219 / 485 analog hits (45.155%) are unmatched in RANDOM DIST with window = 0.045
+DEBUG:196 / 485 analog hits (40.412%) are unmatched in RANDOM DIST with window = 0.050
+DEBUG:178 / 485 analog hits (36.701%) are unmatched in RANDOM DIST with window = 0.055
+DEBUG:169 / 485 analog hits (34.845%) are unmatched in RANDOM DIST with window = 0.060
+DEBUG:155 / 485 analog hits (31.959%) are unmatched in RANDOM DIST with window = 0.065
 DEBUG:148 / 485 analog hits (30.515%) are unmatched in RANDOM DIST with window = 0.070
 DEBUG:135 / 485 analog hits (27.835%) are unmatched in RANDOM DIST with window = 0.075
-DEBUG:125 / 485 analog hits (25.773%) are unmatched in RANDOM DIST with window = 0.080
-DEBUG:112 / 485 analog hits (23.093%) are unmatched in RANDOM DIST with window = 0.085
-DEBUG:101 / 485 analog hits (20.825%) are unmatched in RANDOM DIST with window = 0.090
-DEBUG:89 / 485 analog hits (18.351%) are unmatched in RANDOM DIST with window = 0.095
-DEBUG:80 / 485 analog hits (16.495%) are unmatched in RANDOM DIST with window = 0.100
-DEBUG:77 / 485 analog hits (15.876%) are unmatched in RANDOM DIST with window = 0.105
-DEBUG:69 / 485 analog hits (14.227%) are unmatched in RANDOM DIST with window = 0.110
-DEBUG:65 / 485 analog hits (13.402%) are unmatched in RANDOM DIST with window = 0.115
-DEBUG:60 / 485 analog hits (12.371%) are unmatched in RANDOM DIST with window = 0.120
+DEBUG:126 / 485 analog hits (25.979%) are unmatched in RANDOM DIST with window = 0.080
+DEBUG:118 / 485 analog hits (24.330%) are unmatched in RANDOM DIST with window = 0.085
+DEBUG:112 / 485 analog hits (23.093%) are unmatched in RANDOM DIST with window = 0.090
+DEBUG:100 / 485 analog hits (20.619%) are unmatched in RANDOM DIST with window = 0.095
+DEBUG:90 / 485 analog hits (18.557%) are unmatched in RANDOM DIST with window = 0.100
+DEBUG:80 / 485 analog hits (16.495%) are unmatched in RANDOM DIST with window = 0.105
+DEBUG:74 / 485 analog hits (15.258%) are unmatched in RANDOM DIST with window = 0.110
+DEBUG:64 / 485 analog hits (13.196%) are unmatched in RANDOM DIST with window = 0.115
+DEBUG:59 / 485 analog hits (12.165%) are unmatched in RANDOM DIST with window = 0.120
 DEBUG:436 / 485 analog hits (89.897%) are unmatched in digital with window = 0.005
 DEBUG:970 / 1019 digital hits (95.191%) are unmatched in analog
 DEBUG:394 / 485 analog hits (81.237%) are unmatched in digital with window = 0.010

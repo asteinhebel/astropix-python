@@ -104,7 +104,7 @@ def optimize_window(moreHits, lessHits, moreStr, lessStr, showPlot):
 
 	plt.clf()
 	measPerc=[i/len(lessHits)*100. for i in measProp]
-	randPerc=[i/len(randHits)*100. for i in randProp]
+	randPerc=[i/len(lessHits)*100. for i in randProp]
 	plt.scatter(wind,measPerc,label="meas", s=75)
 	plt.scatter(wind,randPerc,label="rand", alpha=0.7)
 	plt.legend(loc="best")
@@ -228,16 +228,16 @@ if __name__ == "__main__":
 	#anaIn = "../../astropixOut_tmp/v2/070722_amp1/chip602_100mV_digitalPaired_cobalt57_180min.h5py"
 	
 	#2min 0.3V injection, 100ms latency, optimized DACs for short pulse, pixel 00, -60V bias
-	#digiIn = "../logInj/dacScan/pixelr0c0/optimized/vprec_60_vnfoll2_4_vnfb_3_20220823-114012.csv"
-	#anaIn = "../logInj/dacScan/pixelr0c0/optimized/short_chip602_vprec60_vnfoll24_vnfb3_0.3Vinj_2min.h5py"
-	#nm = "optimizedDACs_0.3Vinj"
+	digiIn = "../logInj/dacScan/pixelr0c0/optimized/vprec_60_vnfoll2_4_vnfb_3_20220823-114012.csv"
+	anaIn = "../logInj/dacScan/pixelr0c0/optimized/short_chip602_vprec60_vnfoll24_vnfb3_0.3Vinj_2min.h5py"
+	nm = "optimizedDACs_0.3Vinj"
 	
 	#2min 0.3V injection, 100ms latency, default DACs, pixel 00, -60V bias, vprec60
 	#digital latency ~ 100ms
 	#analog latency ~ 200-500ms (2021 11 30)
-	digiIn = "../logInj/dacScan/pixelr0c0/vprec_test/vprec_60_vnfoll2_1_vnfb_1_20220823-113731.csv"
-	anaIn = "../logInj/dacScan/pixelr0c0/vprec_test/short_chip602_vprec60_vnfoll21_vnfb1_0.3Vinj_2min.h5py"
-	nm = "defaultDACs_0.3Vinj"
+	#digiIn = "../logInj/dacScan/pixelr0c0/vprec_test/vprec_60_vnfoll2_1_vnfb_1_20220823-113731.csv"
+	#anaIn = "../logInj/dacScan/pixelr0c0/vprec_test/short_chip602_vprec60_vnfoll21_vnfb1_0.3Vinj_2min.h5py"
+	#nm = "defaultDACs_0.3Vinj"
 
 	saveDir = "plotsOut/hitTiming/"
 	
