@@ -52,7 +52,7 @@ def optimize_window(moreHits, lessHits, moreStr, lessStr, showPlot):
 	#Initialize random distribution for comparison - same length as longer array
 	randHits = pd.Series(np.random.uniform(0,max(moreHits),len(moreHits)))
 	plt.hist(randHits,np.arange(0,max(moreHits),0.5))
-	plt.xlabel('Random ToT values [us]')
+	plt.xlabel('Random time values [s]')
 	if showPlot: plt.show()
 	plt.clf()
 	logging.debug(f"random: length={len(randHits)}\n{randHits}")
@@ -116,10 +116,10 @@ def optimize_window(moreHits, lessHits, moreStr, lessStr, showPlot):
 	
 	logging.info(f"Leftover {moreStr} events = {len(moreHits)-max(measProp)} ({(len(moreHits)-max(measProp))/len(moreHits)*100:.2f})%")
 
-	#Find optimal window value - matching of measured data is 100% but random array is <100%
-	#Get index of first value of 100% matching in measured data array
-	optIndex = np.searchsorted(measPerc, 100) +1 # Go one index higher just to be safe
-	optVal = wind[optIndex] if randPerc[optIndex]<100 else wind[optIndex+1]
+	#Find optimal window value - matching of measured data is maximal (where curve flattens out)
+	grad = np.gradient(measPerc) #shows gradient between each point - use to find which points aren't increasing much anymore
+	optIndex = np.argmax(grad<0.5) +1 # Go one index higher just to be safe
+	optVal = wind[optIndex]
 	logging.debug(f"Optimal window value: {optVal:.3f} s")
 
 	return optVal
@@ -227,17 +227,26 @@ if __name__ == "__main__":
 	#digiIn = "../source/chip602_cobalt57_180min_pix00_120mV_analogPaired_beamDigital_20220707-140016.csv"
 	#anaIn = "../../astropixOut_tmp/v2/070722_amp1/chip602_100mV_digitalPaired_cobalt57_180min.h5py"
 	
+	"""
 	#2min 0.3V injection, 100ms latency, optimized DACs for short pulse, pixel 00, -60V bias
 	digiIn = "../logInj/dacScan/pixelr0c0/optimized/vprec_60_vnfoll2_4_vnfb_3_20220823-114012.csv"
 	anaIn = "../logInj/dacScan/pixelr0c0/optimized/short_chip602_vprec60_vnfoll24_vnfb3_0.3Vinj_2min.h5py"
 	nm = "optimizedDACs_0.3Vinj"
-	
+	"""
+	"""
 	#2min 0.3V injection, 100ms latency, default DACs, pixel 00, -60V bias, vprec60
 	#digital latency ~ 100ms
 	#analog latency ~ 200-500ms (2021 11 30)
-	#digiIn = "../logInj/dacScan/pixelr0c0/vprec_test/vprec_60_vnfoll2_1_vnfb_1_20220823-113731.csv"
-	#anaIn = "../logInj/dacScan/pixelr0c0/vprec_test/short_chip602_vprec60_vnfoll21_vnfb1_0.3Vinj_2min.h5py"
-	#nm = "defaultDACs_0.3Vinj"
+	digiIn = "../logInj/dacScan/pixelr0c0/vprec_test/vprec_60_vnfoll2_1_vnfb_1_20220823-113731.csv"
+	anaIn = "../logInj/dacScan/pixelr0c0/vprec_test/short_chip602_vprec60_vnfoll21_vnfb1_0.3Vinj_2min.h5py"
+	nm = "defaultDACs_0.3Vinj"
+	"""
+	
+	#60min Ba133, 100ms latency, optimized DACs, pixel 00, -130V bias, vprec60
+	digiIn = "../source/chip602_130V_ba133/optimizedDACs_60min_pixr0c0_20220831-150146.csv"
+	anaIn = "../../astropixOut_tmp/v2/083122_amp1/chip602_130V_barium133_60min.h5py"
+	nm = "optimizedDACs_ba133"
+
 
 	saveDir = "plotsOut/hitTiming/"
 	
