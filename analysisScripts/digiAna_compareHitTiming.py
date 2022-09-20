@@ -26,7 +26,7 @@ def find_nearest(array, value):
     return array[idx]
     
 def find_coincidence(searchArray, val, window=0.05):
-	#find closest element in searchArray to val
+	#find closest element in searchArray to val, returns value of closest element
 	potential_match=find_nearest(searchArray, val)
 	
 	#Check whether potential match values are within the window of coincidence
@@ -35,6 +35,16 @@ def find_coincidence(searchArray, val, window=0.05):
 	matched_i = searchArray.index[searchArray.tolist().index(potential_match)] if abs(val-potential_match)<window else np.NaN
 	
 	return matched_i, deltaT
+	
+def find_pairs(bigArr, smallArr, smallStr, w, optname=""):
+	#With each element of random array, see if there is an element of the longer array within the window (w)	
+	pairs = np.array([find_coincidence(bigArr, j, window=w) for j in smallArr])
+	matched_i = pairs[:,0] #element of bigArr that found a match in smallArr
+	deltaT = pairs[:,1]
+	unmatched = np.count_nonzero(np.isnan(matched_i)) #number of unmatched events\
+	logging.debug(f"{unmatched} / {len(smallArr)} {smallStr} hits ({unmatched/len(smallArr)*100:.3f}%) are unmatched in {optname} DIST with window = {w:.3f}")
+
+	return pairs, unmatched
 	
 def make_hist(x, arrays, labels, titles):
 	plt.clf()
@@ -63,33 +73,20 @@ def optimize_window(moreHits, lessHits, moreStr, lessStr, showPlot):
 
 	#Optimize window by comparing to random distribution
 	wind=[0.005*i for i in range(1,25)]
-	randProp=[]
-	tstArr=lessHits#lessHits
+
+	randProp = []
+	measProp = []
 	for w in wind:
-		#With each element of random array, see if there is an element of the longer array within the window (w)	
-		pairs_rand = np.array([find_coincidence(randHits, j, window=w) for j in lessHits])
-		matched_i_rand = pairs_rand[:,0]
-		deltaT_rand = pairs_rand[:,1]
-		unmatched_rand = np.count_nonzero(np.isnan(matched_i_rand)) #number of unmatched events\
-		logging.debug(f"{unmatched_rand} / {len(lessHits)} {lessStr} hits ({unmatched_rand/len(lessHits)*100:.3f}%) are unmatched in RANDOM DIST with window = {w:.3f}")
+		pairs_rand, unmatched_rand = find_pairs(randHits, lessHits, lessStr, w, optname="RANDOM")
 		randProp.append((len(lessHits)-unmatched_rand)) #stores number of matched hits at each window
-
-	measProp=[]
+		deltaT_rand = pairs_rand[:,1]
 	for w in wind:
-		#With each element of smaller array, see if there is an element of the longer array within the window (w)	
-		#matched_i = [find_coincidence(moreHits, j, window=w) for j in lessHits] #array of same length as lessHits - index of matched_i matches with index of lessHits that is paired with the held index of moreHits
-		pairs = np.array([find_coincidence(moreHits, j, window=w) for j in lessHits])
-		matched_i = pairs[:,0]
-		deltaT = pairs[:,1]
-		
-		#### NEED TO HANDLE DUPLICATIONS - MULTIPLE ELEMENTS MATCHED TO SAME
-
-		nomatch_m = list(set(np.arange(len(moreHits))) - set(matched_i)) #elements in moreHits without a match
-		nomatch_l = [i for i, val in enumerate(matched_i) if val == None]#elements in lessHits without a match
-		unmatched = np.count_nonzero(np.isnan(matched_i))
-		logging.debug(f"{unmatched} / {len(lessHits)} {lessStr} hits ({unmatched/len(lessHits)*100:.3f}%) are unmatched in {moreStr} with window = {w:.3f}")
-		logging.debug(f"{len(nomatch_m)} / {len(moreHits)} {moreStr} hits ({len(nomatch_m)/len(moreHits)*100:.3f}%) are unmatched in {lessStr}")
+		pairs, unmatched = find_pairs(moreHits, lessHits, lessStr, w, optname=lessStr)
 		measProp.append((len(lessHits)-unmatched) ) #stores number of matched hits at each window
+		nomatch_m = list(set(np.arange(len(moreHits))) - set(pairs[:,0])) #elements in moreHits without a match
+		nomatch_l = [i for i, val in enumerate(pairs[:,0]) if val == None]#elements in lessHits without a match
+		logging.debug(f"{len(nomatch_m)} / {len(moreHits)} {moreStr} hits ({len(nomatch_m)/len(moreHits)*100:.3f}%) are unmatched in {lessStr}")
+		deltaT = pairs[:,1]
 		
 	#Plot deltaT values between lessHits array and closest match in moreHits or randHits array
 	xbins = np.arange(0, 0.12, 0.12/25) #25 bins
@@ -148,12 +145,6 @@ def main(args):
 	digiRate = len(digiDF) / (digiDF['Time_scale'].iloc[-1])
 	logging.info(f"Analog hit rate = {anaRate:.3f}; digital hit rate = {digiRate:.3f}")
 
-	#################
-	##TESTING
-	#anaDF = anaDF[:5]
-	#digiDF = digiDF[:6]
-	#################
-
 	#identify whether anlaog or digital has less hits 
 	if len(anaDF)<=len(digiDF):
 		lessHits = anaDF['Time_scale']
@@ -171,16 +162,34 @@ def main(args):
 		moreDF = anaDF
 	logging.info(f"{moreStr} array is longer than {lessStr} array")
 	
-	
 	logging.debug(f"analog: length={len(anaDF['Time_scale'])}\n{anaDF['Time_scale']}")
 	logging.debug(f"digital: length={len(digiDF['Time_scale'])}\n{digiDF['Time_scale']}")
 	
+	#Find or define optimal window size
 	if args.optimizeWindow:
 		w = optimize_window(moreHits, lessHits, moreStr, lessStr, args.showPlots)
 	else:
-		w = 0.125 #default optimal window
+		w = 0.07 #default optimal window
+	logging.info(f"Optimized window size is {w}")
 	
 	#Isolate paired events and store them in a csv
+	pairs, unmatched = find_pairs(moreHits, lessHits, lessStr, w, optname=lessStr)
+	matched_i = pairs[:,0] #stores index of moreHits that found a match in lessHits, matching lessHits element indicated by location in array (len(matched_i)==len(lessHits)
+	deltaT = pairs[:,1]
+	
+	#Create dataframe and populate with arrays without NaNs
+	df=pd.DataFrame(deltaT[~np.isnan(deltaT)], dtype=float, columns=['deltaT'])
+	less_i = np.argwhere(~np.isnan(matched_i)).flatten().astype(int)
+	more_i = matched_i[~np.isnan(matched_i)].astype(int)
+	df[f'{lessStr}_i'] = less_i
+	df[f'{moreStr}_i'] = more_i
+	
+	lessTot=np.array(lessDF['ToT']).round(2)
+	moreTot=np.array(moreDF['ToT']).round(2)
+	df[f'{lessStr}_ToT'] = lessTot[less_i]
+	df[f'{moreStr}_ToT'] = moreTot[more_i]
+	
+	df.to_csv(f'{saveDir}{nm}_matched.csv')  
 	
 
 	"""
@@ -222,6 +231,7 @@ if __name__ == "__main__":
 		help='Display plots to terminal. Saves all plots always. Default: False')
 	parser.add_argument
 	args = parser.parse_args()
+	
 
 	#Hardcode one run - 180min Co with pixel 00, 700ms latency
 	#digiIn = "../source/chip602_cobalt57_180min_pix00_120mV_analogPaired_beamDigital_20220707-140016.csv"
@@ -258,6 +268,7 @@ if __name__ == "__main__":
 	#handlers allows for terminal printout and file writing at the same time
 	logging.basicConfig(format='%(levelname)s:%(message)s',level=loglev,
 		handlers=[logging.FileHandler(f"{saveDir}{nm}{logstr}.log",mode='w'),logging.StreamHandler()])
+
 
 	main(args)
 	
