@@ -127,101 +127,123 @@ def optimize_window(moreHits, lessHits, moreStr, lessStr, showPlot):
 
 def main(args):
 
-	#make into DFs
-	digiDF = ddh.getDF_singlePix(digiIn) #removes bad events and returns DF
-	#Row and column 'RealTime' values agree by definition
-	digiDF.rename(columns={"ToT(us)_row": "ToT"},inplace=True)
-	digiDF.rename(columns={"RealTime_row": "Time"},inplace=True)
+	###########################
+	# STEP ONE - FIND TIME-CORRELATED HITS IN ANALOG AND DIGITAL
+	# If this step is already done, then the output csv of matched hits must be input as an argument with -i and code skips to step two
+	# Consider hardcoded (in init) analog and digital hit files and pair hits based on timing coincidence
+	## If best window for coincidence is not known, run with -w to optimize. Default = 0.07
+	# Outputs plots (if run with -p) and csv of matched digital and analog hits with hit time, deltaT, and ToT
+	
+	#If no input csv of matched hits, then create one
+	if args.inputF is None:
+		#make into DFs
+		digiDF = ddh.getDF_singlePix(digiIn) #removes bad events and returns DF
+		#Row and column 'RealTime' values agree by definition
+		digiDF.rename(columns={"ToT(us)_row": "ToT"},inplace=True)
+		digiDF.rename(columns={"RealTime_row": "Time"},inplace=True)
 
-	anaDF = adh.getDF(anaIn)
-	anaDF.rename(columns={"AnalogToT": "ToT"},inplace=True)
+		anaDF = adh.getDF(anaIn)
+		anaDF.rename(columns={"AnalogToT": "ToT"},inplace=True)
 
-	logging.info(f"{len(anaDF)} analog hits, {len(digiDF)} digital paired hits")
+		logging.info(f"{len(anaDF)} analog hits, {len(digiDF)} digital paired hits")
 
-	#Add column for scaled timing relative to whatever was the first measurement
-	anaDF, digiDF = add_scaled_time(anaDF, digiDF)
+		#Add column for scaled timing relative to whatever was the first measurement
+		anaDF, digiDF = add_scaled_time(anaDF, digiDF)
 
-	#Calculate rates
-	anaRate = len(anaDF) / (anaDF['Time_scale'].iloc[-1])
-	digiRate = len(digiDF) / (digiDF['Time_scale'].iloc[-1])
-	logging.info(f"Analog hit rate = {anaRate:.3f}; digital hit rate = {digiRate:.3f}")
+		#Calculate rates
+		anaRate = len(anaDF) / (anaDF['Time_scale'].iloc[-1])
+		digiRate = len(digiDF) / (digiDF['Time_scale'].iloc[-1])
+		logging.info(f"Analog hit rate = {anaRate:.3f}; digital hit rate = {digiRate:.3f}")
 
-	#identify whether anlaog or digital has less hits 
-	if len(anaDF)<=len(digiDF):
-		lessHits = anaDF['Time_scale']
-		lessStr = "analog"
-		lessDF = anaDF
-		moreHits = digiDF['Time_scale']
-		moreStr = "digital"
-		moreDF = digiDF
+		#identify whether anlaog or digital has less hits 
+		if len(anaDF)<=len(digiDF):
+			lessHits = anaDF['Time_scale']
+			lessStr = "analog"
+			lessDF = anaDF
+			moreHits = digiDF['Time_scale']
+			moreStr = "digital"
+			moreDF = digiDF
+		else:
+			lessHits = digiDF['Time_scale']
+			lessStr = "digital"
+			lessDF = digiDF
+			moreHits = anaDF['Time_scale']
+			moreStr = "analog"
+			moreDF = anaDF
+		logging.info(f"{moreStr} array is longer than {lessStr} array")
+	
+		logging.debug(f"analog: length={len(anaDF['Time_scale'])}\n{anaDF['Time_scale']}")
+		logging.debug(f"digital: length={len(digiDF['Time_scale'])}\n{digiDF['Time_scale']}")
+	
+		#Find or define optimal window size
+		if args.optimizeWindow:
+			w = optimize_window(moreHits, lessHits, moreStr, lessStr, args.showPlots)
+		else:
+			w = 0.07 #default optimal window
+		logging.info(f"Optimized window size is {w}")
+	
+		#Isolate paired events for storage in a csv
+		pairs, unmatched = find_pairs(moreHits, lessHits, lessStr, w, optname=lessStr)
+		matched_i = pairs[:,0] #stores index of moreHits that found a match in lessHits, matching lessHits element indicated by location in array (len(matched_i)==len(lessHits)
+		deltaT = pairs[:,1]
+	
+		#Create dataframe and populate with arrays without NaNs
+		df=pd.DataFrame(deltaT[~np.isnan(deltaT)], dtype=float, columns=['deltaT'])
+		less_i = np.argwhere(~np.isnan(matched_i)).flatten().astype(int)
+		more_i = matched_i[~np.isnan(matched_i)].astype(int)
+		df[f'{lessStr}_i'] = less_i
+		df[f'{moreStr}_i'] = more_i
+	
+		lessTime=np.array(lessDF['Time'])
+		moreTime=np.array(moreDF['Time'])
+		lessTot=np.array(lessDF['ToT']).round(2)
+		moreTot=np.array(moreDF['ToT']).round(2)
+		df[f'{lessStr}_time'] = lessTime[less_i]
+		df[f'{moreStr}_time'] = moreTime[more_i]
+		df[f'{lessStr}_ToT'] = lessTot[less_i]
+		df[f'{moreStr}_ToT'] = moreTot[more_i]
+	
+		#Save dataframe
+		df.to_csv(f'{saveDir}{nm}_matched.csv')  
+	
+	#Provided input csv of matched files so use that to create plots	
 	else:
-		lessHits = digiDF['Time_scale']
-		lessStr = "digital"
-		lessDF = digiDF
-		moreHits = anaDF['Time_scale']
-		moreStr = "analog"
-		moreDF = anaDF
-	logging.info(f"{moreStr} array is longer than {lessStr} array")
-	
-	logging.debug(f"analog: length={len(anaDF['Time_scale'])}\n{anaDF['Time_scale']}")
-	logging.debug(f"digital: length={len(digiDF['Time_scale'])}\n{digiDF['Time_scale']}")
-	
-	#Find or define optimal window size
-	if args.optimizeWindow:
-		w = optimize_window(moreHits, lessHits, moreStr, lessStr, args.showPlots)
-	else:
-		w = 0.07 #default optimal window
-	logging.info(f"Optimized window size is {w}")
-	
-	#Isolate paired events for storage in a csv
-	pairs, unmatched = find_pairs(moreHits, lessHits, lessStr, w, optname=lessStr)
-	matched_i = pairs[:,0] #stores index of moreHits that found a match in lessHits, matching lessHits element indicated by location in array (len(matched_i)==len(lessHits)
-	deltaT = pairs[:,1]
-	
-	#Create dataframe and populate with arrays without NaNs
-	df=pd.DataFrame(deltaT[~np.isnan(deltaT)], dtype=float, columns=['deltaT'])
-	less_i = np.argwhere(~np.isnan(matched_i)).flatten().astype(int)
-	more_i = matched_i[~np.isnan(matched_i)].astype(int)
-	df[f'{lessStr}_i'] = less_i
-	df[f'{moreStr}_i'] = more_i
-	
-	lessTime=np.array(lessDF['Time'])
-	moreTime=np.array(moreDF['Time'])
-	lessTot=np.array(lessDF['ToT']).round(2)
-	moreTot=np.array(moreDF['ToT']).round(2)
-	df[f'{lessStr}_time'] = lessTime[less_i]
-	df[f'{moreStr}_time'] = moreTime[more_i]
-	df[f'{lessStr}_ToT'] = lessTot[less_i]
-	df[f'{moreStr}_ToT'] = moreTot[more_i]
-	
-	#Save dataframe
-	df.to_csv(f'{saveDir}{nm}_matched.csv')  
-	
+		logging.info(f"Opening file {args.inputF}")
+		df = pd.read_csv(args.inputF)
+		
 
-	"""
-	###################################
-	#Plots
-	###################################
+	###########################
+	# STEP TWO - MAKE PLOTS COMPARING COINCIDENT HIT MEASUREMENTS
 
+	ana_time = np.array(df['analog_time'])	
+	digi_time = np.array(df['digital_time'])
+	ana_ToT = np.array(df['analog_ToT'])	
+	digi_ToT = np.array(df['digital_ToT'])
+	deltaT = np.array(df['deltaT'])
+	logging.debug("Input dataframe received and data read off")
+	
 	#Plot ToT/analog ToT proxy - histogram
 	xtot=np.arange(100)
-	make_hist(xtot, [anaDF['ToT'],digiDF['ToT']], ['analog','digitalRow'], ['All Hits', 'ToT [us]', 'Counts'])
-
+	make_hist(xtot, [ana_ToT,digi_ToT], ['analog','digitalRow'], ['All Hits', 'ToT [us]', 'Counts'])
+	
 	#Plot real hit time wrt earliest recorded hit - scatter
 	plt.clf()
-	plt.scatter(anaDF['Time_scale'],anaDF['ToT'])
-	plt.scatter(digiDF['Time_scale'],digiDF['ToT'])
-	#plt.show()
+	plt.scatter(ana_time, ana_ToT, label='analog')
+	plt.scatter(digi_time, digi_ToT, label='digital')
+	plt.legend(loc='best')
+	plt.xlabel("Trigger time [s from epoch]")
+	plt.ylabel("ToT [us]")
+	plt.show()
 
-	#Plot real hit time wrt earliest recorded hit - histogram
-	xtime=np.arange(0, max(anaDF['Time_scale'].iloc[-1],digiDF['Time_scale'].iloc[-1]), 100)#100s increment
-	make_hist(xtime, [anaDF['Time_scale'],digiDF['Time_scale']], ['analog','digital'], ['Unmatched Hits', 'Time of trigger (from first recording) [s]', 'Counts'])
+	#Plot deltaT - histogram
+	plt.clf()
+	xtime=np.arange(min(deltaT), max(deltaT), 0.001)#0.07s increment
+	plt.hist(deltaT, xtime)
+	plt.title('Time difference of matching pair')
+	plt.xlabel('Time difference [s]')
+	plt.ylabel('Counts')
+	plt.show()
 
-
-	#plot ToT, real time of unmatched hits
-	make_hist(xtot, [moreDF['ToT'][nomatch_m],lessDF['ToT'][nomatch_l]], [moreStr,lessStr], ['Unmatched Hits (digital row)', 'ToT [us]', 'Counts'])
-	make_hist(xtime, [moreDF['Time_scale'][nomatch_m],lessDF['Time_scale'][nomatch_l]], [moreStr,lessStr], ['Unmatched Hits', 'Time of trigger (from first recording) [s]', 'Counts'])
-	"""
 	
 #################################################################
 # call main
@@ -234,7 +256,11 @@ if __name__ == "__main__":
 	parser.add_argument('-w', '--optimizeWindow', action='store_true', default=False, required=False, 
 		help='Calculate and plot window optimization compared to random distribution. Default: False')
 	parser.add_argument('-p', '--showPlots', action='store_true', default=False, required=False, 
-		help='Display plots to terminal. Saves all plots always. Default: False')
+		help='Display plots to terminal. Saves all plots always. Default: False')	
+	parser.add_argument('-i', '--inputF', default=None, required=False,
+        help='Input .csv containing paired digital/analog hits (from previously running this code). If argument provided, matching and csv creation not redone. Default: None')
+	
+		
 	parser.add_argument
 	args = parser.parse_args()
 	
