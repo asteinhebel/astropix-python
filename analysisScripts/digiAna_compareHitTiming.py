@@ -15,9 +15,9 @@ from scipy.optimize import curve_fit
 #################################################################
 def add_scaled_time(ana,digi):
 	#Real times recorded in s
-	t_start = min(ana['Time'].iloc[0],digi['RealTime_row'].iloc[0], digi['RealTime_col'].iloc[0])
+	t_start = min(ana['Time'].iloc[0],digi['Time'].iloc[0], digi['RealTime_col'].iloc[0])
 	ana['Time_scale']=[t-t_start for t in ana['Time']]
-	digi['Time_scale']=[t-t_start for t in digi['RealTime_row']]
+	digi['Time_scale']=[t-t_start for t in digi['Time']]
 	return ana, digi
 
 def find_nearest(array, value):
@@ -131,6 +131,7 @@ def main(args):
 	digiDF = ddh.getDF_singlePix(digiIn) #removes bad events and returns DF
 	#Row and column 'RealTime' values agree by definition
 	digiDF.rename(columns={"ToT(us)_row": "ToT"},inplace=True)
+	digiDF.rename(columns={"RealTime_row": "Time"},inplace=True)
 
 	anaDF = adh.getDF(anaIn)
 	anaDF.rename(columns={"AnalogToT": "ToT"},inplace=True)
@@ -172,7 +173,7 @@ def main(args):
 		w = 0.07 #default optimal window
 	logging.info(f"Optimized window size is {w}")
 	
-	#Isolate paired events and store them in a csv
+	#Isolate paired events for storage in a csv
 	pairs, unmatched = find_pairs(moreHits, lessHits, lessStr, w, optname=lessStr)
 	matched_i = pairs[:,0] #stores index of moreHits that found a match in lessHits, matching lessHits element indicated by location in array (len(matched_i)==len(lessHits)
 	deltaT = pairs[:,1]
@@ -184,11 +185,16 @@ def main(args):
 	df[f'{lessStr}_i'] = less_i
 	df[f'{moreStr}_i'] = more_i
 	
+	lessTime=np.array(lessDF['Time'])
+	moreTime=np.array(moreDF['Time'])
 	lessTot=np.array(lessDF['ToT']).round(2)
 	moreTot=np.array(moreDF['ToT']).round(2)
+	df[f'{lessStr}_time'] = lessTime[less_i]
+	df[f'{moreStr}_time'] = moreTime[more_i]
 	df[f'{lessStr}_ToT'] = lessTot[less_i]
 	df[f'{moreStr}_ToT'] = moreTot[more_i]
 	
+	#Save dataframe
 	df.to_csv(f'{saveDir}{nm}_matched.csv')  
 	
 
@@ -232,10 +238,6 @@ if __name__ == "__main__":
 	parser.add_argument
 	args = parser.parse_args()
 	
-
-	#Hardcode one run - 180min Co with pixel 00, 700ms latency
-	#digiIn = "../source/chip602_cobalt57_180min_pix00_120mV_analogPaired_beamDigital_20220707-140016.csv"
-	#anaIn = "../../astropixOut_tmp/v2/070722_amp1/chip602_100mV_digitalPaired_cobalt57_180min.h5py"
 	
 	"""
 	#2min 0.3V injection, 100ms latency, optimized DACs for short pulse, pixel 00, -60V bias
@@ -256,7 +258,6 @@ if __name__ == "__main__":
 	digiIn = "../source/chip602_130V_ba133/optimizedDACs_60min_pixr0c0_20220831-150146.csv"
 	anaIn = "../../astropixOut_tmp/v2/083122_amp1/chip602_130V_barium133_60min.h5py"
 	nm = "optimizedDACs_ba133"
-
 
 	saveDir = "plotsOut/hitTiming/"
 	
