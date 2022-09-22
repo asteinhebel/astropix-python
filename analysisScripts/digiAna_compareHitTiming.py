@@ -298,13 +298,13 @@ def main(args):
 	#Bin deltaToT in deltaT bins of 0.01s - stacked histogram
 	deltaTBins=[]
 	labelList=[]
-	for i in range(6):
-		deltaTBins.append(deltaToT[(0.01*i<absdeltaT) & (absdeltaT<0.01*(i+1))])
+	for i in range(-6,7):
+		deltaTBins.append(deltaToT[(0.01*i<deltaT) & (deltaT<0.01*(i+1))])
 		#plt.hist(deltaToT[(0.01*i<deltaT) & (deltaT<0.01*(i+1))], xdtot, label=f"{0.01*i} - {0.01*(i+1)} s deltaT", stacked=True) #subsample every 5th element of xtime
 		labelList.append(f"{0.01*i} - {0.01*(i+1)} s deltaT")
 
 	plt.hist(deltaTBins, xdtot, stacked=True)
-	plt.title('ToT difference (digital-analog) binned by |deltaT|')
+	plt.title('ToT difference (digital-analog) binned by deltaT')
 	plt.xlabel('Digital - analog ToT [us]')
 	plt.ylabel('Counts')
 	plt.legend(labelList,loc='best')
@@ -326,11 +326,11 @@ def main(args):
 	
 	#Bin totRatio in deltaT bins of 0.01s - stacked histogram
 	totRatioBins=[]
-	for i in range(6):
-		totRatioBins.append(totRatio[(0.01*i<absdeltaT) & (absdeltaT<0.01*(i+1))])
+	for i in range(-6,7):
+		totRatioBins.append(totRatio[(0.01*i<deltaT) & (deltaT<0.01*(i+1))])
 
 	plt.hist(totRatioBins, xtotr, stacked=True)
-	plt.title('ToT ratio (digital/analog) binned by |deltaT|')
+	plt.title('ToT ratio (digital/analog) binned by deltaT')
 	plt.xlabel('Digital/analog ToT')
 	plt.ylabel('Counts')
 	plt.legend(labelList,loc='best')
