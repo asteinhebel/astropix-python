@@ -46,15 +46,17 @@ def find_pairs(bigArr, smallArr, smallStr, w, optname=""):
 
 	return pairs, unmatched
 	
-def make_hist(x, arrays, labels, titles):
+def make_hist(x, arrays, labels, titles, sve:str='histogram.png'):
 	plt.clf()
-	plt.hist(arrays[0],x,label=labels[0])
+	hist = plt.hist(arrays[0],x,label=labels[0])
 	plt.hist(arrays[1],x,alpha=0.6,label=labels[1])
 	plt.legend(loc='best')
 	plt.title(titles[0])
 	plt.xlabel(titles[1])
 	plt.ylabel(titles[2])
-	plt.show()
+	plt.savefig(sve)
+	logging.info(f"Saving {sve}")
+	if args.showPlots: plt.show()
 	
 def optimize_window(moreHits, lessHits, moreStr, lessStr, showPlot):
 	logging.info("Optimizing the time window for matching")
@@ -186,6 +188,18 @@ def main(args):
 		pairs, unmatched = find_pairs(moreHits, lessHits, lessStr, w, optname=lessStr)
 		matched_i = pairs[:,0] #stores index of moreHits that found a match in lessHits, matching lessHits element indicated by location in array (len(matched_i)==len(lessHits)
 		deltaT = pairs[:,1]
+		
+		#Remove duplicate matches - keep only pair with the smallest deltaT and eliminate other pairs that share matches
+		uniques, counts = np.unique(matched_i, return_counts=True) #uniques stores unique index values found in  matched_i, counts returns how many times the corresponding entry of uniques occurs in matched_i
+		dupes = uniques[counts>1] #array of duplicated index values
+		logging.info(f"{len(dupes)} elements of {moreStr} array have multiple matches - retain only pair with smallest deltaT")
+		for d in dupes:
+			dupe_i = np.where(matched_i==d) #position in array of duplicated matching index
+			keep_i = np.where(deltaT==min(deltaT[dupe_i]))[0] #get position in array of element to keep (smallest deltaT)
+			dupe_i = np.delete(dupe_i, np.where(dupe_i==keep_i))
+			#change elements of matched_i/deltaT that have duplicated array and are not the pair chosen to keep to NaN
+			np.put(matched_i, dupe_i, np.NaN)
+			np.put(deltaT, dupe_i, np.NaN)
 	
 		#Create dataframe and populate with arrays without NaNs
 		df=pd.DataFrame(deltaT[~np.isnan(deltaT)], dtype=float, columns=['deltaT'])
@@ -210,7 +224,7 @@ def main(args):
 	else:
 		logging.info(f"Opening file {args.inputF}")
 		df = pd.read_csv(args.inputF)
-		
+
 
 	###########################
 	# STEP TWO - MAKE PLOTS COMPARING COINCIDENT HIT MEASUREMENTS
@@ -219,12 +233,15 @@ def main(args):
 	digi_time = np.array(df['digital_time'])
 	ana_ToT = np.array(df['analog_ToT'])	
 	digi_ToT = np.array(df['digital_ToT'])
-	deltaT = np.array(df['deltaT'])
+	absdeltaT = np.array(df['deltaT'])
+	deltaT = np.add(digi_time, -1*ana_time)
 	logging.debug("Input dataframe received and data read off")
 	
 	#Plot ToT/analog ToT proxy - histogram
-	xtot=np.arange(100)
-	make_hist(xtot, [ana_ToT,digi_ToT], ['analog','digitalRow'], ['All Hits', 'ToT [us]', 'Counts'])
+	xtot=np.arange(42)
+	xtot2=np.arange(0,42,0.5)
+	outname = f"{saveDir}{nm}_hist_pairs_ToT.png"
+	make_hist(xtot, [ana_ToT,digi_ToT], ['analog','digitalRow'], ['All Hits', 'ToT [us]', 'Counts'], sve=outname)
 	
 	#Plot real hit time wrt earliest recorded hit - scatter
 	plt.clf()
@@ -233,17 +250,103 @@ def main(args):
 	plt.legend(loc='best')
 	plt.xlabel("Trigger time [s from epoch]")
 	plt.ylabel("ToT [us]")
-	plt.show()
-
+	plt.savefig(f"{saveDir}{nm}_scatter_pairs_timeToT.png")
+	logging.info(f"Saving {saveDir}{nm}_scatter_pairs_timeToT.png")
+	if args.showPlots: plt.show()
+	
 	#Plot deltaT - histogram
 	plt.clf()
-	xtime=np.arange(min(deltaT), max(deltaT), 0.001)#0.07s increment
+	xtime=np.arange(min(deltaT), max(deltaT), 0.001)
 	plt.hist(deltaT, xtime)
 	plt.title('Time difference of matching pair')
-	plt.xlabel('Time difference [s]')
+	plt.xlabel('Time difference (digital - analog) [s]')
 	plt.ylabel('Counts')
-	plt.show()
+	plt.savefig(f"{saveDir}{nm}_hist_pairs_deltaT.png")
+	logging.info(f"Saving {saveDir}{nm}_hist_pairs_deltaT.png")
+	if args.showPlots: plt.show()
 
+	#Plot analog vs digital ToT for pairs - scatter
+	plt.clf()
+	plt.scatter(ana_ToT, digi_ToT, s=2)
+	plt.xlabel("Analog ToT proxy [us]")
+	plt.ylabel("Digital ToT [us]")
+	plt.savefig(f"{saveDir}{nm}_scatter_pairs_compToT.png")
+	logging.info(f"Saving {saveDir}{nm}_scatter_pairs_compToT.png")
+	if args.showPlots: plt.show()
+	
+	#Plot analog vs digital ToT for pairs - 2d hist
+	plt.clf()
+	plt.hist2d(ana_ToT, digi_ToT, bins=[xtot2, xtot2])
+	plt.xlabel("Analog ToT proxy [us]")
+	plt.ylabel("Digital ToT [us]")
+	plt.savefig(f"{saveDir}{nm}_hist2d_pairs_compToT.png")
+	logging.info(f"Saving {saveDir}{nm}_hist2d_pairs_compToT.png")
+	if args.showPlots: plt.show()
+	
+	#Plot deltaToT - histogram
+	deltaToT = np.add(digi_ToT, -1.*ana_ToT)
+	xdtot=np.arange(0, max(deltaToT), 0.5)
+	plt.clf()
+	plt.hist(deltaToT, xdtot) 
+	plt.title('ToT difference (digital-analog) of matching pair')
+	plt.xlabel('Digital - analog ToT [us]')
+	plt.ylabel('Counts')
+	plt.savefig(f"{saveDir}{nm}_hist_pairs_deltaToT.png")
+	logging.info(f"Saving {saveDir}{nm}_hist_pairs_deltaToT.png")
+	if args.showPlots: plt.show()
+	
+	#Bin deltaToT in deltaT bins of 0.01s - stacked histogram
+	deltaTBins=[]
+	labelList=[]
+	for i in range(6):
+		deltaTBins.append(deltaToT[(0.01*i<absdeltaT) & (absdeltaT<0.01*(i+1))])
+		#plt.hist(deltaToT[(0.01*i<deltaT) & (deltaT<0.01*(i+1))], xdtot, label=f"{0.01*i} - {0.01*(i+1)} s deltaT", stacked=True) #subsample every 5th element of xtime
+		labelList.append(f"{0.01*i} - {0.01*(i+1)} s deltaT")
+
+	plt.hist(deltaTBins, xdtot, stacked=True)
+	plt.title('ToT difference (digital-analog) binned by |deltaT|')
+	plt.xlabel('Digital - analog ToT [us]')
+	plt.ylabel('Counts')
+	plt.legend(labelList,loc='best')
+	plt.savefig(f"{saveDir}{nm}_hist_pairs_deltaToTBinned.png")
+	logging.info(f"Saving {saveDir}{nm}_hist_pairs_deltaToTBinned.png")
+	if args.showPlots: plt.show()
+	
+	#Plot totRatio - histogram
+	totRatio = np.divide(digi_ToT, ana_ToT)
+	xtotr=np.arange(0, max(totRatio), 0.1)
+	plt.clf()
+	plt.hist(totRatio, xtotr) 
+	plt.title('ToT ratio (digital/analog) of matching pair')
+	plt.xlabel('Digital/analog ToT')
+	plt.ylabel('Counts')
+	plt.savefig(f"{saveDir}{nm}_hist_pairs_ToTratio.png")
+	logging.info(f"Saving {saveDir}{nm}_hist_pairs_ToTratio.png")
+	if args.showPlots: plt.show()
+	
+	#Bin totRatio in deltaT bins of 0.01s - stacked histogram
+	totRatioBins=[]
+	for i in range(6):
+		totRatioBins.append(totRatio[(0.01*i<absdeltaT) & (absdeltaT<0.01*(i+1))])
+
+	plt.hist(totRatioBins, xtotr, stacked=True)
+	plt.title('ToT ratio (digital/analog) binned by |deltaT|')
+	plt.xlabel('Digital/analog ToT')
+	plt.ylabel('Counts')
+	plt.legend(labelList,loc='best')
+	plt.savefig(f"{saveDir}{nm}_hist_pairs_ToTratioBinned.png")
+	logging.info(f"Saving {saveDir}{nm}_hist_pairs_ToTratioBinned.png")
+	if args.showPlots: plt.show()
+	
+	#Plot deltaT vs ToT ratio - 2d hist
+	plt.clf()
+	plt.hist2d(deltaT, totRatio, bins=[xtime, xtotr])
+	plt.xlabel("Time difference (digital-analog)[s]")
+	plt.ylabel("Digital/analog ToT")
+	plt.savefig(f"{saveDir}{nm}_hist2d_pairs_deltaTVStotratio.png")
+	logging.info(f"Saving {saveDir}{nm}_hist2d_pairs_deltaTVStotratio.png")
+	if args.showPlots: plt.show()
+	
 	
 #################################################################
 # call main
