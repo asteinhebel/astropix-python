@@ -1,0 +1,33 @@
+INFO:Note: NumExpr detected 12 cores but "NUMEXPR_MAX_THREADS" not set, so enforcing safe limit of 8.
+INFO:NumExpr defaulting to 8 threads.
+INFO:778 analog hits, 583 digital paired hits
+INFO:Analog hit rate = 0.217; digital hit rate = 0.162
+INFO:analog array is longer than digital array
+DEBUG:analog: length=778
+0         3.561361
+1         3.851034
+2         8.950439
+3        12.307966
+4        13.727376
+          ...     
+773    3577.418440
+774    3578.131408
+775    3582.258422
+776    3585.034746
+777    3589.631524
+Name: Time_scale, Length: 778, dtype: float64
+DEBUG:digital: length=583
+0         0.000000
+1         3.585848
+2         3.969142
+3         8.993719
+4        12.347075
+          ...     
+578    3567.840665
+579    3574.392941
+580    3578.122968
+581    3585.027477
+582    3593.885282
+Name: Time_scale, Length: 583, dtype: float64
+INFO:Optimized window size is 0.07
+DEBUG:55 / 583 digital hits (9.434%) are unmatched in digital DIST with window = 0.070
