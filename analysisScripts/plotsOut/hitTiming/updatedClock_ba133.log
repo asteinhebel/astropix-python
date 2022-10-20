@@ -1,0 +1,17 @@
+INFO:Note: NumExpr detected 12 cores but "NUMEXPR_MAX_THREADS" not set, so enforcing safe limit of 8.
+INFO:NumExpr defaulting to 8 threads.
+INFO:372 analog hits, 272 digital paired hits
+INFO:Analog hit rate = 0.206; digital hit rate = 0.151
+INFO:analog array is longer than digital array
+INFO:Optimized window size is 0.07
+INFO:3 elements of analog array have multiple matches - retain only pair with smallest deltaT
+INFO:Saving plotsOut/hitTiming/updatedClock_ba133_hist_pairs_ToT.png
+INFO:Saving plotsOut/hitTiming/updatedClock_ba133_scatter_pairs_timeToT.png
+INFO:Saving plotsOut/hitTiming/updatedClock_ba133_hist_pairs_deltaT.png
+INFO:Saving plotsOut/hitTiming/updatedClock_ba133_scatter_pairs_compToT.png
+INFO:Saving plotsOut/hitTiming/updatedClock_ba133_hist2d_pairs_compToT.png
+INFO:Saving plotsOut/hitTiming/updatedClock_ba133_hist_pairs_deltaToT.png
+INFO:Saving plotsOut/hitTiming/updatedClock_ba133_hist_pairs_deltaToTBinned.png
+INFO:Saving plotsOut/hitTiming/updatedClock_ba133_hist_pairs_ToTratio.png
+INFO:Saving plotsOut/hitTiming/updatedClock_ba133_hist_pairs_ToTratioBinned.png
+INFO:Saving plotsOut/hitTiming/updatedClock_ba133_hist2d_pairs_deltaTVStotratio.png

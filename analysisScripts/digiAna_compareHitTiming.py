@@ -139,7 +139,7 @@ def main(args):
 	#If no input csv of matched hits, then create one
 	if args.inputF is None:
 		#make into DFs
-		digiDF = ddh.getDF_singlePix(digiIn) #removes bad events and returns DF
+		digiDF = ddh.getDF_singlePix(digiIn, args.pixel) #removes bad events and returns DF
 		#Row and column 'RealTime' values agree by definition
 		digiDF.rename(columns={"ToT(us)_row": "ToT"},inplace=True)
 		digiDF.rename(columns={"RealTime_row": "Time"},inplace=True)
@@ -362,10 +362,17 @@ if __name__ == "__main__":
 		help='Display plots to terminal. Saves all plots always. Default: False')	
 	parser.add_argument('-i', '--inputF', default=None, required=False,
         help='Input .csv containing paired digital/analog hits (from previously running this code). If argument provided, matching and csv creation not redone. Default: None')
-	
+	parser.add_argument('-x','--pixel', action='store', type=int, nargs=2, default = None,
+		help='Active pixel in digital data. Enter as two ints: row col. Default: 0 0')
 		
 	parser.add_argument
 	args = parser.parse_args()
+	
+	#Set default pixel
+	if args.pixel is None:
+		args.pixel=[0,0]
+	else:
+		args.pixel=[args.pixel[0],args.pixel[1]]
 	
 	
 	"""
@@ -381,13 +388,23 @@ if __name__ == "__main__":
 	digiIn = "../logInj/dacScan/pixelr0c0/vprec_test/vprec_60_vnfoll2_1_vnfb_1_20220823-113731.csv"
 	anaIn = "../logInj/dacScan/pixelr0c0/vprec_test/short_chip602_vprec60_vnfoll21_vnfb1_0.3Vinj_2min.h5py"
 	nm = "defaultDACs_0.3Vinj"
-	"""
 	
 	#60min Ba133, 100ms latency, optimized DACs, pixel 00, -130V bias, vprec60
 	digiIn = "../source/chip602_130V_ba133/optimizedDACs_60min_pixr0c0_20220831-150146.csv"
 	anaIn = "../../astropixOut_tmp/v2/083122_amp1/chip602_130V_barium133_60min.h5py"
 	nm = "optimizedDACs_ba133"
-
+	
+	#30min Ba133, 100ms latency, optimized DACs, pixel 00, -130V bias, vprec60, 5ns clock in decoder
+	digiIn = "../source/chip602_130V_ba133/timingTest/r0c0_30min_20221019-142430.csv"
+	anaIn = "../../astropixOut_tmp/v2/101922_amp1/chip602_130V_r0c0_barium133_30min.h5py"
+	nm = "updatedClock_ba133"
+	"""
+	
+	#30min Ba133, 100ms latency, optimized DACs, pixel r0c5, -130V bias, vprec60, 5ns clock in decoder
+	digiIn = "../source/chip602_130V_ba133/timingTest/r0c5_30min_20221019-145731.csv"
+	anaIn = "../../astropixOut_tmp/v2/101922_amp1/chip602_130V_r0c5_barium133_30min.h5py"
+	nm = "updatedClock_r0c5_ba133"
+	
 	saveDir = "plotsOut/hitTiming/"
 	
 	#Setup logger
