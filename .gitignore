@@ -141,3 +141,9 @@ cython_debug/
 
 #pylint
 .pylint.d/
+
+#.DS_store
+.DS_Store
+._.DS_Store
+**/.DS_Store
+**/._.DS_Store
