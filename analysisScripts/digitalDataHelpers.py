@@ -27,13 +27,15 @@ def getDF_singlePix(f, pix=[0,0]):
 	try:
 		df=df[df['NEvent']!=0]
 	except KeyError: #more modern files change the variable names, no FPGA dump
-		df.rename(columns={"readout": "NEvent", "timestamp": "tStamp","location": "Locatn","tot_us": "ToT(us)", "isCol":"Row/Col", "hittime":"RealTime"},inplace=True)	
+		df.rename(columns={"readout": "NEvent", "timestamp": "tStamp","location": "Locatn","tot_us": "ToT(us)", "isCol":"Row/Col", "hittime":"RealTime"},inplace=True)
+		df.drop(columns=['dec_order'], inplace=True)	
 		#convert boolean column to Row/Col structure
 		df['Row/Col'] = df['Row/Col'].replace({True: 'Col', False: 'Row'})
 	#put matching row and column info in one line
 	df_row = df[df["Row/Col"] == "Row"]
 	df_col = df[df["Row/Col"] == "Col"]	
 	df = df_row.merge( df_col, how="outer", on = ["tStamp","NEvent"], suffixes = ["_row", "_col"] )
+	df.dropna(inplace=True)
 	#Drop duplicates	
 	df.drop_duplicates(subset=["tStamp", "NEvent"], keep=False, inplace=True, ignore_index=True)
 	#Remove entries if any pixel other than pix is measured - only one pixel enabled at a time
