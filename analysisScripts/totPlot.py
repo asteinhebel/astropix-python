@@ -21,7 +21,9 @@ def fitHist(data,label,nmbBins):
 	ydata=hist[0]
 	binCenters=hist[1]+((hist[1][1]-hist[1][0])/2)
 	binCenters=binCenters[:-1]
-	popt, pcov = curve_fit(Gauss, xdata=binCenters, ydata=ydata, bounds=(0,np.inf), maxfev=5000, absolute_sigma=True)
+	muGuess = np.mean(np.array(ydata))
+	p0=[200,muGuess,muGuess/2] #amp, mu, sig
+	popt, pcov = curve_fit(Gauss, xdata=binCenters, ydata=ydata, p0=p0, absolute_sigma=True)
 	return hist, popt
 
 #################################################################
@@ -58,12 +60,20 @@ def main(args):
 		hist, fit = fitHist(dfDict[key]['ToT(us)_row'].append(dfDict[key]['ToT(us)_col']),key+" "+args.legend, nmbBins)
 		mean.append(fit[1])
 		xspace=np.linspace(hist[1][0],hist[1][-1], len(hist[1])*10)
-		if args.scanInj:
-			plt.plot(xspace, Gauss(xspace, *fit))  
-			plt.title(f"{key} V Injection")
+		if args.scanInj or args.fitGaussian:
+			plt.plot(xspace, Gauss(xspace, *fit)) 		
+			plt.plot([], [], ' ', label=f"Amp={fit[0]:.2f}, $\mu$={fit[1]:.3f}, $\sigma$={fit[2]:.3f}")
+			if args.scanInj: 
+				plt.title(f"{key} V Injection")
+			plt.legend(loc='best')
 			plt.xlabel('ToT (us)')
 			plt.ylabel('counts')
-			plt.show()	
+			if args.savePlotName is not None:
+				saveName = f"tot_{args.savePlotName}_{key}_fit"
+				plt.savefig(f"{saveDir}{saveName}.png")
+				plt.clf()
+			else:
+				plt.show()	
 	
 	if args.basicPlots:
 		for key in dfDict.keys():
@@ -74,7 +84,12 @@ def main(args):
 			plt.ylabel('column ToT duration [us]')
 			x=np.arange(40.96)
 			plt.plot(x, 'b')
-			plt.show()
+			if args.savePlotName is not None:
+				saveName = f"tot_rowVcol_{args.savePlotName}_{key}"
+				plt.savefig(f"{saveDir}{saveName}.png")
+				plt.clf()
+			else:
+				plt.show()	
 	
 			plt.clf()
 			plt.plot(dfDict[key]['ToT(us)_row']/dfDict[key]['ToT(us)_col'],"o")
@@ -82,10 +97,16 @@ def main(args):
 			plt.xlabel('Triggered point')
 			plt.ylabel('Ratio row/col ToT')
 			plt.axhline(y=1, color='r')
-			plt.show()
+			if args.savePlotName is not None:
+				saveName = f"tot_rowColRatio_{args.savePlotName}_{key}"
+				plt.savefig(f"{saveDir}{saveName}.png")
+				plt.clf()
+			else:
+				plt.show()	
 			
 			ratio=np.array(dfDict[key]['ToT(us)_row']/dfDict[key]['ToT(us)_col'])
 			outliers=np.where((ratio<0.5)|(ratio>1.5))
+			print(f"Mean of row/col ratio: {np.mean(ratio):.3f}")
 			print(dfDict[key].loc[outliers])
 	
 			plt.clf()
@@ -95,21 +116,36 @@ def main(args):
 			plt.xlabel('ToT (us)')
 			plt.ylabel('Counts')
 			plt.legend(loc="best")
-			plt.show()	
+			if args.savePlotName is not None:
+				saveName = f"tot_hist_{args.savePlotName}_{key}"
+				plt.savefig(f"{saveDir}{saveName}.png")
+				plt.clf()
+			else:
+				plt.show()	
 	
 	if args.scanInj:
 		x=[0.2+(i*0.1) for i in range(len(dfDict.keys()))]
 		plt.plot(x,mean,marker="o")
 		plt.xlabel("Injected voltage [V]")
 		plt.ylabel("Average ToT [us]")
-		plt.show()
+		if args.savePlotName is not None:
+			saveName = f"tot_inj_{args.savePlotName}_all"
+			plt.savefig(f"{saveDir}{saveName}.png")
+			plt.clf()
+		else:
+			plt.show()	
 		
 	if args.totOverlay:
 		#plot overlaid ToT histograms
 		plt.xlabel('ToT (us)')
 		plt.ylabel('Counts')
 		plt.legend(loc="best")
-		plt.show()
+		if args.savePlotName is not None:
+			saveName = f"tot_{args.savePlotName}_all"
+			plt.savefig(f"{saveDir}{saveName}.png")
+			plt.clf()
+		else:
+			plt.show()	
 		
 	if args.timestmp:
 		plt.clf()
@@ -118,14 +154,20 @@ def main(args):
 		plt.xlabel('Event number')
 		plt.ylabel('Timestamp')
 		plt.legend(loc='best')
-		plt.show()
+		if args.savePlotName is not None:
+			saveName = f"timestamp_{args.savePlotName}_all"
+			plt.savefig(f"{saveDir}{saveName}.png")
+			plt.clf()
+		else:
+			plt.show()	
 
 #################################################################
 # call main
 #################################################################
 if __name__ == "__main__":
 
-	dirPath=os. getcwd()[:-15] #go one directory above the current one where only scripts are held
+	saveDir = os.getcwd()+"/plotsOut/dacOptimization/" #hardcode location of dir for saving output plots
+	dirPath = os.getcwd()[:-15] #go one directory above the current one where only scripts are held
 
 	parser = argparse.ArgumentParser(description='Plot Digital Data')
 	parser.add_argument('-f', '--inputF', default='', required=True,
@@ -135,15 +177,19 @@ if __name__ == "__main__":
 	parser.add_argument('-t', '--timestmp', action='store_true', default=False, required=False, 
         help='Plot Overlaid plots of timestamp values. Default: False')
 	parser.add_argument('-o', '--totOverlay', action='store_true', default=False, required=False, 
-        help='Plot Overlaid plots ToT. Default: False')
+        help='Plot Overlaid plots ToT. For use when -f provides .txt file with list of input data files. Default: False')
 	parser.add_argument('-b', '--basicPlots', action='store_true', default=False, required=False, 
         help='Plot ToT and row vs col hit plots for eaach input. Default: False')
-	parser.add_argument('-s','--binSize', action='store', default = 1.0, type=float,
+	parser.add_argument('-x','--binSize', action='store', default = 1.0, type=float,
         help = 'Bin size for ToT plotting (in us). Default: 1us')
 	parser.add_argument('-l', '--legend', default='', required=False,
         help='Additional input for legend (ex units)')
 	parser.add_argument('-p', '--pixel', action='store', default=[0,0], type=int, nargs=2, 
     	help =  'Digital pixel to consider [row,col]. Default: [0,0]')
+	parser.add_argument('-g', '--fitGaussian', action='store_true', default=False, required=False,
+        help='Fit Gaussian function to the distribution, displaying fit parameters. Default: False')
+	parser.add_argument('-s', '--savePlotName', action='store', default=None, required=False,
+        help='Save all plots (no display) with input name to plotsOut/dacOptimization. Default: None (only displays, does not save)')
 
 	parser.add_argument
 	args = parser.parse_args()
