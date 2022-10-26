@@ -1,0 +1,3 @@
+/Users/asteinhe/AstroPixData/digital/logInj/dacScan/pixelr0c0/vncomp/chip602_DACscan_130V_vncomp_2_20221020-150936.csv ; 2
+/Users/asteinhe/AstroPixData/digital/logInj/dacScan/pixelr0c0/vncomp/chip602_DACscan_130V_vncomp_5_20221020-151226.csv ; 5
+/Users/asteinhe/AstroPixData/digital/logInj/dacScan/pixelr0c0/vncomp/chip602_DACscan_130V_vncomp_10_20221020-151452.csv ; 10
