@@ -1,0 +1,10 @@
+/Users/asteinhe/AstroPixData/digital/logInj/dacScan/pixelr0c0/vncomp/chip602_DACscan_130V_vncomp_1_20221025-141412.csv ; 1
+/Users/asteinhe/AstroPixData/digital/logInj/dacScan/pixelr0c0/vncomp/chip602_DACscan_130V_vncomp_2_20221025-141621.csv ; 2
+/Users/asteinhe/AstroPixData/digital/logInj/dacScan/pixelr0c0/vncomp/chip602_DACscan_130V_vncomp_3_20221025-141831.csv ; 3
+/Users/asteinhe/AstroPixData/digital/logInj/dacScan/pixelr0c0/vncomp/chip602_DACscan_130V_vncomp_4_20221025-142040.csv ; 4
+/Users/asteinhe/AstroPixData/digital/logInj/dacScan/pixelr0c0/vncomp/chip602_DACscan_130V_vncomp_5_20221025-142249.csv ; 5
+/Users/asteinhe/AstroPixData/digital/logInj/dacScan/pixelr0c0/vncomp/chip602_DACscan_130V_vncomp_6_20221025-142459.csv ; 6
+/Users/asteinhe/AstroPixData/digital/logInj/dacScan/pixelr0c0/vncomp/chip602_DACscan_130V_vncomp_7_20221025-142708.csv ; 7
+/Users/asteinhe/AstroPixData/digital/logInj/dacScan/pixelr0c0/vncomp/chip602_DACscan_130V_vncomp_8_20221025-142917.csv ; 8
+/Users/asteinhe/AstroPixData/digital/logInj/dacScan/pixelr0c0/vncomp/chip602_DACscan_130V_vncomp_9_20221025-143127.csv ; 9
+/Users/asteinhe/AstroPixData/digital/logInj/dacScan/pixelr0c0/vncomp/chip602_DACscan_130V_vncomp_10_20221025-143336.csv ; 10
