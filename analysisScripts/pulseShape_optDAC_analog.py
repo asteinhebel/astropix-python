@@ -21,7 +21,10 @@ def new_dac_i (arr):
 	indexArray=np.insert(indexArray,0,0)
 	return indexArray
 
-def get_average_traces( filename ):
+def get_average_traces( filename , smoothing:int=50):
+	#smoothing = how many points from original curve are skipped before plotting the next one. 
+	#			 Original curve has 10k points
+	#			 Smaller value of 'smoothing' leads to noisier curve 
 
 	f = h5py.File(filename, 'r')
 	traces = f['run1'] #baseline subtracted already
@@ -31,7 +34,7 @@ def get_average_traces( filename ):
 	newDac=new_dac_i(time)
 	for i in range(1,len(newDac)):
 		#smooth curve
-		mean.append(np.mean(traces[newDac[i-1]:newDac[i]], axis = 0)[0::50])
+		mean.append(np.mean(traces[newDac[i-1]:newDac[i]], axis = 0)[0::smoothing])
 		
 	#Remove sections that do not have recorded traces (ie when number of recorded traces was exceeded during data taking but pulse heights were still recorded)
 	mean=np.array(mean)
@@ -39,16 +42,16 @@ def get_average_traces( filename ):
 	
 	return mean[noNan]
 	
-def makeTitle(pixDir, txtin, ext='.png'):
+def makeTitle(saveDir, txtin, ext='.png'):
 	if len(args.title)>0:
 		filestr=args.title+"_"
 	else:
 		filestr=""
 	
-	fname=f'{dataDir}{pixDir}/{filestr}{txtin}{ext}'
+	fname=f'{saveDir}/{filestr}{txtin}{ext}'
 	return fname
 	
-def get_baseline_plt(filename, labels, pixDir):
+def get_baseline_plt(filename, labels, saveDir):
 
 	f = h5py.File(filename, 'r')
 	time = f['run1_trigTime']
@@ -76,7 +79,7 @@ def get_baseline_plt(filename, labels, pixDir):
 	plt.legend(loc='best')
 	plot=plt.gcf() #get current figure - saves fig in case savePlt==True
 	plt.show() #creates new figure for display
-	plot.savefig(makeTitle(pixDir,'stdBaselineHist'))
+	plot.savefig(makeTitle(saveDir,'stdBaselineHist'))
 
 	for i in range(1,len(newDac)):
 		hist,binEdges=np.histogram(rmsArr[newDac[i-1]:newDac[i]], bins=xRms)
@@ -88,7 +91,7 @@ def get_baseline_plt(filename, labels, pixDir):
 	plt.legend(loc='best')
 	plot=plt.gcf() #get current figure - saves fig in case savePlt==True
 	plt.show() #creates new figure for display
-	plot.savefig(makeTitle(pixDir,'varBaselineHist'))
+	plot.savefig(makeTitle(saveDir,'varBaselineHist'))
 	
 #################################################################
 # main
@@ -97,7 +100,6 @@ def get_baseline_plt(filename, labels, pixDir):
 def main(args):
 
 	#get analog data
-	pixDir = args.inputAnalog[:9]
 	anaDF = adh.getDF(dataDir+args.inputAnalog)
 	anaDF.rename(columns={"AnalogToT": "ToT"},inplace=True)
 
@@ -108,24 +110,25 @@ def main(args):
 	anaRate = len(anaDF) / (anaDF['Time_scale'].iloc[-1])
 	print(f"Analog hit rate = {anaRate:.3f} Hz")
 	
-	
 	#plot average trace at each DAC setting
-	labels=[i for i in range(1,10)]
-	#labels=[1+i*8 for i in range(8)]
-	avePlots=get_average_traces(dataDir+args.inputAnalog)
+	avePlots = get_average_traces(dataDir+args.inputAnalog, smoothing=5)
+	pltpts = len(avePlots[0])
+	#labels=[i for i in range(1,len(avePlots)+1)]
+	labels=np.arange(5,61,5)
+	time_us = np.arange(0,100,100/pltpts) #100us / trace, scale appropriately with smoothing so arrays are same length
 	for i,p in enumerate(avePlots):
-		plt.plot(p, label=str(labels[i]))
+		plt.plot(time_us, p, label=str(labels[i]))
 	plt.xlabel("Time [us]")
 	plt.ylabel("Pulse [V]")
 	plt.legend(loc="best")
 	plt.title(args.title)
 	plot=plt.gcf() #get current figure - saves fig in case savePlt==True
 	plt.show() #creates new figure for display
-	plot.savefig(makeTitle(pixDir,'aveAnalogTraces'))
+	plot.savefig(makeTitle(saveDir,'aveAnalogTraces'))
 	
 	if args.noise:
 		#histograms of noise on DC baseline for each DAC setting
-		get_baseline_plt(dataDir+args.inputAnalog,labels, pixDir)
+		get_baseline_plt(dataDir+args.inputAnalog,labels, saveDir)
 		
 		#NEED TO QUANTIFY BETTER
 
@@ -134,6 +137,7 @@ def main(args):
 #################################################################
 if __name__ == "__main__":
 
+	saveDir = os.getcwd()+"/plotsOut/dacOptimization/" #hardcode location of dir for saving output plots - automatically saves
 	dataDir = "/Users/asteinhe/AstroPixData/digital/logInj/dacScan/"
 	
 	parser = argparse.ArgumentParser(description='Plot Digital Data')
