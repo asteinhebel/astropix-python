@@ -1,2 +1,0 @@
-dec_order,readout,Chip ID,payload,location,isCol,timestamp,tot_msb,tot_lsb,tot_total,tot_us,hittime
-0,0,0,4,34,False,46,0,51,51,0.255,1666977384.0382957
