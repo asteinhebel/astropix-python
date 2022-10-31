@@ -120,7 +120,7 @@ astropix2:
       - 68719476734
       col8:
       - 38
-      - 68719476734
+      - 60129542142
       col9:
       - 38
       - 68719476734
@@ -180,23 +180,7 @@ astropix2:
       - 68719476734
       col28:
       - 38
-      - !!python/object/apply:numpy.core.multiarray.scalar
-        - !!python/object/apply:numpy.dtype
-          args:
-          - i8
-          - false
-          - true
-          state: !!python/tuple
-          - 3
-          - <
-          - null
-          - null
-          - null
-          - -1
-          - -1
-          - 0
-        - !!binary |
-          /v///w8AAAA=
+      - 68719476734
       col29:
       - 38
       - 68719476734
