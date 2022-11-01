@@ -107,8 +107,8 @@ def arrayVis(arrIn, barTitle:str=None, invert:bool=False):
 	else:
 		cbar.set_label('Counts') 	
 	plt.tight_layout() #reduce margin space	
-	plot=plt.gcf()
+	#plot=plt.gcf()
 	
-	return plot
+	return cax
 	
 

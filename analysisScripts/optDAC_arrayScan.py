@@ -43,21 +43,25 @@ def makePlots(dataIn,title,fname, invert:bool=False):
 		titleSave=title.replace(" ", "")
 		saveName = f"{fname}_map_{titleSave}"
 		print(f"Saving {saveDir}{saveName}.png")
-		mapFig.savefig(f"{saveDir}{saveName}.png")
-		mapFig.clf()
+		plt.savefig(f"{saveDir}{saveName}.png")
+		plt.clf()
 	else:
-		mapFig.show()
+		plt.show()
 	
-	#<make histogram of dataIn>#
+	#make histogram of flattened dataIn#
 	dataHist=dataIn[~np.isnan(dataIn)]#remove NaNs to simplify histogram calculation
-	hist=plt.hist(dataHist, bins=100, density=True)
+	#identify if plot should be on 0-100 scale from title
+	if '%' in title:
+		rnge=[0,100]
+	else:
+		rnge=[dataHist.min(),dataHist.max()]
+	hist=plt.hist(dataHist, range=rnge, bins=100, density=True)
 	plt.xlabel(title)
 	if args.savePlot:
 		titleSave=title.replace(" ", "")
 		saveName = f"{fname}_hist_{titleSave}"
 		print(f"Saving {saveDir}{saveName}.png")
 		plt.savefig(f"{saveDir}{saveName}.png")
-		plt.clf()
 	else:
 		plt.show()	
 	
@@ -78,14 +82,10 @@ def main(args):
 	elif args.plotOpt:
 		boolDef = False
 		fname = "optimized"
-		
-	print(args.savePlot)
 	
 	#identify files in input directory
 	os.chdir(args.inputDir)
 	files = glob.glob(os.path.join('./', f'*{fname}*.csv'))
-	
-	#files=files[:5]
 	
 	#End execution if no files
 	if len(files)==0:
@@ -138,7 +138,7 @@ def main(args):
 	hist_origR = makePlots((origLengthArr-origCLengthArr)/origLengthArr*100.,"% of Orig Hits from Rows",fname,invert=True)
 	
 	#Combined plots of bulk properties
-	binCenters=np.arange(0.5,100,1)
+	binCenters=np.arange(0.5,100,1)	
 	plt.bar(binCenters,hist_origC[0],label="Original Col hits")
 	plt.bar(binCenters,hist_origR[0],label="Original Row hits",alpha=0.6)
 	plt.legend(loc='best')
@@ -149,7 +149,6 @@ def main(args):
 		saveName = f"{fname}_hist_{titleSave}"
 		print(f"Saving {saveDir}{saveName}.png")
 		plt.savefig(f"{saveDir}{saveName}.png")
-		plt.clf()
 	else:
 		plt.show()
 	
