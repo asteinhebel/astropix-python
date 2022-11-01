@@ -66,6 +66,31 @@ def makePlots(dataIn,title,fname, invert:bool=False):
 		plt.show()	
 	
 	return hist
+	
+def histCompare(data1, data2, title, labels=None):
+
+	data1Hist=data1[~np.isnan(data1)]#remove NaNs to simplify histogram calculation
+	data2Hist=data2[~np.isnan(data2)]#remove NaNs to simplify histogram calculation
+	
+	#identify if plot should be on 0-100 scale from title
+	if '%' in title:
+		rnge=[0,100]
+	else:
+		totmin = min(data1Hist.min(), data2Hist.min())
+		totmax = max(data1Hist.max(), data2Hist.max())
+		rnge=[totmin, totmax]
+	hist1=plt.hist(data1Hist, range=rnge, bins=100, density=True, alpha=0.5, label=labels[0])
+	hist2=plt.hist(data2Hist, range=rnge, bins=100, density=True, alpha=0.5,label=labels[1])
+	plt.xlabel(title)
+	plt.legend(loc='best')
+	if args.savePlot:
+		titleSave=title.replace(" ", "")
+		saveName = f"histComp_{titleSave}"
+		print(f"Saving {saveDir}{saveName}.png")
+		plt.savefig(f"{saveDir}{saveName}.png")
+	else:
+		plt.show()	
+
 
 #################################################################
 # main
@@ -73,98 +98,119 @@ def makePlots(dataIn,title,fname, invert:bool=False):
 
 def main(args):
 
+	#Define whether default and/or optimized DAC data sets should be used
 	boolDef, boolOpt = True, True
+	dir2 = 1 if len(args.inputDir)>1 else 0
+	fileDict = {"default": args.inputDir[0], "optimized": args.inputDir[dir2]}
 	if args.plotDef and args.plotOpt:
 		pass
 	elif args.plotDef:
 		boolOpt = False
-		fname = "default"
+		fileDict = {"default": args.inputDir[0]}
 	elif args.plotOpt:
 		boolDef = False
-		fname = "optimized"
-	
-	#identify files in input directory
-	os.chdir(args.inputDir)
-	files = glob.glob(os.path.join('./', f'*{fname}*.csv'))
-	
-	#End execution if no files
-	if len(files)==0:
-		print("No files detected")
-		return
+		fileDict = {"optimized": args.inputDir[0]}
 
-	#DF to keep track of general properties of each file
-	bulkDF = pd.DataFrame(files)
-	lengthOrig=[]
-	lengthMatch=[]
-	lenR, lenC = [],[]
-	row, col = [],[]
+	#dictionaries of data to compare default and optimized settings on same plot
+	dict_bulkDF={}
 	
-	#DF dictionary to keep individual data from each run
-	dfDict={}
+	#Get data files for default OR optimized DACs, create plots for the bulk properties individually
+	for item in fileDict.items():
+		#identify files in input directory
+		fname = item[0]
+		inputDir = item[1]
+		os.chdir(dirPath+inputDir)
+		files = glob.glob(os.path.join('./', f'*{fname}*.csv'))
 	
-	#Extract data from input files - store bulk properties in bulkDF and individual DFs in dfDict dictionary
-	print("Getting data from all input files")
-	for f in files:
-		r,c = getRowCol(f)
-		dfIn, origLen, origR, origC = ddh.getDF_singlePix_extraVars(f, [r,c])
-		dfDict[f'r{r}c{c}'] = dfIn
-		row.append(r)
-		col.append(c)
-		lengthOrig.append(origLen)
-		lengthMatch.append(len(dfIn)*2)
-		lenR.append(origR)
-		lenC.append(origC)
+		#End execution if no files
+		if len(files)==0:
+			print("No files detected")
+			return
 
-	#Fill DF of bulk properties
-	bulkDF = bulkDF.join(pd.DataFrame({
-		'row':row, 'col':col, 'origLength':lengthOrig, 
-		'matchedLength':lengthMatch, 'origRows':lenR, 'origCols':lenC
-	}))
+		#DF to keep track of general properties of each file
+		bulkDF = pd.DataFrame(files)
+		lengthOrig=[]
+		lengthMatch=[]
+		lenR, lenC = [],[]
+		row, col = [],[]
 	
-	origLengthArr = np.full([35, 35], np.nan)
-	matchLengthArr = np.full([35, 35], np.nan)
-	origCLengthArr = np.full([35, 35], np.nan)
-	for index, row in bulkDF.iterrows():
-		origLengthArr[int(row['row']),int(row['col'])]=int(row['origLength'])
-		matchLengthArr[int(row['row']),int(row['col'])]=int(row['matchedLength'])
-		origCLengthArr[int(row['row']),int(row['col'])]=int(row['origCols'])
+		#DF dictionary to keep individual data from each run
+		dfDict={}
 	
-	#Make plots of bulk properties
-	h=makePlots(origLengthArr,"Original Number of Hits",fname,invert=True)
-	h=makePlots(matchLengthArr,"Matched Number of Hits",fname,invert=True)
-	h=makePlots(origLengthArr-matchLengthArr,"Unmatched Number of Hits",fname,invert=True)
-	hist_match = makePlots(matchLengthArr/origLengthArr*100.,"Matched % of Hits",fname,invert=True)
-	hist_origC = makePlots(origCLengthArr/origLengthArr*100.,"% of Orig Hits from Columns",fname,invert=True)
-	hist_origR = makePlots((origLengthArr-origCLengthArr)/origLengthArr*100.,"% of Orig Hits from Rows",fname,invert=True)
+		#Extract data from input files - store bulk properties in bulkDF and individual DFs in dfDict dictionary
+		print("Getting data from all input files")
+		for f in files:
+			r,c = getRowCol(f)
+			dfIn, origLen, origR, origC = ddh.getDF_singlePix_extraVars(f, [r,c])
+			dfDict[f'r{r}c{c}'] = dfIn
+			row.append(r)
+			col.append(c)
+			lengthOrig.append(origLen)
+			lengthMatch.append(len(dfIn)*2)
+			lenR.append(origR)
+			lenC.append(origC)
+
+		#Fill DF of bulk properties
+		bulkDF = bulkDF.join(pd.DataFrame({
+			'row':row, 'col':col, 'origLength':lengthOrig, 
+			'matchedLength':lengthMatch, 'origRows':lenR, 'origCols':lenC
+		}))
 	
-	#Combined plots of bulk properties
-	binCenters=np.arange(0.5,100,1)	
-	plt.bar(binCenters,hist_origC[0],label="Original Col hits")
-	plt.bar(binCenters,hist_origR[0],label="Original Row hits",alpha=0.6)
-	plt.legend(loc='best')
-	plt.xlabel("% of raw hits")
-	plt.ylabel('counts (normalized)')
-	if args.savePlot:
-		titleSave="%ofOrigHitsColRow"
-		saveName = f"{fname}_hist_{titleSave}"
-		print(f"Saving {saveDir}{saveName}.png")
-		plt.savefig(f"{saveDir}{saveName}.png")
-	else:
-		plt.show()
+		origLengthArr = np.full([35, 35], np.nan)
+		matchLengthArr = np.full([35, 35], np.nan)
+		origCLengthArr = np.full([35, 35], np.nan)
+		for index, row in bulkDF.iterrows():
+			origLengthArr[int(row['row']),int(row['col'])]=int(row['origLength'])
+			matchLengthArr[int(row['row']),int(row['col'])]=int(row['matchedLength'])
+			origCLengthArr[int(row['row']),int(row['col'])]=int(row['origCols'])
 	
+		#Add bulk DFs to dictionary for future potential use
+		dict_bulkDF[fname] = bulkDF
 	
+		
+		#Make plots of bulk properties
+		h=makePlots(origLengthArr,"Original Number of Hits",fname,invert=True)
+		h=makePlots(matchLengthArr,"Matched Number of Hits",fname,invert=True)
+		h=makePlots(origLengthArr-matchLengthArr,"Unmatched Number of Hits",fname,invert=True)
+		hist_match = makePlots(matchLengthArr/origLengthArr*100.,"Matched % of Hits",fname,invert=True)
+		hist_origC = makePlots(origCLengthArr/origLengthArr*100.,"% of Orig Hits from Columns",fname,invert=True)
+		hist_origR = makePlots((origLengthArr-origCLengthArr)/origLengthArr*100.,"% of Orig Hits from Rows",fname,invert=True)
+	
+		#Combined plots of bulk properties
+		binCenters=np.arange(0.5,100,1)	
+		plt.bar(binCenters,hist_origC[0],label="Original Col hits")
+		plt.bar(binCenters,hist_origR[0],label="Original Row hits",alpha=0.6)
+		plt.legend(loc='best')
+		plt.xlabel("% of raw hits")
+		plt.ylabel('counts (normalized)')
+		if args.savePlot:
+			titleSave="%ofOrigHitsColRow"
+			saveName = f"{fname}_hist_{titleSave}"
+			print(f"Saving {saveDir}{saveName}.png")
+			plt.savefig(f"{saveDir}{saveName}.png")
+		else:
+			plt.show()
+		
+	
+	#Create plots comparing default and optimized settings on same axes
+	if boolDef and boolOpt:
+		print("Considering default vs optimized plots")
+		ky=list(dict_bulkDF.keys())
+		percMatching = [dict_bulkDF[k]['matchedLength']/dict_bulkDF[k]['origLength']*100 for k in ky]
+		plt.clf()
+		histCompare(percMatching[0], percMatching[1], "% Matching Hits", labels=ky)
 	
 #################################################################
 # call main
 #################################################################
 if __name__ == "__main__":
 
-	saveDir = os.getcwd()+"/plotsOut/dacOptimization/arrayScan/injection/" #hardcode location of dir for saving output plots
+	saveDir = os.getcwd()+"/plotsOut/dacOptimization/arrayScan/test/" #hardcode location of dir for saving output plots
 	dirPath = os.getcwd()[:-15] #go one directory above the current one where only scripts are held
 
 	parser = argparse.ArgumentParser(description='Plot array data comparing default and optimized comparator DACs')
-	parser.add_argument('-i', '--inputDir', default='', required=True,
-        help='Directory containing data files')
+	parser.add_argument('-i', '--inputDir', default='', required=True, nargs='+',  
+        help='Directory containing data files, from main git repo space. Can provide one or two directories - if two, send default first.')
 	parser.add_argument('-d', '--plotDef', action='store_true', default=False, required=False, 
         help='Consider default DACs ONLY. If no -o or -d, plot both. Default: False')
 	parser.add_argument('-o', '--plotOpt', action='store_true', default=False, required=False, 
@@ -174,5 +220,8 @@ if __name__ == "__main__":
 
 	parser.add_argument
 	args = parser.parse_args()
+	
+	if len(args.inputDir) > 2:
+  	  sys.exit('Argument --inputDir takes one or two values')
  	
 	main(args)
