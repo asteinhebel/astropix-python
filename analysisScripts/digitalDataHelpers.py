@@ -85,7 +85,7 @@ def getDF_singlePix_extraVars(f, pix=[0,0]):
 	
 	
 #visualize array
-def arrayVis(arrIn, barTitle:str=None, invert:bool=False):
+def arrayVis(arrIn, barRange=None, barTitle:str=None, invert:bool=False):
 
 	#expecting 35x35 array for arrIn
 	#if invert=True, pixel r0c0 is NOT in bottom left (like in array). invert=True reconfigures arrIn for proper visualization
@@ -103,12 +103,13 @@ def arrayVis(arrIn, barTitle:str=None, invert:bool=False):
 	ax.set_yticklabels(ylabels)
 	ax.tick_params(axis="x", bottom=True, top=True, labelbottom=True, labeltop=True)
 	cbar = plt.colorbar(cax)
+	if range is not None:
+		cax.set_clim(vmin=barRange[0], vmax=barRange[1])
 	if barTitle is not None:
 		cbar.set_label(barTitle) 	
 	else:
 		cbar.set_label('Counts') 	
 	plt.tight_layout() #reduce margin space	
-	#plot=plt.gcf()
 	
 	return cax
 	
