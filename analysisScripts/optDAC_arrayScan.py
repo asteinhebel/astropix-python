@@ -35,11 +35,33 @@ def fitHist(data,label,nmbBins):
 	popt, pcov = curve_fit(Gauss, xdata=binCenters, ydata=ydata, p0=p0, absolute_sigma=True)
 	return hist, popt
 	
-def makePlots(dataIn,title,save:bool=False, invert:bool=False):
+def makePlots(dataIn,title,fname, invert:bool=False):
 
-	ddh.arrayVis(dataIn, barTitle = title, invert=True)
+	#Make array map
+	mapFig=ddh.arrayVis(dataIn, barTitle=title, invert=True)
+	if args.savePlot:
+		titleSave=title.replace(" ", "")
+		saveName = f"{fname}_map_{titleSave}"
+		print(f"Saving {saveDir}{saveName}.png")
+		mapFig.savefig(f"{saveDir}{saveName}.png")
+		mapFig.clf()
+	else:
+		mapFig.show()
 	
 	#<make histogram of dataIn>#
+	dataHist=dataIn[~np.isnan(dataIn)]#remove NaNs to simplify histogram calculation
+	hist=plt.hist(dataHist, bins=100, density=True)
+	plt.xlabel(title)
+	if args.savePlot:
+		titleSave=title.replace(" ", "")
+		saveName = f"{fname}_hist_{titleSave}"
+		print(f"Saving {saveDir}{saveName}.png")
+		plt.savefig(f"{saveDir}{saveName}.png")
+		plt.clf()
+	else:
+		plt.show()	
+	
+	return hist
 
 #################################################################
 # main
@@ -56,6 +78,8 @@ def main(args):
 	elif args.plotOpt:
 		boolDef = False
 		fname = "optimized"
+		
+	print(args.savePlot)
 	
 	#identify files in input directory
 	os.chdir(args.inputDir)
@@ -106,20 +130,37 @@ def main(args):
 		origCLengthArr[int(row['row']),int(row['col'])]=int(row['origCols'])
 	
 	#Make plots of bulk properties
-#	makePlots(origLengthArr,"Original Number of Hits",invert=True)
-#	makePlots(matchLengthArr,"Matched Number of Hits",invert=True)
-#	makePlots(origLengthArr-matchLengthArr,"Unmatched Number of Hits",invert=True)
-#	makePlots((origLengthArr-matchLengthArr)/origLengthArr*100.,"Matched % of Hits",invert=True)
-	makePlots(origCLengthArr/origLengthArr*100.,"% of Orig Hits from Columns",invert=True)
-	makePlots((origLengthArr-origCLengthArr)/origLengthArr*100.,"% of Orig Hits from Columns",invert=True)
+	h=makePlots(origLengthArr,"Original Number of Hits",fname,invert=True)
+	h=makePlots(matchLengthArr,"Matched Number of Hits",fname,invert=True)
+	h=makePlots(origLengthArr-matchLengthArr,"Unmatched Number of Hits",fname,invert=True)
+	hist_match = makePlots(matchLengthArr/origLengthArr*100.,"Matched % of Hits",fname,invert=True)
+	hist_origC = makePlots(origCLengthArr/origLengthArr*100.,"% of Orig Hits from Columns",fname,invert=True)
+	hist_origR = makePlots((origLengthArr-origCLengthArr)/origLengthArr*100.,"% of Orig Hits from Rows",fname,invert=True)
 	
-
+	#Combined plots of bulk properties
+	binCenters=np.arange(0.5,100,1)
+	plt.bar(binCenters,hist_origC[0],label="Original Col hits")
+	plt.bar(binCenters,hist_origR[0],label="Original Row hits",alpha=0.6)
+	plt.legend(loc='best')
+	plt.xlabel("% of raw hits")
+	plt.ylabel('counts (normalized)')
+	if args.savePlot:
+		titleSave="%ofOrigHitsColRow"
+		saveName = f"{fname}_hist_{titleSave}"
+		print(f"Saving {saveDir}{saveName}.png")
+		plt.savefig(f"{saveDir}{saveName}.png")
+		plt.clf()
+	else:
+		plt.show()
+	
+	
+	
 #################################################################
 # call main
 #################################################################
 if __name__ == "__main__":
 
-	saveDir = os.getcwd()+"/plotsOut/dacOptimization/" #hardcode location of dir for saving output plots
+	saveDir = os.getcwd()+"/plotsOut/dacOptimization/arrayScan/injection/" #hardcode location of dir for saving output plots
 	dirPath = os.getcwd()[:-15] #go one directory above the current one where only scripts are held
 
 	parser = argparse.ArgumentParser(description='Plot array data comparing default and optimized comparator DACs')
@@ -129,8 +170,8 @@ if __name__ == "__main__":
         help='Consider default DACs ONLY. If no -o or -d, plot both. Default: False')
 	parser.add_argument('-o', '--plotOpt', action='store_true', default=False, required=False, 
 		help='Consider optimized DACs ONLY. If no -o or -d, plot both. Default: False')
-	parser.add_argument('-s', '--savePlotName', action='store', default=None, required=False, 
-		help='Save all plots (no display) with input name to plotsOut/dacOptimization. Default: None (only displays, does not save)')
+	parser.add_argument('-s', '--savePlot', action='store_true', default=False, required=False, 
+		help='Save all plots (no display) to plotsOut/dacOptimization/arrayScan. Default: None (only displays, does not save)')
 
 	parser.add_argument
 	args = parser.parse_args()
