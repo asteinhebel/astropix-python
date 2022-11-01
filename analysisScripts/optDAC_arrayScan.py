@@ -57,6 +57,7 @@ def makePlots(dataIn,title,fname, invert:bool=False):
 		rnge=[dataHist.min(),dataHist.max()]
 	hist=plt.hist(dataHist, range=rnge, bins=100, density=True)
 	plt.xlabel(title)
+	plt.tight_layout()
 	if args.savePlot:
 		titleSave=title.replace(" ", "")
 		saveName = f"{fname}_hist_{titleSave}"
@@ -71,6 +72,7 @@ def histCompare(data1, data2, title, labels=None):
 
 	data1Hist=data1[~np.isnan(data1)]#remove NaNs to simplify histogram calculation
 	data2Hist=data2[~np.isnan(data2)]#remove NaNs to simplify histogram calculation
+	plt.clf()
 	
 	#identify if plot should be on 0-100 scale from title
 	if '%' in title:
@@ -83,6 +85,7 @@ def histCompare(data1, data2, title, labels=None):
 	hist2=plt.hist(data2Hist, range=rnge, bins=100, density=True, alpha=0.5,label=labels[1])
 	plt.xlabel(title)
 	plt.legend(loc='best')
+	plt.tight_layout()
 	if args.savePlot:
 		titleSave=title.replace(" ", "")
 		saveName = f"histComp_{titleSave}"
@@ -133,15 +136,20 @@ def main(args):
 		lengthMatch=[]
 		lenR, lenC = [],[]
 		row, col = [],[]
+		tottrigs = []
 	
 		#DF dictionary to keep individual data from each run
 		dfDict={}
+		
+		#Hard coded time of data run for rate calculation
+		global tottime 
+		tottime = 15 if "15s" in files[0] else 60 
 	
 		#Extract data from input files - store bulk properties in bulkDF and individual DFs in dfDict dictionary
 		print("Getting data from all input files")
 		for f in files:
 			r,c = getRowCol(f)
-			dfIn, origLen, origR, origC = ddh.getDF_singlePix_extraVars(f, [r,c])
+			dfIn, origLen, origR, origC, trigs = ddh.getDF_singlePix_extraVars(f, [r,c])
 			dfDict[f'r{r}c{c}'] = dfIn
 			row.append(r)
 			col.append(c)
@@ -149,33 +157,38 @@ def main(args):
 			lengthMatch.append(len(dfIn)*2)
 			lenR.append(origR)
 			lenC.append(origC)
+			tottrigs.append(trigs)
 
 		#Fill DF of bulk properties
 		bulkDF = bulkDF.join(pd.DataFrame({
 			'row':row, 'col':col, 'origLength':lengthOrig, 
-			'matchedLength':lengthMatch, 'origRows':lenR, 'origCols':lenC
+			'matchedLength':lengthMatch, 'origRows':lenR, 'origCols':lenC, 'origTrigs':tottrigs
 		}))
 	
 		origLengthArr = np.full([35, 35], np.nan)
 		matchLengthArr = np.full([35, 35], np.nan)
 		origCLengthArr = np.full([35, 35], np.nan)
+		origTrigsArr = np.full([35, 35], np.nan)
 		for index, row in bulkDF.iterrows():
 			origLengthArr[int(row['row']),int(row['col'])]=int(row['origLength'])
 			matchLengthArr[int(row['row']),int(row['col'])]=int(row['matchedLength'])
 			origCLengthArr[int(row['row']),int(row['col'])]=int(row['origCols'])
+			origTrigsArr[int(row['row']),int(row['col'])]=int(row['origTrigs'])
 	
 		#Add bulk DFs to dictionary for future potential use
 		dict_bulkDF[fname] = bulkDF
 	
 		
 		#Make plots of bulk properties
-		h=makePlots(origLengthArr,"Original Number of Hits",fname,invert=True)
-		h=makePlots(matchLengthArr,"Matched Number of Hits",fname,invert=True)
-		h=makePlots(origLengthArr-matchLengthArr,"Unmatched Number of Hits",fname,invert=True)
-		hist_match = makePlots(matchLengthArr/origLengthArr*100.,"Matched % of Hits",fname,invert=True)
-		hist_origC = makePlots(origCLengthArr/origLengthArr*100.,"% of Orig Hits from Columns",fname,invert=True)
-		hist_origR = makePlots((origLengthArr-origCLengthArr)/origLengthArr*100.,"% of Orig Hits from Rows",fname,invert=True)
+		#h=makePlots(origLengthArr,"Original Number of Hits",fname,invert=True)
+		#h=makePlots(matchLengthArr,"Matched Number of Hits",fname,invert=True)
+		#h=makePlots(origLengthArr-matchLengthArr,"Unmatched Number of Hits",fname,invert=True)
+		h=makePlots(origTrigsArr/tottime,"Hit Rate [Hz]",fname,invert=True)
+		#hist_match = makePlots(matchLengthArr/origLengthArr*100.,"Matched % of Hits",fname,invert=True)
+		#hist_origC = makePlots(origCLengthArr/origLengthArr*100.,"% of Orig Hits from Columns",fname,invert=True)
+		#hist_origR = makePlots((origLengthArr-origCLengthArr)/origLengthArr*100.,"% of Orig Hits from Rows",fname,invert=True)
 	
+		"""
 		#Combined plots of bulk properties
 		binCenters=np.arange(0.5,100,1)	
 		plt.bar(binCenters,hist_origC[0],label="Original Col hits")
@@ -190,15 +203,16 @@ def main(args):
 			plt.savefig(f"{saveDir}{saveName}.png")
 		else:
 			plt.show()
-		
+		"""
 	
 	#Create plots comparing default and optimized settings on same axes
 	if boolDef and boolOpt:
 		print("Considering default vs optimized plots")
 		ky=list(dict_bulkDF.keys())
 		percMatching = [dict_bulkDF[k]['matchedLength']/dict_bulkDF[k]['origLength']*100 for k in ky]
-		plt.clf()
+		rate = [dict_bulkDF[k]['origTrigs']/tottime for k in ky]
 		histCompare(percMatching[0], percMatching[1], "% Matching Hits", labels=ky)
+		histCompare(rate[0], rate[1], "Raw rate [Hz]", labels=ky)
 	
 #################################################################
 # call main

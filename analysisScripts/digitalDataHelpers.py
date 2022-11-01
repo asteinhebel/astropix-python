@@ -65,7 +65,8 @@ def getDF_singlePix_extraVars(f, pix=[0,0]):
 		#convert boolean column to Row/Col structure
 		df['Row/Col'] = df['Row/Col'].replace({True: 'Col', False: 'Row'})
 		
-	#Record values from original DF before selecting row/col matches
+	#Raw number of triggers
+	lenTrigs = df['NEvent'].iloc[-1]
 		
 	#put matching row and column info in one line
 	df_row = df[df["Row/Col"] == "Row"]
@@ -80,7 +81,7 @@ def getDF_singlePix_extraVars(f, pix=[0,0]):
 	#Remove entries if any pixel other than pix is measured - only one pixel enabled at a time
 	df=df[df['Locatn_row']==pix[0]]
 	df=df[df['Locatn_col']==pix[1]]
-	return df.reset_index(), int(lenIn), int(lenR), int(lenC)
+	return df.reset_index(), int(lenIn), int(lenR), int(lenC), int(lenTrigs)
 	
 	
 #visualize array
