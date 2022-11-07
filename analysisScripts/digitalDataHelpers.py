@@ -25,7 +25,8 @@ def reduceFile(f, outDir="./csv/"):
 #ASSUMES A SINGLE PIXEL IS ENABLED
 def getDF_singlePix(f, pix=[0,0]):
 	df=pd.read_csv(f)
-	#print(f'Input DF length: {len(df)}')
+	print(f)
+	print(f'Input DF length: {len(df)}')
 	#Drop any hit from count 0 - FPGA dump
 	try:
 		df=df[df['NEvent']!=0]
@@ -103,7 +104,7 @@ def arrayVis(arrIn, barRange=None, barTitle:str=None, invert:bool=False):
 	ax.set_yticklabels(ylabels)
 	ax.tick_params(axis="x", bottom=True, top=True, labelbottom=True, labeltop=True)
 	cbar = plt.colorbar(cax)
-	if range is not None:
+	if barRange is not None:
 		cax.set_clim(vmin=barRange[0], vmax=barRange[1])
 	if barTitle is not None:
 		cbar.set_label(barTitle) 	
