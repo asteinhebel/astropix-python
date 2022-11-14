@@ -1,5 +1,7 @@
 #AstroPix unique files
 logTestBeam/*
+thresholdScan602/**/*.log
+thresholdScan602/**/*.yml
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
