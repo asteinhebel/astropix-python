@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 from scipy.interpolate import make_interp_spline
 import os,sys, glob
 import argparse
+from collections import defaultdict
 
 import digitalDataHelpers as ddh
 
@@ -11,6 +12,33 @@ import digitalDataHelpers as ddh
 # helper functions
 #################################################################
 
+def get_deadPix(arr, sve):
+	#Identify pixels that measure 0 counts for every tested threshold value
+	maxThresholdsTested = len(arr)
+	
+	#Identify pixels with 0 counts for each threshold 
+	#Check against all other thresholds by totaling for how many thresholds each pixel reads 0 counts
+	totArr=np.full([35, 35], 0.)
+	for a in arr:
+		a = np.array(a)
+		totArr += (a==0)*1.
+		
+	#A pixel is dead (returned 0 counts) if the additive value in totArr equals the total number of tested thresholds
+	#Plot
+	mapFig=ddh.arrayVis(totArr==maxThresholdsTested, barTitle=f'Dead pixels')
+	if sve:
+		saveName = f"deadPixels"
+		print(f"Saving {saveDir}{saveName}.png")
+		plt.savefig(f"{saveDir}{saveName}.png")
+		plt.clf()
+	else:
+		plt.show()
+		
+	#invert rows to fit array origin
+	dpix = np.argwhere(np.flip(totArr,0)==maxThresholdsTested)
+	print(dpix)
+	
+	return(dpix)
 
 #################################################################
 # main
@@ -18,14 +46,15 @@ import digitalDataHelpers as ddh
 
 def main(args):
 
-	threshold=[100]
+	threshold = [10,100]
+	dataDirs = [f"{i}mV/" for i in threshold]
 	mapArr=[]
 	
 	#Get data from txt files and store in 35x35 arrays - one array for each threshold value
 	os.chdir(args.inputDir)	
 	for i,t in enumerate(threshold):
 		counts = np.full([35, 35], np.nan)
-		for f in sorted(glob.glob(f"count*{t}mVThresh*.txt")): #get all txt files in datadir in alphabetic order ('sorted' alphabatizes)
+		for f in sorted(glob.glob(f"{dataDirs[i]}/count*{t}mVThresh*.txt")): #get all txt files in datadir in alphabetic order ('sorted' alphabatizes)
 			parts=f.split('_')
 			cStr = [p for p in parts if "col" in p]
 			colVal = cStr[0][3:] #eliminate 'col'
@@ -35,8 +64,16 @@ def main(args):
 			counts[:,int(colVal)] = countVals
 		mapArr.append(np.flip(counts,0)) #flip array to match array pixel numbering
 		
+		#DELETE!!!
+		mapArr.append(np.flip(counts,0) )
+	
 		#Plot counts on array if argument given when script ran
 		if args.masks: 
+			p = (35.*35.)-np.count_nonzero(counts)
+			print(f"{p} pixels ({p/1225*100:.2f}%)  have count = 0")
+			#pp = sum(counts[counts==0.])
+			pp = np.count_nonzero(counts == 10)
+			print(f"{pp} pixels ({pp/1225*100:.2f}%)  have count = 10")
 			mapFig=ddh.arrayVis(mapArr[i], barTitle=f'Counts with {t}mV threshold')
 			if args.savePlot:
 				saveName = f"{t}mV_map"
@@ -45,35 +82,50 @@ def main(args):
 				plt.clf()
 			else:
 				plt.show()
-			
 
-		#Create S-curve plot
-		for c in range(35):
-			for r in range(35):
-				curvePts=[m[r][c] for m in mapArr]
-				plt.plot(threshold,curvePts, marker='o', label=f"r{r} c{c}")
-				#INTERPOLATE BETWEEN POINTS FOR SMOOTH CURVE
-				#CAN ONLY DO WITH AT LEAST 4 DATA POINTS = AT LEAST 4 THRESHOLD VALUES
-				"""
-				X_Y_Spline = make_interp_spline(threshold, curvePts)
-				# Returns evenly spaced numbers over a specified interval.
-				X_ = np.linspace(threshold[0], threshold[-1], 50)
-				Y_ = X_Y_Spline(X_)
-				plt.plot(X_, Y_)
-				"""
-		plt.xlabel("Digital threshold [mV]")
-		plt.ylabel("Interrupt counts in 10s")
-		#Fit curves to Sigmoid
-		
-		if args.savePlot:
-			saveName = f"Scurve"
-			print(f"Saving {saveDir}{saveName}.png")
-			plt.savefig(f"{saveDir}{saveName}.png")
-			plt.clf()
-		else:
-			plt.show()
+	#Create S-curve plot
+	plots=[]
+	
+	#DELETE!!
+	threshold.append(200)
+	threshold.append(300)
+	
+	for c in range(35):
+		for r in range(35):
+			curvePts=[m[r][c] for m in mapArr]
+			#plt.plot(threshold,curvePts, marker='o', label=f"r{r} c{c}")
+			#INTERPOLATE BETWEEN POINTS FOR SMOOTH CURVE
+			#CAN ONLY DO WITH AT LEAST 4 DATA POINTS = AT LEAST 4 THRESHOLD VALUES
 			
+			X_Y_Spline = make_interp_spline(threshold, curvePts)
+			# Returns evenly spaced numbers over a specified interval.
+			X_ = np.linspace(threshold[0], threshold[-1], 50)
+			Y_ = X_Y_Spline(X_)
+			plots.append(Y_)
+			plt.plot(X_, Y_)
+			
+	plt.xlabel("Digital threshold [mV]")
+	plt.ylabel("Interrupt counts in 10s")
+	
+	if args.savePlot:
+		saveName = f"Scurve"
+		print(f"Saving {saveDir}{saveName}.png")
+		plt.savefig(f"{saveDir}{saveName}.png")
+		plt.clf()
+	else:
+		plt.show()
 		
+	#Estimate dead pixels
+	dpix = get_deadPix(mapArr, args.savePlot)
+	print(f"{len(dpix)} dead pixels (0 hits at all thresholds)")
+	if args.saveCSV:
+		deadDF = pd.DataFrame(dpix, columns = ['Rows', 'Cols'])
+		print(f"Saving {saveDir}deadPixels.csv")
+		deadDF.to_csv(f"{saveDir}deadPixels.csv")
+
+	#Calculate some interesting/relevant values
+	print(f"{np.count_nonzero(mapArr[-1]==10)} potentially noisy pixels (10 hits at highest threshold)")
+	plots=np.array(plots)
 	
 #################################################################
 # call main
@@ -85,11 +137,13 @@ if __name__ == "__main__":
 
 	parser = argparse.ArgumentParser(description='Plot array data comparing default and optimized comparator DACs')
 	parser.add_argument('-i', '--inputDir', default='../thresholdScan602/', required=False,  
-        help='Directory containing data files, from main git repo space. Can provide one or two directories - if two, send default first.')
+        help='Directory containing repos of data files, from main git repo space.')
 	parser.add_argument('-m', '--masks', action='store_true', default=False, required=False, 
 		help='Create figures of full array with good vs noisy pixels (previously called masks). Default: False')
 	parser.add_argument('-s', '--savePlot', action='store_true', default=False, required=False, 
 		help='Save all plots (no display) to plotsOut/dacOptimization/arrayScan. Default: None (only displays, does not save)')
+	parser.add_argument('-c', '--saveCSV', action='store_true', default=False, required=False, 
+		help='Save CSV of dead/noisy pixel maps to plotsOut/dacOptimization/arrayScan. Default: False')
 
 	parser.add_argument
 	args = parser.parse_args()
