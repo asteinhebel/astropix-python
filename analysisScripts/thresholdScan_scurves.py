@@ -1,7 +1,8 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy.interpolate import make_interp_spline
+from scipy.interpolate import pchip_interpolate
+from scipy.optimize import curve_fit
 import os,sys, glob
 import argparse
 from collections import defaultdict
@@ -10,8 +11,8 @@ import digitalDataHelpers as ddh
 
 #################################################################
 # helper functions
-#################################################################
-
+#################################################################    
+    
 def get_deadPix(arr, sve):
 	#Identify pixels that measure 0 counts for every tested threshold value
 	maxThresholdsTested = len(arr)
@@ -34,11 +35,55 @@ def get_deadPix(arr, sve):
 	else:
 		plt.show()
 		
-	#invert rows to fit array origin
+	#invert rows to fit array origin, identify indices of pixels that are dead
 	dpix = np.argwhere(np.flip(totArr,0)==maxThresholdsTested)
-	print(dpix)
-	
 	return(dpix)
+	
+def get_noisyPix(arr, sve, noiseCount:float=0):
+
+	#invert rows to fit array origin
+	arr=np.flip(np.array(arr),0)
+	
+	#Identify which/how many pixels are noisy, where "noise" is counts>noiseCount
+	npix = np.argwhere(arr>noiseCount)
+	return(npix, noiseCount)
+	
+def get_optThreshold(plots, x, sve, noiseCount:float=0, perc:float=99):
+
+	goodPix = int((35*35) * perc / 100.) #number of pixels that should remain good (counts>noiseCount)
+	#Identify what threshold value is necessary for each pixel to be above noiseCount
+	idealThresh = np.full([35, 35], np.nan)
+	for r,row in enumerate(plots):
+		for c,cols in enumerate(row):
+			ind = np.argwhere(cols>noiseCount)
+			idealThresh[r][c] = x[max(ind)]
+		
+	passingpix = [len(np.where(idealThresh<=xpts)[0]) for xpts in x] #number of pixels that have an ideal threshold less than or equal to the chosen value
+	passingpixperc = [p/35/35*100 for p in passingpix]
+	optThreshInd = min(np.argwhere(np.array(passingpix)>=goodPix)) #smallest value where the optimal threshold for at least `perc` percent of pixels 
+
+	mapFig=ddh.arrayVis(idealThresh, barTitle=f'Ideal Threshold [mV]')
+	if sve:
+		saveName = f"idealThreshold"
+		print(f"Saving {saveDir}{saveName}.png")
+		plt.savefig(f"{saveDir}{saveName}.png")
+		plt.clf()
+	else:
+		plt.show()	
+	plt.plot(x,passingpixperc, marker='o')
+	plt.xlabel("Threshold [mV]")
+	plt.ylabel("% of active pixels")		
+	plt.tight_layout() #reduce margin space	
+	if sve:
+		saveName = f"percActivePixelsVsThreshold"
+		print(f"Saving {saveDir}{saveName}.png")
+		plt.savefig(f"{saveDir}{saveName}.png")
+		plt.clf()
+	else:
+		plt.show()	
+			
+	return(x[optThreshInd])
+	
 
 #################################################################
 # main
@@ -46,7 +91,7 @@ def get_deadPix(arr, sve):
 
 def main(args):
 
-	threshold = [10,100]
+	threshold = [25, 50, 75, 100, 150, 200]
 	dataDirs = [f"{i}mV/" for i in threshold]
 	mapArr=[]
 	
@@ -62,10 +107,7 @@ def main(args):
 			#insert np.nan into array pulled from file if there are missing pixels 
 			## should be 35 entries for 35 pixels - if no data, holds np.nan
 			counts[:,int(colVal)] = countVals
-		mapArr.append(np.flip(counts,0)) #flip array to match array pixel numbering
-		
-		#DELETE!!!
-		mapArr.append(np.flip(counts,0) )
+		mapArr.append(np.flip(counts,0)) #flip array to match array pixel numberings
 	
 		#Plot counts on array if argument given when script ran
 		if args.masks: 
@@ -84,28 +126,25 @@ def main(args):
 				plt.show()
 
 	#Create S-curve plot
-	plots=[]
-	
-	#DELETE!!
-	threshold.append(200)
-	threshold.append(300)
-	
+	xpts=50
+	plots=np.empty([35,35,xpts])
+	xspace=np.linspace(threshold[0],threshold[-1], 150)
+
 	for c in range(35):
 		for r in range(35):
-			curvePts=[m[r][c] for m in mapArr]
+			curvePts = [m[r][c] for m in mapArr]
 			#plt.plot(threshold,curvePts, marker='o', label=f"r{r} c{c}")
+
 			#INTERPOLATE BETWEEN POINTS FOR SMOOTH CURVE
-			#CAN ONLY DO WITH AT LEAST 4 DATA POINTS = AT LEAST 4 THRESHOLD VALUES
-			
-			X_Y_Spline = make_interp_spline(threshold, curvePts)
-			# Returns evenly spaced numbers over a specified interval.
-			X_ = np.linspace(threshold[0], threshold[-1], 50)
-			Y_ = X_Y_Spline(X_)
-			plots.append(Y_)
-			plt.plot(X_, Y_)
+			#PCHIP (Piecewise Cubic Hermite Interpolating Polynomial) INTERPOLATION - not twice differentiable like spline
+			interp_x = np.linspace(threshold[0], threshold[-1], xpts)
+			interp_y = pchip_interpolate(threshold,curvePts, interp_x)
+			plots[r][c]=interp_y
+			plt.plot(interp_x, interp_y, linewidth=0.5)
 			
 	plt.xlabel("Digital threshold [mV]")
 	plt.ylabel("Interrupt counts in 10s")
+	plt.tight_layout() #reduce margin space	
 	
 	if args.savePlot:
 		saveName = f"Scurve"
@@ -122,10 +161,21 @@ def main(args):
 		deadDF = pd.DataFrame(dpix, columns = ['Rows', 'Cols'])
 		print(f"Saving {saveDir}deadPixels.csv")
 		deadDF.to_csv(f"{saveDir}deadPixels.csv")
-
+		
+	#Estimate noisy pixels with highest threshold scan
+	npix, nc = get_noisyPix(mapArr[-1], args.savePlot) #get all pixels with more counts than 0 from highest threshold scan
+	print(f"{len(npix)} noisy pixels (counts> {nc})")
+	if args.saveCSV:
+		deadDF = pd.DataFrame(npix, columns = ['Rows', 'Cols'])
+		print(f"Saving {saveDir}noisyPixels_{threshold[-1]}mV_above{nc}.csv")
+		deadDF.to_csv(f"{saveDir}noisyPixels_{threshold[-1]}mV_above{nc}.csv")
+		
 	#Calculate some interesting/relevant values
-	print(f"{np.count_nonzero(mapArr[-1]==10)} potentially noisy pixels (10 hits at highest threshold)")
 	plots=np.array(plots)
+	#get_optThreshold(plots,threshold)#returns ideal threshold value for `perc` percent of pixels to be above `noiseCounts` noise level
+	perc=50 #percentage of pixels you want activated on array
+	opt=get_optThreshold(plots,interp_x,args.savePlot, perc=perc)
+	print(f"For {perc}% of the array to be active, a threshold of at least {opt[0]:.1f} mV must be set")
 	
 #################################################################
 # call main
