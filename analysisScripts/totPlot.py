@@ -46,6 +46,7 @@ def main(args):
 	dfDict = {} 
 	for i,f in enumerate(filesIn):
 		if f[-3:] == "csv":
+			print(f)
 			dfDict[labels[i]] = ddh.getDF_singlePix(f, args.pixel)
 		else: #is log and need to generate csv
 			fi=ddh.reduceFile(dirPath+f)
@@ -78,6 +79,7 @@ def main(args):
 	if args.basicPlots:
 		for key in dfDict.keys():
 			plt.clf()
+			print(len(dfDict[key]))
 			plt.plot( dfDict[key]["ToT(us)_row"], dfDict[key]['ToT(us)_col'], ".", alpha=0.5  )
 			plt.title(key)
 			plt.xlabel('row ToT duration [us]')
@@ -171,7 +173,7 @@ if __name__ == "__main__":
 
 	parser = argparse.ArgumentParser(description='Plot Digital Data')
 	parser.add_argument('-f', '--inputF', default='', required=True,
-        help='Input .txt containing location of data files to compare AND a label for each file semicolon deliminated OR command line path to single file, separated by new lines')
+        help='Input .txt containing location of data files to compare AND a label for each file semicolon deliminated and separated by new lines OR command line path to single file')
 	parser.add_argument('-i', '--scanInj', action='store_true', default=False, required=False, 
         help='Plot average ToT at each point along injection scan. Default: False')
 	parser.add_argument('-t', '--timestmp', action='store_true', default=False, required=False, 
