@@ -56,7 +56,10 @@ def get_optThreshold(plots, x, sve, noiseCount:float=0, perc:float=99):
 	for r,row in enumerate(plots):
 		for c,cols in enumerate(row):
 			ind = np.argwhere(cols>noiseCount)
-			idealThresh[r][c] = x[max(ind)]
+			try:
+				idealThresh[r][c] = x[max(ind)]
+			except ValueError: #if dead pixel, insert zero
+				idealThresh[r][c] = 0.
 		
 	passingpix = [len(np.where(idealThresh<=xpts)[0]) for xpts in x] #number of pixels that have an ideal threshold less than or equal to the chosen value
 	passingpixperc = [p/35/35*100 for p in passingpix]
