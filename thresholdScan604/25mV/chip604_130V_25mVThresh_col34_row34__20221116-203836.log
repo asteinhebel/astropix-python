@@ -1,0 +1,16 @@
+Voltageboard settings: [1.025, 1, 0, 0, 1, 1.1, 0, 0]
+Digital: {'interrupt_pushpull': 1, 'en_inj': 0, 'reset': 0, 'extrabits': 0}
+Biasblock: {'DisHiDR': 0, 'q01': 0, 'qon0': 0, 'qon1': 1, 'qon2': 0, 'qon3': 1}
+DAC: {'blres': 0, 'nu1': 0, 'vn1': 20, 'vnfb': 3, 'vnfoll': 10, 'nu5': 0, 'nu6': 0, 'nu7': 0, 'nu8': 0, 'vn2': 0, 'vnfoll2': 4, 'vnbias': 0, 'vpload': 5, 'nu13': 0, 'vncomp': 2, 'vpfoll': 60, 'nu16': 0, 'vprec': 15, 'vnrec': 2}
+Receiver: {'col0': 68719476734, 'col1': 68719476734, 'col2': 68719476734, 'col3': 68719476734, 'col4': 68719476734, 'col5': 68719476734, 'col6': 68719476734, 'col7': 68719476734, 'col8': 68719476734, 'col9': 68719476734, 'col10': 68719476734, 'col11': 68719476734, 'col12': 68719476734, 'col13': 68719476734, 'col14': 68719476734, 'col15': 68719476734, 'col16': 68719476734, 'col17': 68719476734, 'col18': 68719476734, 'col19': 68719476734, 'col20': 68719476734, 'col21': 68719476734, 'col22': 68719476734, 'col23': 68719476734, 'col24': 68719476734, 'col25': 68719476734, 'col26': 68719476734, 'col27': 68719476734, 'col28': 68719476734, 'col29': 68719476734, 'col30': 68719476734, 'col31': 68719476734, 'col32': 68719476734, 'col33': 68719476734, 'col34': 34359738366}
+Namespace(name='chip604_130V', outdir='../../kit-adl/cleanAstroPix/amanda_python/thresholdScan604', yaml='config_none', threshold=25.0, maxtime=0.17, colrange=[0, 34], rowrange=[0, 34])
+0	b'bcbcbcbcbcbcbc20bc20457d40242044bb60342045bbc04fbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc20447ac00c20457ac018bcbc'
+1	b'0c20457ac018bcbcbcbc204454304b2044acc0002045ac90f8bcbcbcbcbcbcbcbcbcbcbcbcbcbc20449b401c20459b40f8bcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+2	b'bcbcbcbcbcbcbcbcbcbc204420e06720452070e120448d40e020458d800f20445f40a020455f8037bcbcbcbcbc20444180b620454180aa204472c0c220450dc0'
+3	b'4472c0c220450dc0bcbc20443fd08320453f207dbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc20444b40'
+4	b'bcbcbcbc20444b40bcbc2044e970ab2045e9a0cbbcbcbcbcbcbcbcbc2044afc0f82045afc060bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc2044b7a08d2045'
+5	b'bc2044b7a08d2045bcbc20448640e3204586300b20442f80c520440c40a620440c00582045d6a0112044cd20822045cd104820448580a620458580b220442b40'
+6	b'458580b220442b40bcbc20443bb05920445fc0d420455f50a6204433c07c204466407e2044278095204527e0b8bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+7	b'bcbcbcbcbcbcbcbcbcbc2044bba0462045bbb07cbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc20440f4095204478401320444a809b2045d1e0e8bcbcbcbcbcbcbcbc'
+8	b'bcbcbcbcbcbcbcbcbcbc2044b890a52045b8808d20442bc0bc204468c030204568606820447740c52045b740d1bcbcbcbcbcbcbc204482405820458240402044'
+9	b'5820458240402044bcbc2044df604b2045dfb09bbcbcbc2044a5c0242045a5c0d0bcbcbcbcbcbc20442a20a720452a202dbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
