@@ -94,7 +94,7 @@ def get_optThreshold(plots, x, sve, noiseCount:float=0, perc:float=99):
 
 def main(args):
 
-	threshold = [25, 50, 75, 100, 150, 200]
+	threshold = [25, 50, 75, 100,110, 120, 130, 140, 150, 160, 200]
 	dataDirs = [f"{i}mV/" for i in threshold]
 	mapArr=[]
 	
