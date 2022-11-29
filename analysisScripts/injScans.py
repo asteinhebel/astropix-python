@@ -175,10 +175,13 @@ def main(chip):
 		mean,sig = fitGauss(dfDict[df]['ToT(us)_row'], float(df.split('_')[1]))
 		digitalMeans.append(mean)
 		digitalSigs.append(sig)
-	pltInjScan(sorted(digitalMeans), sorted(injs), sorted(digitalSigs),"Digital (row)")	
+	#Sort means/sigmas with respect to injs
+	digitalMeans_sorted = [x for _,x in sorted(zip(injs,digitalMeans))]
+	digitalSigs_sorted = [x for _,x in sorted(zip(injs,digitalSigs))]
+	pltInjScan(digitalMeans_sorted, sorted(injs), digitalSigs_sorted,"Digital (row)")	
 		
 	#Compare scans
-	compareInjScans(analogMeans, sorted(digitalMeans), sorted(injs), analogSigs, sorted(digitalSigs))
+	compareInjScans(analogMeans, digitalMeans_sorted, sorted(injs), analogSigs, digitalSigs_sorted)
 	
 #################################################################
 # call main
