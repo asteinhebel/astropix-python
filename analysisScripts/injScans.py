@@ -28,7 +28,7 @@ def separateRuns (time,arr):
 def Gauss(x, A, mu, sigma):
     return A*np.exp(-(x-mu)**2/(2.0*sigma**2))
     
-def fitGauss(data,title,nmbBins=50, analog=False):
+def fitGauss(data,title,nmbBins=50, analog=False, compare=False):
 	#remove entries of 0 from array
 	data=data[data != 0]
 	#remove first element of array - leftover from previous injection energy
@@ -46,18 +46,24 @@ def fitGauss(data,title,nmbBins=50, analog=False):
 		popt = arrayStats(data)
 	
 	if analog:
-		plt.xlabel("Analog proxy ToT [us]")
-		nme="analog"
+		if analogPulseHeight:
+			plt.xlabel("Analog pulse height [V]")
+			nme="analog_peak"
+		else:
+			plt.xlabel("Analog proxy ToT [us]")
+			nme="analog_ToT"
 	else:
 		plt.xlabel("Digital ToT [us]")
 		nme="digital"
 	plt.ylabel("Counts")
 	plt.title(f"{title:.1f}V injection, chip {c}")
 	
-	if savePlts:
+	if savePlts and not compare:
 		saveName = f"totHist_chip{c}_{title:.1f}Vinj_{nme}"
 		plt.savefig(f"{saveDir}{saveName}.png")
 		plt.clf()
+	elif compare:
+		pass
 	else:
 		plt.show()
 	
@@ -80,8 +86,12 @@ def pltInjScan(tot, injections, totErr, title, analog=False):
 	plt.title(f"{title} - Chip {c}")
 	plt.xlabel("Injection voltage [V]")	
 	if analog:
-		plt.ylabel("Analog proxy ToT [us]")
-		nme="analog"
+		if analogPulseHeight:
+			plt.ylabel("Analog pulse height [V]")
+			nme="analog_peak"
+		else:
+			plt.ylabel("Analog proxy ToT [us]")
+			nme="analog_ToT"
 	else:
 		plt.ylabel("Digital ToT [us]")
 		nme="digital"
@@ -116,7 +126,64 @@ def compareInjScans(totA, totD, injections, errA, errD):
 		plt.show()
 	
 	return
+	
+def compareAnalogInjScans(anaP, anaT, injections, errP, errT):
 
+	if len(anaP)!=len(injections):
+		injections=injections[0:len(anaP)]
+
+	fig, ax1 = plt.subplots()	
+	plt.title(f"Chip {c}")
+	ax1.set_xlabel('Injection voltage [V]')
+	ax1.set_ylabel('Peak height [V]')
+	ax1.errorbar(injections, anaP, yerr=errP, marker="o", linestyle='', color='black')
+ 
+ 	#twin axes on right side
+	ax2 = ax1.twinx()
+	color = 'blue'
+	ax2.set_ylabel('Analog ToT [us]', color = color)
+	ax2.errorbar(injections, anaT, yerr=errT, marker="o", linestyle='', color=color)
+	ax2.tick_params(axis ='y', labelcolor = color)
+	
+	if savePlts:
+		saveName = f"compareAnalogInjScan_chip{c}"
+		plt.savefig(f"{saveDir}{saveName}.png")
+	else:
+		plt.show()
+		
+	plt.clf()
+	plt.plot(injections,np.array(anaT)/np.array(anaP), marker="o")
+	plt.xlabel("Injection voltage [V]")
+	plt.ylabel("Ratio ToT/peakHeight [us/V]")
+	plt.title(f"Chip {c}")
+	if savePlts:
+		saveName = f"compareAnalogRatio_chip{c}"
+		plt.savefig(f"{saveDir}{saveName}.png")
+	else:
+		plt.show()
+	
+	return
+
+def get_average_traces( filename , smoothing:int=50):
+	#smoothing = how many points from original curve are skipped before plotting the next one. 
+	#			 Original curve has 10k points
+	#			 Smaller value of 'smoothing' leads to noisier curve 
+
+	f = h5py.File(filename, 'r')
+	traces = f['run1'] #baseline subtracted already
+	time = f['run1_trigTime']
+	mean=[]
+
+	newDac=new_dac_i(time)
+	for i in range(1,len(newDac)):
+		#smooth curve
+		mean.append(np.mean(traces[newDac[i-1]:newDac[i]], axis = 0)[0::smoothing])
+		
+	#Remove sections that do not have recorded traces (ie when number of recorded traces was exceeded during data taking but pulse heights were still recorded)
+	mean=np.array(mean)
+	noNan=np.array([~np.isnan(i[0]) for i in mean])
+	
+	return mean[noNan]	
 	
 #################################################################
 # main
@@ -151,7 +218,7 @@ def main(chip):
 
 	
 	#Analog injection plot
-	analogRuns = separateRuns(dfDict['analog']['Time'],dfDict['analog']['ToT'])
+	analogRuns = separateRuns(dfDict['analog']['Time'],dfDict['analog']['Peaks']) if analogPulseHeight else separateRuns(dfDict['analog']['Time'],dfDict['analog']['ToT'])
 	analogMeans = []
 	analogSigs = []
 	print("Create analog plots")
@@ -178,10 +245,23 @@ def main(chip):
 	#Sort means/sigmas with respect to injs
 	digitalMeans_sorted = [x for _,x in sorted(zip(injs,digitalMeans))]
 	digitalSigs_sorted = [x for _,x in sorted(zip(injs,digitalSigs))]
-	pltInjScan(digitalMeans_sorted, sorted(injs), digitalSigs_sorted,"Digital (row)")	
+	pltInjScan(digitalMeans_sorted, sorted(injs), digitalSigs_sorted,"Digital (row)")
 		
 	#Compare scans
-	compareInjScans(analogMeans, digitalMeans_sorted, sorted(injs), analogSigs, digitalSigs_sorted)
+	if analogPulseHeight: #compare analog pulse vs analog ToT	
+		analogToTRuns = separateRuns(dfDict['analog']['Time'],dfDict['analog']['ToT'])
+		analogToTMeans = []
+		analogToTSigs = []
+		for i,injV in enumerate(analogToTRuns):
+			mean,sig = fitGauss(injV, (i+1)*0.1, analog=True, compare=True)
+			analogToTMeans.append(mean)
+			analogToTSigs.append(sig)
+		print("Comparing analog data")
+		compareAnalogInjScans(analogMeans, analogToTMeans, sorted(injs), analogSigs, analogToTSigs)
+	else: #compare analog and digital ToT
+		print("Comparing analog and digital data")
+		compareInjScans(analogMeans, digitalMeans_sorted, sorted(injs), analogSigs, digitalSigs_sorted)
+
 	
 #################################################################
 # call main
@@ -193,6 +273,7 @@ if __name__ == "__main__":
 	adataDir = "/Users/asteinhe/AstroPixData/astropixOut_tmp/v2/111622_amp1/"
 
 	savePlts = True
+	analogPulseHeight = True #if False, consider analog proxy ToT
 
 	chip = [602, 604, 401]
 	#chip = [602]
