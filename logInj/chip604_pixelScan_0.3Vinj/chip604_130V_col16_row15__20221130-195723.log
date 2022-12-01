@@ -1,0 +1,11 @@
+Voltageboard settings: [1.1, 1, 0, 0, 1, 1.1, 0, 0]
+Digital: {'interrupt_pushpull': 1, 'en_inj': 0, 'reset': 0, 'extrabits': 0}
+Biasblock: {'DisHiDR': 0, 'q01': 0, 'qon0': 0, 'qon1': 1, 'qon2': 0, 'qon3': 1}
+DAC: {'blres': 0, 'nu1': 0, 'vn1': 20, 'vnfb': 3, 'vnfoll': 10, 'nu5': 0, 'nu6': 0, 'nu7': 0, 'nu8': 0, 'vn2': 0, 'vnfoll2': 4, 'vnbias': 0, 'vpload': 5, 'nu13': 0, 'vncomp': 2, 'vpfoll': 60, 'nu16': 0, 'vprec': 15, 'vnrec': 2}
+Receiver: {'col0': 137438953471, 'col1': 68719476734, 'col2': 68719476734, 'col3': 68719476734, 'col4': 68719476734, 'col5': 68719476734, 'col6': 68719476734, 'col7': 68719476734, 'col8': 68719476734, 'col9': 68719476734, 'col10': 68719476734, 'col11': 68719476734, 'col12': 68719476734, 'col13': 68719476734, 'col14': 68719476734, 'col15': 68719476735, 'col16': 137438887934, 'col17': 68719476734, 'col18': 68719476734, 'col19': 68719476734, 'col20': 68719476734, 'col21': 68719476734, 'col22': 68719476734, 'col23': 68719476734, 'col24': 68719476734, 'col25': 68719476734, 'col26': 68719476734, 'col27': 68719476734, 'col28': 68719476734, 'col29': 68719476734, 'col30': 68719476734, 'col31': 68719476734, 'col32': 68719476734, 'col33': 68719476734, 'col34': 68719476734}
+Namespace(name='chip604_130V', outdir='../../kit-adl/cleanAstroPix/amanda_python/logInj/chip604_pixelScan_0.3Vinj', yaml='config_none', threshold=None, maxtime=0.5, colrange=[0, 34], rowrange=[0, 34], vinj=300.0, saveascsv=True)
+0	b'20f02c401720092cbcbc20f01d700a20091d905120f0a1208a2009a12028bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc20f004800c200904'
+1	b'20f004800c200904bc80dd20f05600fd200996e034bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc20f00d40c420090d40'
+2	b'f00d40c420090d40bc4020f020f09820092070bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc20f02000ae200920006abcbcbcbcbcbcbcbcbcbc20f000'
+3	b'bcbcbcbcbc20f000bc80b520f0d3402d2009d3408bbcbcbcbcbcbcbcbc20f0d840c0200958802720f03b40d920093b40debcbcbc20f086406c20098640e8bc20'
+4	b'6c20098640e8bc20bc2009bfd07a20f0bfb08820f07d20ea20f02a408120092a603abcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
