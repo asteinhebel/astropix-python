@@ -81,6 +81,7 @@ def pltInjScan(tot, injections, totErr, title, analog=False):
 
 	if len(tot)!=len(injections):
 		injections=injections[0:len(tot)]
+		print(len(tot))
 
 	plt.errorbar(injections, tot, yerr=totErr, marker="o", linestyle='')
 	plt.title(f"{title} - Chip {c}")
@@ -202,20 +203,21 @@ def main(chip):
 	dfDict['analog'] = anaDF
 	
 	#get digital data and injection energies
-	files = glob.glob(os.path.join(ddataDir, f'*{chip}*.csv'))
+	files = glob.glob(os.path.join(ddataDir, f'chip{chip}*.csv'))
+	lenddir = len(ddataDir)
 	#End execution if no files
 	if len(files)==0:
 		print("No files detected")
 		return
 	for f in files:
-		injV = f.split('_')[5][0]
+		f_nopath = f[lenddir:]
+		injV = f_nopath.split('_')[1][0]
 		#Check whether 10 or 100
-		if len(f.split('_')[5])==9:
+		if len(f_nopath.split('_')[1])==9:
 			injV = 10.
 		injs.append(round(float(injV)*0.1, 2))
 		digiDF = ddh.getDF_singlePix(f)
 		dfDict[f'digital_{0.1*float(injV):.1f}'] = digiDF
-
 	
 	#Analog injection plot
 	analogRuns = separateRuns(dfDict['analog']['Time'],dfDict['analog']['Peaks']) if analogPulseHeight else separateRuns(dfDict['analog']['Time'],dfDict['analog']['ToT'])
@@ -268,15 +270,24 @@ def main(chip):
 #################################################################
 if __name__ == "__main__":
 
+	"""
+	#new vs old low res v2 chips
 	saveDir = os.getcwd()+"/plotsOut/newChipInjectionScans/" #hardcode location of dir for saving output plots - automatically saves
 	ddataDir = "/Users/asteinhe/AstroPixData/digital/logInj/injectionScans_10s_chip602_chip604_chip401/"
 	adataDir = "/Users/asteinhe/AstroPixData/astropixOut_tmp/v2/111622_amp1/"
-
-	savePlts = True
-	analogPulseHeight = True #if False, consider analog proxy ToT
-
 	chip = [602, 604, 401]
-	#chip = [602]
+	"""
+
+	#post-irradiation June HI chips
+	saveDir = os.getcwd()+"/plotsOut/lbnlIrradiated/" #hardcode location of dir for saving output plots - automatically saves
+	ddataDir = "/Users/asteinhe/AstroPixData/digital/logInj/lbnl_HIbeam_prepAndPost/"
+	adataDir = "/Users/asteinhe/AstroPixData/astropixOut_tmp/v2/111622_amp1/"
+	chip = [601, 603]
+	
+
+	savePlts = False
+	analogPulseHeight = False #if False, consider analog proxy ToT
+
 	for c in chip:
 		print(f"Running Chip {c}")
 		main(c)
