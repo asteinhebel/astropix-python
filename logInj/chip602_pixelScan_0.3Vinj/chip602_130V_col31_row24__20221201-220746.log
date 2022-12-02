@@ -1,0 +1,13 @@
+Voltageboard settings: [1.1, 1, 0, 0, 1, 1.1, 0, 0]
+Digital: {'interrupt_pushpull': 1, 'en_inj': 0, 'reset': 0, 'extrabits': 0}
+Biasblock: {'DisHiDR': 0, 'q01': 0, 'qon0': 0, 'qon1': 1, 'qon2': 0, 'qon3': 1}
+DAC: {'blres': 0, 'nu1': 0, 'vn1': 20, 'vnfb': 3, 'vnfoll': 10, 'nu5': 0, 'nu6': 0, 'nu7': 0, 'nu8': 0, 'vn2': 0, 'vnfoll2': 4, 'vnbias': 0, 'vpload': 5, 'nu13': 0, 'vncomp': 2, 'vpfoll': 60, 'nu16': 0, 'vprec': 15, 'vnrec': 2}
+Receiver: {'col0': 137438953471, 'col1': 68719476734, 'col2': 68719476734, 'col3': 68719476734, 'col4': 68719476734, 'col5': 68719476734, 'col6': 68719476734, 'col7': 68719476734, 'col8': 68719476734, 'col9': 68719476734, 'col10': 68719476734, 'col11': 68719476734, 'col12': 68719476734, 'col13': 68719476734, 'col14': 68719476734, 'col15': 68719476734, 'col16': 68719476734, 'col17': 68719476734, 'col18': 68719476734, 'col19': 68719476734, 'col20': 68719476734, 'col21': 68719476734, 'col22': 68719476734, 'col23': 68719476734, 'col24': 68719476735, 'col25': 68719476734, 'col26': 68719476734, 'col27': 68719476734, 'col28': 68719476734, 'col29': 68719476734, 'col30': 68719476734, 'col31': 137405399038, 'col32': 68719476734, 'col33': 68719476734, 'col34': 68719476734}
+Namespace(name='chip602_130V', outdir='../../kit-adl/cleanAstroPix/amanda_python/logInj/chip602_pixelScan_0.3Vinj', yaml='config_none', threshold=None, maxtime=0.5, colrange=[0, 34], rowrange=[0, 34], vinj=300.0, saveascsv=True)
+0	b'80aabcbcbcbcbcbcbcbc201829408620f929e00920182940302018eb00cf20f91d200120181d808b2018a1807a20f9a180c2bcbc20180c805c20f90c80f8bc20'
+1	b'5c20f90c80f8bc20bc20f957b0db201857506bbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc20180e80da20f90e8002bcbcbcbcbc20185b805c20'
+2	b'bcbc20185b805c20bcbc201831b0fe20f9318060bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc20180780c020f9070017bcbcbcbcbcbcbcbcbcbcbcbc2018308093'
+3	b'bcbcbc2018308093bcbc2018f2000a20f9f2c0e4bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+4	b'bcbcbcbcbcbcbcbcbc00c040f82000c0707620e0d3902fbcbcbcbc201809802020f90980c02018ca00e020f9ca00a9bcbcbcbcbcbcbc2018a0800120f9a28066'
+5	b'a0800120f9a28066bcbc008080c0201822205b20181100a020f91160df2018ad80b320f9ad80cdbcbcbcbcbcbcbcbcbcbcbcbcbc201842806720f94280d32018'
+6	b'6720f94280d32018bce08056201815102120f915306a2018f580df2018d0808c20f9d0401f2018d2800f20f9d2806b2018d0800d20f9d080a920182880962018'
