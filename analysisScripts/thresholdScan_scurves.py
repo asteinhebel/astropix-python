@@ -169,9 +169,10 @@ def main(args):
 	npix, nc = get_noisyPix(mapArr[-1], args.savePlot) #get all pixels with more counts than 0 from highest threshold scan
 	print(f"{len(npix)} noisy pixels (counts> {nc})")
 	if args.saveCSV:
-		deadDF = pd.DataFrame(npix, columns = ['Rows', 'Cols'])
+		noisyDF = pd.DataFrame(npix, columns = ['Rows', 'Cols'])
+		noisyDF = noisyDF.append(deadDF,ignore_index=True)
 		print(f"Saving {saveDir}noisyPixels_{threshold[-1]}mV_above{nc}.csv")
-		deadDF.to_csv(f"{saveDir}noisyPixels_{threshold[-1]}mV_above{nc}.csv")
+		noisyDF.to_csv(f"{saveDir}noisyPixels_{threshold[-1]}mV_above{nc}.csv")
 		
 	#Calculate some interesting/relevant values
 	plots=np.array(plots)
@@ -185,11 +186,11 @@ def main(args):
 #################################################################
 if __name__ == "__main__":
 
-	saveDir = os.getcwd()+"/plotsOut/thresholdScan/" #hardcode location of dir for saving output plots
+	saveDir = os.getcwd()+"/plotsOut/thresholdScan/chip604/" #hardcode location of dir for saving output plots
 	dirPath = os.getcwd()[:-15] #go one directory above the current one where only scripts are held
 
 	parser = argparse.ArgumentParser(description='Plot array data comparing default and optimized comparator DACs')
-	parser.add_argument('-i', '--inputDir', default='../thresholdScan602/', required=False,  
+	parser.add_argument('-i', '--inputDir', default='../thresholdScan604/', required=False,  
         help='Directory containing repos of data files, from main git repo space.')
 	parser.add_argument('-m', '--masks', action='store_true', default=False, required=False, 
 		help='Create figures of full array with good vs noisy pixels (previously called masks). Default: False')
