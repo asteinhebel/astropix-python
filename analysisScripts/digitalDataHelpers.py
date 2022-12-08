@@ -84,7 +84,27 @@ def getDF_singlePix_extraVars(f, pix=[0,0]):
 	df=df[df['Locatn_col']==pix[1]]
 	return df.reset_index(), int(lenIn), int(lenR), int(lenC), int(lenTrigs)
 	
-	
+def getDF_fullArr(f):
+	df=pd.read_csv(f)
+	print(f)
+	print(f'Input DF length: {len(df)}')
+	#Drop any hit from count 0 - FPGA dump
+	try:
+		df=df[df['NEvent']!=0]
+	except KeyError: #more modern files change the variable names, no FPGA dump
+		df.rename(columns={"readout": "NEvent", "timestamp": "tStamp","location": "Locatn","tot_us": "ToT(us)", "isCol":"Row/Col", "hittime":"RealTime"},inplace=True)
+		df.drop(columns=['dec_order'], inplace=True)	
+		#convert boolean column to Row/Col structure
+		df['Row/Col'] = df['Row/Col'].replace({True: 'Col', False: 'Row'})
+	#put matching row and column info in one line
+	df_row = df[df["Row/Col"] == "Row"]
+	df_col = df[df["Row/Col"] == "Col"]	
+	df = df_row.merge( df_col, how="outer", on = ["tStamp","NEvent"], suffixes = ["_row", "_col"] )
+	df.dropna(inplace=True)
+	#Drop duplicates	
+	df.drop_duplicates(subset=["tStamp", "NEvent"], keep=False, inplace=True, ignore_index=True)
+	return df.reset_index()
+		
 #visualize array
 def arrayVis(arrIn, barRange=None, barTitle:str=None, invert:bool=False):
 
