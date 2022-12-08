@@ -1,0 +1,26 @@
+Voltageboard settings: [1.1, 1, 0, 0, 1, 1.1, 0, 0]
+Digital: {'interrupt_pushpull': 1, 'en_inj': 0, 'reset': 0, 'extrabits': 0}
+Biasblock: {'DisHiDR': 0, 'q01': 0, 'qon0': 0, 'qon1': 1, 'qon2': 0, 'qon3': 1}
+DAC: {'blres': 0, 'nu1': 0, 'vn1': 20, 'vnfb': 3, 'vnfoll': 10, 'nu5': 0, 'nu6': 0, 'nu7': 0, 'nu8': 0, 'vn2': 0, 'vnfoll2': 4, 'vnbias': 0, 'vpload': 5, 'nu13': 0, 'vncomp': 2, 'vpfoll': 60, 'nu16': 0, 'vprec': 15, 'vnrec': 2}
+Receiver: {'col0': 68719476734, 'col1': 68719476734, 'col2': 68719476734, 'col3': 68719476734, 'col4': 68719476734, 'col5': 68719476734, 'col6': 68719476734, 'col7': 274877898750, 'col8': 68719476734, 'col9': 68719476734, 'col10': 68719476734, 'col11': 68719476734, 'col12': 68719476735, 'col13': 68719476734, 'col14': 68719476734, 'col15': 68719476734, 'col16': 68719476734, 'col17': 68719476734, 'col18': 68719476734, 'col19': 68719476734, 'col20': 68719476734, 'col21': 68719476734, 'col22': 68719476734, 'col23': 68719476734, 'col24': 68719476734, 'col25': 68719476734, 'col26': 68719476734, 'col27': 68719476734, 'col28': 68719476734, 'col29': 68719476734, 'col30': 68719476734, 'col31': 68719476734, 'col32': 68719476734, 'col33': 68719476734, 'col34': 68719476734}
+Namespace(name='chipHR3_20V', outdir='../../kit-adl/cleanAstroPix/amanda_python/logInj/chipHR3_pixelScan_0.3Vinj/', yaml='config_none', threshold=None, maxtime=0.5, colrange=[0, 34], rowrange=[0, 34], vinj=None, saveascsv=True)
+0	b'20e19440782030f4bc20d52030e8008020e0e830fa2030f8c00020e1f840af2030e380ca20e1e3804cbcbcbcbcbcbcbcbcbcbcbcbcbc20308880e620e18880a2'
+1	b'8880e620e18880a2bcbc20302ca07e20e11dd0be2030cf40f920e1cf00292030a4007220e1a4009c203022809220e1228064bcbcbcbcbcbcbcbc203042c04620'
+2	b'bcbc203042c04620bcbc2030c5308720e1c5b019bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc203050c04a20e150c08c'
+3	b'50c04a20e150c08cbcbc20304e301120e14e00bcbcbcbcbc20301d00cf20e11d000bbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc2030ff40ec20e1ff'
+4	b'2030ff40ec20e1ffbc0020203087700020e187804bbcbcbcbcbcbcbcbc20308b80aa20e18b804cbcbcbcbcbcbc20302e400c20e12e40b0bc20300980fa20e109'
+5	b'20300980fa20e109bcbc203090a09f20e190e0912030df802720e1df8043bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+6	b'bcbcbcbcbcbcbcbcbc20309fb04320309fb02b20302c80c020e12c702ebcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+7	b'bcbcbcbcbcbcbcbcbcbc2030f8b02820e1f83096bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc20308540fb20e18540bdbcbcbcbcbcbc20306c009f20e16c00ebbcbc'
+8	b'9f20e16c00ebbcbcbcbc203075e06720e1759062bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+9	b'bcbcbcbcbcbcbcbcbcbc2030e8b08320e1e8f095bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc2030d4801d20e1d48069203040002f20e140004b2030c1801d20'
+10	b'004b2030c1801d20bce094405820308880c020e1882070bcbcbcbcbcbcbcbcbcbcbcbc203054c0f620e140c032bc203022002b20e122008dbcbcbcbcbcbcbcbc'
+11	b'bcbcbcbcbcbcbcbcbcbc203005a06920e1056028bcbcbcbcbcbcbc203079400f20e17940b3bc20302d808b20e12d80f5bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+12	b'bcbcbcbcbcbcbcbcbcbc203045c08320e14540c520308b20f020e18bc037bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+13	b'bcbcbcbcbcbcbcbcbcbc2030aa407520e1aa2083bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc2030ca402b20e1ca404dbcbcbcbcbcbc20309f40f920e19f40'
+14	b'309f40f920e19f40bcbc203083c03820e1838036bcbcbcbcbcbcbcbcbcbcbcbcbcbc2030b1403f20e1b1405bbcbcbcbc2030b780b820e1b700dfbcbcbcbcbcbc'
+15	b'00dfbcbcbcbcbcbcbcbc20308f10f920e18f60f8bc20308580f620e1058072bcbcbcbcbc20306880be20e168805a20309b80ef20e19b802b2030a3c0c42030f4'
+16	b'2030a3c0c42030f4bcc053203080f0e020e188808cbcbcbcbcbcbc203000407720e0174033bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc20302540c020e12540'
+17	b'302540c020e12540bcbc2030aa00002030bec0ce20308b40fa20e10b102120306b40c1203054807920e154c07b203051c0f620e151c0b2bcbcbcbcbcbcbcbc20'
+18	b'bcbcbcbcbcbcbc20bc20e183b07e2030839081bcbcbcbcbc2030b3407f20e1b340bbbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc2030d7408420e1d780'
+19	b'30d7408420e1d780bce02030c270a32030c0f0e120e0c2102b2030a6604020e1a060a92030cfc0c9203020801620e12020ad2030e0005720e1f60013bcbcbcbc'
