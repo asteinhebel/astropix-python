@@ -1,0 +1,25 @@
+Voltageboard settings: [1.1, 1, 0, 0, 1, 1.1, 0, 0]
+Digital: {'interrupt_pushpull': 1, 'en_inj': 0, 'reset': 0, 'extrabits': 0}
+Biasblock: {'DisHiDR': 0, 'q01': 0, 'qon0': 0, 'qon1': 1, 'qon2': 0, 'qon3': 1}
+DAC: {'blres': 0, 'nu1': 0, 'vn1': 20, 'vnfb': 3, 'vnfoll': 10, 'nu5': 0, 'nu6': 0, 'nu7': 0, 'nu8': 0, 'vn2': 0, 'vnfoll2': 4, 'vnbias': 0, 'vpload': 5, 'nu13': 0, 'vncomp': 2, 'vpfoll': 60, 'nu16': 0, 'vprec': 15, 'vnrec': 2}
+Receiver: {'col0': 68719476734, 'col1': 68719476734, 'col2': 68719476734, 'col3': 68719476734, 'col4': 68719476734, 'col5': 68719476734, 'col6': 68719476734, 'col7': 68719476734, 'col8': 68719476734, 'col9': 257698037758, 'col10': 68719476734, 'col11': 68719476734, 'col12': 68719476734, 'col13': 68719476734, 'col14': 68719476734, 'col15': 68719476734, 'col16': 68719476734, 'col17': 68719476734, 'col18': 68719476734, 'col19': 68719476734, 'col20': 68719476734, 'col21': 68719476734, 'col22': 68719476734, 'col23': 68719476734, 'col24': 68719476734, 'col25': 68719476734, 'col26': 68719476734, 'col27': 68719476734, 'col28': 68719476734, 'col29': 68719476734, 'col30': 68719476734, 'col31': 68719476734, 'col32': 68719476734, 'col33': 68719476735, 'col34': 68719476734}
+Namespace(name='chipHR3_20V', outdir='../../kit-adl/cleanAstroPix/amanda_python/logInj/chipHR3_pixelScan_0.3Vinj/', yaml='config_none', threshold=None, maxtime=0.5, colrange=[0, 34], rowrange=[0, 34], vinj=None, saveascsv=True)
+0	b'913980d0bcbcbcbcbcbc20843690aa20914060bebcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc208487009f20918700172084da80f92091da80b1bcbcbcbcbcbcbc'
+1	b'b1bcbcbcbcbcbcbcbcbc208421705320912160acbcbcbcbcbcbcbcbcbcbcbcbcbc2084a400c62091a4006abcbcbc20840600bb20910600b3bcbcbcbcbcbcbcbc'
+2	b'bcbcbcbcbcbcbcbcbcbc8074802e208490c0b7bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
+3	b'bcbcbcbcbcbcbcbcbcbc2084e2d0b72091e2903520844300e3209143006dbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc20844b403320914b40ddbcbcbcbcbc'
+4	b'4b40ddbcbcbcbcbcbcbc2084ff607f2091ffc08fbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc208470804c20845c800f20919c40ffbcbcbcbc'
+5	b'919c40ffbcbcbcbcbc00402084c020ed2080c6c08abcbcbcbcbc20842000ba209120004abcbcbc208440c02020914f40cfbcbcbcbcbcbcbcbc20842b00cd2091'
+6	b'bc20842b00cd2091bcbc20845d008720919df08bbcbcbcbcbcbcbcbc208493407b209193405d208444401c2091444064bcbcbcbcbcbcbcbcbcbcbcbcbcbc2084'
+7	b'bcbcbcbcbcbc2084bc2080b5208440701c209156b0562084bcc01820911b2053208460c04020916080382084b140452091b140f1208414401a20911440a22084'
+8	b'1a20911440a22084bc0080b120843dd08520913d503bbcbcbcbcbc208446a0da209146a01c2084ec80a12091ec802ebcbcbcbcbcbcbcbcbc2084944041209194'
+9	b'2084944041209194bc2084b080082084cb500e20914bb072bcbc208460c086209160c0f2bcbcbcbcbcbcbcbcbc20843f40ca20913f40822084d900012091d900'
+10	b'84d900012091d900bcbc208437204b209137c09c2084f840b22091f840342084e0c0e62091e0c06abcbcbcbcbcbcbcbc20843f00fe803f00e0208442008dbcbc'
+11	b'e0208442008dbcbcbcbc208456c0d120915680cebcbcbcbcbc208411408420911140d0bcbcbcbcbcbcbcbcbcbcbcbcbcbc208468e03a208468b007209168b0bd'
+12	b'68b007209168b0bdbcbc2084b770282091b7d007bcbcbcbcbc2084b7005220847b40dc20917b409ebcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc2084834000209183'
+13	b'2084834000209183bcc0f7208420406e20912040c8bcbcbcbcbcbcbcbcbc2084c040692080ce4021bcbcbcbcbcbc2080b040d02080b0805f2084fe006d20910a'
+14	b'2084fe006d20910abc20ab2084882053209188a05520846d00a020913080a4208436a03a2091d6a01dbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc20843c40d72091'
+15	b'bc20843c40d72091bcbc2084f5e0fd2091f5a090bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc208478c083209178c0f5bcbcbcbcbcbcbcbc'
+16	b'bcbcbcbcbcbcbcbcbcbc2084a300742091a370ccbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc208445c0f8209145403f20848140ab20918140c32084ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'
+17	b'ab20918140c32084bcc080bf2080b860922091b8a031bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc20843140aa20913140c220845f406720915f40ab20849c'
+18	b'20915f40ab20849cbcc0a82084c0f0172080dda048bcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbcbc'
