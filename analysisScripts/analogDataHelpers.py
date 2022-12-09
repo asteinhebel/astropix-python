@@ -21,3 +21,32 @@ def getDF(f):
 	df = pd.DataFrame(dataArr, columns=['Peaks','Time', 'AnalogToT'])
 	return df
 
+def new_i(arr):
+	#identify each different setting in run
+	#if more than 1s between triggers, then it's a new setting
+	diffArr=np.diff(arr)
+	indexArray=np.where(diffArr>1)
+	indexArray=np.insert(indexArray,0,0)
+	return indexArray
+
+def get_average_traces( filename , smoothing:int=50):
+	#smoothing = how many points from original curve are skipped before plotting the next one. 
+	#			 Original curve has 10k points
+	#			 Smaller value of 'smoothing' leads to noisier curve 
+
+	f = h5py.File(filename, 'r')
+	traces = f['run1'] #baseline subtracted already
+	time = f['run1_trigTime']
+	scalingDict = f['run1_scaling']
+	mean=[]
+
+	newRun=new_i(time)
+	for i in range(1,len(newRun)):
+		#smooth curve
+		mean.append(np.mean(traces[newRun[i-1]:newRun[i]], axis = 0)[0::smoothing])
+		
+	#Remove sections that do not have recorded traces (ie when number of recorded traces was exceeded during data taking but pulse heights were still recorded)
+	mean=np.array(mean)
+	noNan=np.array([~np.isnan(i[0]) for i in mean])
+	
+	return mean[noNan], scalingDict[1] #xincrement in us
