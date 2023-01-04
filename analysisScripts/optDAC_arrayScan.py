@@ -6,43 +6,18 @@ import os,sys, glob
 import argparse
 
 import digitalDataHelpers as ddh
+import calcHelpers as clch
+import plotHelpers as plth
 
 #################################################################
 # helper functions
-#################################################################
-
-def getRowCol(f):
-
-	r,c = -1, -1
-	
-	parts=f.split('_')
-	rStr = [p for p in parts if "row" in p]
-	cStr = [p for p in parts if "col" in p]
-	r = rStr[0][3:] #eliminate 'row'
-	c = cStr[0][3:] #eliminate 'col'
-	
-	return r,c
-	
-def Gauss(x, A, mu, sigma):
-    return A*np.exp(-(x-mu)**2/(2.0*sigma**2))
-    
-def fitHist(data,label,nmbBins):
-	hist=plt.hist(data, nmbBins, range=[0,20.48], alpha=0.3, label=label) 
-		#20.48 = max ToT value now with updated decoder clock tiem of 5ns
-	ydata=hist[0]
-	binCenters=hist[1]+((hist[1][1]-hist[1][0])/2)
-	binCenters=binCenters[:-1]
-	muGuess = binCenters[np.argmax(ydata)] #bin with most entries most likely to be near peak of distribution
-	p0=[ydata.max(),muGuess,muGuess/2] #amp, mu, sig
-	try:
-		popt, pcov = curve_fit(Gauss, xdata=binCenters, ydata=ydata, p0=p0, absolute_sigma=True)
-	except RuntimeError: #fit won't converge, close to zero but allows for division
-		popt = [1e-32, 1e-32, 1e-32]
-	
-	return hist, popt
+#################################################################	
 	
 def getToTVals(dataDF):
-
+	"""Clean data and fit ToT distributions of row and column hits separately to Gaussians
+	Return: mean and sigma fit parameters from row data
+			mean and sigma fit parameters from column data"""
+			
 	#Skip consideration of empty data frames (no matching row/col hits)
 	if dataDF.empty:
 		return -1,-1,-1,-1
@@ -50,29 +25,20 @@ def getToTVals(dataDF):
 	binSize=0.25 #0.25us bins
 	nmbBins=int(40.96/2/binSize)
 	
-	hist_r, (amp_r, mean_r, std_r) = fitHist(dataDF['ToT(us)_row'],"row", nmbBins)
-	hist_c, (amp_c, mean_c, std_c) = fitHist(dataDF['ToT(us)_col'],"col", nmbBins)
+	(amp_r, mean_r, std_r)= clch.fitGauss(dataDF['ToT(us)_row'], nmbBins, [0,20.48], alpha_in=0.3)
+	(amp_c, mean_c, std_c) = clch.fitGauss(dataDF['ToT(us)_col'], nmbBins, [0,20.48], alpha_in=0.3)
 	
 	#return fit parameters and abs. value of sigma
 	return mean_r, mean_c, np.abs(std_r), np.abs(std_c)
 	
-def makePlots(dataIn,title,fname, invert:bool=False):
+def makePlots(dataIn,title,fname,invert:bool=False):
+	"""Plot visualization of full array and the input data value in each pixel
+			Plot histogram of same data"""
 
 	dataHist=dataIn[~np.isnan(dataIn)]#remove NaNs to simplify histogram calculation
-	#identify if plot should be on 0-100 or 0-20.5 scale from title
-	if 'mean' or 'FWHM' in title:
-		rnge=[0,21] #don't show empty datasets or outliers
-	elif '%' in title:
-		rnge=[0,100]
-	elif 'Row/Col' in title:
-		rnge=[0,2] #don't show empty datasets or outliers
-	elif 'std' in title:
-		rnge=[0,10] #don't show empty datasets or outliers
-	else:
-		rnge=[dataHist.min(),dataHist.max()]
-
+	
 	#Make array map
-	mapFig=ddh.arrayVis(dataIn, barRange=rnge, barTitle=title, invert=True)
+	mapFig=plth.arrayVis(dataIn, barTitle=title, invert=True)
 	if args.savePlot:
 		titleSave=title.replace(" ", "")
 		saveName = f"{fname}_map_{titleSave}"
@@ -83,7 +49,7 @@ def makePlots(dataIn,title,fname, invert:bool=False):
 		plt.show()
 	
 	#make histogram of flattened dataIn#
-	plt.hist(dataHist, range=rnge, bins=100, density=True)
+	plt.hist(dataHist, bins=100, density=True)
 	plt.xlabel(title)
 	plt.tight_layout()
 	if args.savePlot:
@@ -96,6 +62,7 @@ def makePlots(dataIn,title,fname, invert:bool=False):
 	
 	
 def histCompare(data1, data2, title, labels=None, leadName=None):
+	"""Plot two histograms for two input data sets on same axis"""
 
 	data1Hist=data1[~np.isnan(data1)]#remove NaNs to simplify histogram calculation
 	data2Hist=data2[~np.isnan(data2)]#remove NaNs to simplify histogram calculation
@@ -181,7 +148,7 @@ def main(args):
 		#Extract data from input files - store bulk properties in bulkDF and individual DFs in dfDict dictionary
 		print("Getting data from all input files")
 		for f in files:
-			r,c = getRowCol(f) #find activated pixel
+			r,c = ddh.getRowCol(f) #find activated pixel
 			dfIn, origLen, origR, origC, trigs = ddh.getDF_singlePix_extraVars(f, [r,c]) #get info about the full data run ("bulk") and dataframe with info about every trigger from that pixel
 			dfDict[f'r{r}c{c}'] = dfIn
 			mean_r, mean_c, std_r, std_c = getToTVals(dfIn) #get ToT distribution values

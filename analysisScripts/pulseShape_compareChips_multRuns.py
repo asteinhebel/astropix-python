@@ -13,36 +13,6 @@ from scipy.optimize import curve_fit
 # helper functions
 #################################################################
 
-def new_i (arr):
-	#identify each different setting in run
-	#if more than 1s between triggers, then it's a new setting
-	diffArr=np.diff(arr)
-	indexArray=np.where(diffArr>1)
-	indexArray=np.insert(indexArray,0,0)
-	return indexArray
-
-def get_average_traces( filename , smoothing:int=50):
-	#smoothing = how many points from original curve are skipped before plotting the next one. 
-	#			 Original curve has 10k points
-	#			 Smaller value of 'smoothing' leads to noisier curve 
-
-	f = h5py.File(filename, 'r')
-	traces = f['run1'] #baseline subtracted already
-	time = f['run1_trigTime']
-	scalingDict = f['run1_scaling']
-	mean=[]
-
-	newRun=new_i(time)
-	for i in range(1,len(newRun)):
-		#smooth curve
-		mean.append(np.mean(traces[newRun[i-1]:newRun[i]], axis = 0)[0::smoothing])
-		
-	#Remove sections that do not have recorded traces (ie when number of recorded traces was exceeded during data taking but pulse heights were still recorded)
-	mean=np.array(mean)
-	noNan=np.array([~np.isnan(i[0]) for i in mean])
-	
-	return mean[noNan], scalingDict[1] #xincrement in us
-
 	
 #################################################################
 # main
@@ -52,13 +22,13 @@ def main():
 	
 	#plot average trace at given injection
 	smooth=1
-	avePlots1,xincr1 = get_average_traces(dataDir+in1, smoothing=smooth)
+	avePlots1,xincr1 = adh.get_average_traces(dataDir+in1, smoothing=smooth)
 	pltpts1 = len(avePlots1[2])
 	traceTime1 = 10000*xincr1*1e6
 	time_us1 = np.arange(0, traceTime1, traceTime1/pltpts1)
 	plt.plot(time_us1, avePlots1[2], label=label1)
 
-	avePlots2,xincr2 = get_average_traces(dataDir+in2, smoothing=smooth)
+	avePlots2,xincr2 = adh.get_average_traces(dataDir+in2, smoothing=smooth)
 	xratio = int(xincr2 / xincr1)
 	time_us2 = time_us1[0::xratio]
 	#Nominally 2000 baseline points before pulse

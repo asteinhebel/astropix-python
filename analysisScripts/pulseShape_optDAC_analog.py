@@ -2,45 +2,18 @@ import pandas as pd
 import numpy as np
 import h5py
 import matplotlib.pyplot as plt
+from scipy.optimize import curve_fit
 import os,sys
 import argparse
 
 import digitalDataHelpers as ddh
 import analogDataHelpers as adh
-from scipy.optimize import curve_fit
+import calcHelpers as clch
+import plotHelpers as plth
 
 #################################################################
 # helper functions
 #################################################################
-
-def new_dac_i (arr):
-	#identify each different setting in run
-	#if more than 1s between triggers, then it's a new setting
-	diffArr=np.diff(arr)
-	indexArray=np.where(diffArr>1)
-	indexArray=np.insert(indexArray,0,0)
-	return indexArray
-
-def get_average_traces( filename , smoothing:int=50):
-	#smoothing = how many points from original curve are skipped before plotting the next one. 
-	#			 Original curve has 10k points
-	#			 Smaller value of 'smoothing' leads to noisier curve 
-
-	f = h5py.File(filename, 'r')
-	traces = f['run1'] #baseline subtracted already
-	time = f['run1_trigTime']
-	mean=[]
-
-	newDac=new_dac_i(time)
-	for i in range(1,len(newDac)):
-		#smooth curve
-		mean.append(np.mean(traces[newDac[i-1]:newDac[i]], axis = 0)[0::smoothing])
-		
-	#Remove sections that do not have recorded traces (ie when number of recorded traces was exceeded during data taking but pulse heights were still recorded)
-	mean=np.array(mean)
-	noNan=np.array([~np.isnan(i[0]) for i in mean])
-	
-	return mean[noNan]
 	
 def makeTitle(saveDir, txtin, ext='.png'):
 	if len(args.title)>0:
@@ -68,7 +41,7 @@ def get_baseline_plt(filename, labels, saveDir):
 	xRms=np.linspace(0,max(rmsArr),50)
 
 	#sort by DAC config
-	newDac=new_dac_i(time)
+	newDac=adh.new_i(time)
 	for i in range(1,len(newDac)):
 		hist,binEdges=np.histogram(varArr[newDac[i-1]:newDac[i]], bins=xVar)
 		plt.hist(varArr[newDac[i-1]:newDac[i]], bins=xVar, alpha=0.4, label=labels[i-1])
@@ -111,7 +84,7 @@ def main(args):
 	print(f"Analog hit rate = {anaRate:.3f} Hz")
 	
 	#plot average trace at each DAC setting
-	avePlots = get_average_traces(dataDir+args.inputAnalog, smoothing=5)
+	avePlots, scale = adh.get_average_traces(dataDir+args.inputAnalog, smoothing=5)
 	pltpts = len(avePlots[0])
 	#labels=[i for i in range(1,len(avePlots)+1)]
 	labels=np.arange(5,61,5)

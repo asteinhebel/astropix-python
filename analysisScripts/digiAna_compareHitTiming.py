@@ -14,6 +14,9 @@ from scipy.optimize import curve_fit
 # helper functions
 #################################################################
 def add_scaled_time(ana,digi):
+	"""Add series to analog and digital dataframes scaling the timing variable from 
+			time since first epoch to time since first trigger
+	Return: analog and digital dictionaries storing data, with scaled time array added in"""
 	#Real times recorded in s
 	t_start = min(ana['Time'].iloc[0],digi['Time'].iloc[0], digi['RealTime_col'].iloc[0])
 	ana['Time_scale']=[t-t_start for t in ana['Time']]
@@ -21,11 +24,16 @@ def add_scaled_time(ana,digi):
 	return ana, digi
 
 def find_nearest(array, value):
+	"""Find closest element in array to an input value
+	Return: value of array element that is closest to the input value"""
     array = np.asarray(array)
     idx = (np.abs(array - value)).argmin()
     return array[idx]
     
 def find_coincidence(searchArray, val, window=0.05):
+	"""For a given value, find whether there is an entry in an input array that is within the given distance
+	Return: index of value from array that is closest to the given value, 
+			difference between given value and array element that is closest to it (to which it is matched)"""
 	#find closest element in searchArray to val, returns value of closest element
 	potential_match=find_nearest(searchArray, val)
 	
@@ -37,28 +45,25 @@ def find_coincidence(searchArray, val, window=0.05):
 	return matched_i, deltaT
 	
 def find_pairs(bigArr, smallArr, smallStr, w, optname=""):
+	""" Given two arrays of any size, find whether elements from smaller array are contained within larger array
+	Return: 2d array containing indices of larger array that match an element of the smaller array and the difference of the matched pairs
+			Number of values from larger array that do not have a match in the smaller array"""
 	#With each element of random array, see if there is an element of the longer array within the window (w)	
 	pairs = np.array([find_coincidence(bigArr, j, window=w) for j in smallArr])
 	matched_i = pairs[:,0] #element of bigArr that found a match in smallArr
 	deltaT = pairs[:,1]
-	unmatched = np.count_nonzero(np.isnan(matched_i)) #number of unmatched events\
+	unmatched = np.count_nonzero(np.isnan(matched_i)) #number of unmatched events
 	logging.debug(f"{unmatched} / {len(smallArr)} {smallStr} hits ({unmatched/len(smallArr)*100:.3f}%) are unmatched in {optname} DIST with window = {w:.3f}")
 
 	return pairs, unmatched
 	
-def make_hist(x, arrays, labels, titles, sve:str='histogram.png'):
-	plt.clf()
-	hist = plt.hist(arrays[0],x,label=labels[0])
-	plt.hist(arrays[1],x,alpha=0.6,label=labels[1])
-	plt.legend(loc='best')
-	plt.title(titles[0])
-	plt.xlabel(titles[1])
-	plt.ylabel(titles[2])
-	plt.savefig(sve)
-	logging.info(f"Saving {sve}")
-	if args.showPlots: plt.show()
-	
 def optimize_window(moreHits, lessHits, moreStr, lessStr, showPlot):
+	"""Optimize the size of the timing window to use when identifying coincident digital and analog triggers
+			Compare time difference between matched elements of smaller dataset (between analog and digital) to a random data set
+			Compare time difference between matched elements of smaller dataset to larger dataset
+			Identify whether random data set or larger data set is a closer match to smaller dataset
+			Find optimal window from where the better fitting curve of deltaT vs window size flattens out 
+	Return: optimal value to use as comparison window"""
 	logging.info("Optimizing the time window for matching")
 	
 	#Initialize random distribution for comparison - same length as longer array
@@ -122,6 +127,20 @@ def optimize_window(moreHits, lessHits, moreStr, lessStr, showPlot):
 	logging.debug(f"Optimal window value: {optVal:.3f} s")
 
 	return optVal
+	
+
+def make_2hist(x, arrays, labels, titles, sve:str='histogram.png'):
+	"""Plot two histograms on same axes"""
+	plt.clf()
+	hist = plt.hist(arrays[0],x,label=labels[0])
+	plt.hist(arrays[1],x,alpha=0.6,label=labels[1])
+	plt.legend(loc='best')
+	plt.title(titles[0])
+	plt.xlabel(titles[1])
+	plt.ylabel(titles[2])
+	plt.savefig(sve)
+	logging.info(f"Saving {sve}")
+	if args.showPlots: plt.show()
 
 #################################################################
 # main
@@ -241,7 +260,7 @@ def main(args):
 	xtot=np.arange(42)
 	xtot2=np.arange(0,42,0.5)
 	outname = f"{saveDir}{nm}_hist_pairs_ToT.png"
-	make_hist(xtot, [ana_ToT,digi_ToT], ['analog','digitalRow'], ['All Hits', 'ToT [us]', 'Counts'], sve=outname)
+	make_2hist(xtot, [ana_ToT,digi_ToT], ['analog','digitalRow'], ['All Hits', 'ToT [us]', 'Counts'], sve=outname)
 	
 	#Plot real hit time wrt earliest recorded hit - scatter
 	plt.clf()
@@ -393,18 +412,18 @@ if __name__ == "__main__":
 	digiIn = "../source/chip602_130V_ba133/optimizedDACs_60min_pixr0c0_20220831-150146.csv"
 	anaIn = "../../astropixOut_tmp/v2/083122_amp1/chip602_130V_barium133_60min.h5py"
 	nm = "optimizedDACs_ba133"
-	
+	"""
 	#30min Ba133, 100ms latency, optimized DACs, pixel 00, -130V bias, vprec60, 5ns clock in decoder
 	digiIn = "../source/chip602_130V_ba133/timingTest/r0c0_30min_20221019-142430.csv"
 	anaIn = "../../astropixOut_tmp/v2/101922_amp1/chip602_130V_r0c0_barium133_30min.h5py"
 	nm = "updatedClock_ba133"
-	"""
 	
+	"""
 	#30min Ba133, 100ms latency, optimized DACs, pixel r0c5, -130V bias, vprec60, 5ns clock in decoder
 	digiIn = "../source/chip602_130V_ba133/timingTest/r0c5_30min_20221019-145731.csv"
 	anaIn = "../../astropixOut_tmp/v2/101922_amp1/chip602_130V_r0c5_barium133_30min.h5py"
 	nm = "updatedClock_r0c5_ba133"
-	
+	"""
 	saveDir = "plotsOut/hitTiming/"
 	
 	#Setup logger
@@ -419,5 +438,3 @@ if __name__ == "__main__":
 
 	main(args)
 	
-	
-	## remove possibility for duplicate matches in moreHits - only match each event in moreHits with a single events in lessHits max

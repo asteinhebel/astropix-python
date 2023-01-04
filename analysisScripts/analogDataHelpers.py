@@ -2,8 +2,10 @@ import pandas as pd
 import numpy as np
 import h5py
 
-#create dataframe from h5py 
+
 def getDF(f):
+	"""Create dataframe from input analog h5py
+	Return: dataframe containing time of trigger, peak height, ToT proxy"""
 	f=h5py.File(f, 'r')
 	labels=[key for key in f.keys()]
 	labels.remove('run1')#remove full traces
@@ -22,14 +24,18 @@ def getDF(f):
 	return df
 
 def new_i(arr):
-	#identify each different setting in run
-	#if more than 1s between triggers, then it's a new setting
+	"""Identify each different setting in run
+		if more than 1s between triggers, then it's a new setting
+	Return: array of array indices where new setting begins"""
 	diffArr=np.diff(arr)
 	indexArray=np.where(diffArr>1)
 	indexArray=np.insert(indexArray,0,0)
 	return indexArray
 
 def get_average_traces( filename , smoothing:int=50):
+	"""Average traces together to find average response
+	Return: array of points that draw the average trace, length of array defined by smoothing variable
+			oscilloscope x increment in us"""
 	#smoothing = how many points from original curve are skipped before plotting the next one. 
 	#			 Original curve has 10k points
 	#			 Smaller value of 'smoothing' leads to noisier curve 

@@ -7,14 +7,16 @@ import os,sys, glob
 import argparse
 from collections import defaultdict
 
-import digitalDataHelpers as ddh
+import plotHelpers as plth
 
 #################################################################
 # helper functions
 #################################################################    
     
 def get_deadPix(arr, sve):
-	#Identify pixels that measure 0 counts for every tested threshold value
+	"""Identify pixels that measure 0 counts for every tested threshold value. Plot map of number of hits in each pixel
+	Return: list of dead pixels as coordinate pairs"""
+	
 	maxThresholdsTested = len(arr)
 	
 	#Identify pixels with 0 counts for each threshold 
@@ -26,7 +28,7 @@ def get_deadPix(arr, sve):
 		
 	#A pixel is dead (returned 0 counts) if the additive value in totArr equals the total number of tested thresholds
 	#Plot
-	mapFig=ddh.arrayVis(totArr==maxThresholdsTested, barTitle=f'Dead pixels')
+	mapFig=plth.arrayVis(totArr==maxThresholdsTested, barTitle=f'Dead pixels')
 	if sve:
 		saveName = f"deadPixels"
 		print(f"Saving {saveDir}{saveName}.png")
@@ -40,6 +42,9 @@ def get_deadPix(arr, sve):
 	return(dpix)
 	
 def get_noisyPix(arr, sve, noiseCount:float=0):
+	"""Identify pixels that are noisy - have more counts than allowed noiseCount value
+	Return: list of noisy pixels as coordinate pairs
+			maximum allowed noise counts"""
 
 	#invert rows to fit array origin
 	arr=np.flip(np.array(arr),0)
@@ -49,6 +54,13 @@ def get_noisyPix(arr, sve, noiseCount:float=0):
 	return(npix, noiseCount)
 	
 def get_optThreshold(plots, x, sve, noiseCount:float=0, perc:float=99):
+	"""Identify optimal threshold for each pixel
+			Identify what threshold is necessary for each pixel individually to be above allowed noise count
+			Scan across threshold values and find % of pixels with optimal threshold below the given threshold
+			Plot array map of optimal threshold values
+			Plot % of pixels with passing (lower) threshold vs threshold 
+			Calculate minimum threshold with given percent of the array passing
+	Return: Minimum threshold with given percent of array passing """
 
 	goodPix = int((35*35) * perc / 100.) #number of pixels that should remain good (counts>noiseCount)
 	#Identify what threshold value is necessary for each pixel to be above noiseCount
@@ -65,7 +77,7 @@ def get_optThreshold(plots, x, sve, noiseCount:float=0, perc:float=99):
 	passingpixperc = [p/35/35*100 for p in passingpix]
 	optThreshInd = min(np.argwhere(np.array(passingpix)>=goodPix)) #smallest value where the optimal threshold for at least `perc` percent of pixels 
 
-	mapFig=ddh.arrayVis(idealThresh, barTitle=f'Ideal Threshold [mV]')
+	mapFig=plth.arrayVis(idealThresh, barTitle=f'Ideal Threshold [mV]')
 	if sve:
 		saveName = f"idealThreshold"
 		print(f"Saving {saveDir}{saveName}.png")
@@ -119,7 +131,7 @@ def main(args):
 			#pp = sum(counts[counts==0.])
 			pp = np.count_nonzero(counts == 10)
 			print(f"{pp} pixels ({pp/1225*100:.2f}%)  have count = 10")
-			mapFig=ddh.arrayVis(mapArr[i], barTitle=f'Counts with {t}mV threshold')
+			mapFig=plth.arrayVis(mapArr[i], barTitle=f'Counts with {t}mV threshold')
 			if args.savePlot:
 				saveName = f"{t}mV_map"
 				print(f"Saving {saveDir}{saveName}.png")

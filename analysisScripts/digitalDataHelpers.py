@@ -2,11 +2,11 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 
-#Eliminates lines in original txt file that are not properly formatted
-## Removes header
-## If bitstream saved, removes bitstream 
-## Save output as csv to local dir
+
 def reduceFile(f, outDir="./csv/"):
+	"""Convert input txt file to csv and save to local dir
+	Return: path to output csv"""
+	
 	fileName=f.split('/')[-1][:-3]
 	outFileName=outDir+fileName+"csv"
 	
@@ -21,9 +21,11 @@ def reduceFile(f, outDir="./csv/"):
 					fileOut.write(csvline)
 	return outFileName
 
-#pull dataframe from CSV and read ToT information
-#ASSUMES A SINGLE PIXEL IS ENABLED
+
 def getDF_singlePix(f, pix=[0,0]):
+	"""With input csv/dataframe, clean data to retain only "good hits" (matching timestamp and trigger in expected pixel) and standardize notation
+			ASSUMES A SINGLE PIXEL IS ENABLED
+	Return: Cleaned dataframe"""
 	df=pd.read_csv(f)
 	print(f)
 	print(f'Input DF length: {len(df)}')
@@ -52,6 +54,14 @@ def getDF_singlePix(f, pix=[0,0]):
 	return df.reset_index()
 	
 def getDF_singlePix_extraVars(f, pix=[0,0]):
+	"""With input csv/dataframe, clean data to retain only "good hits" (matching timestamp and trigger in expected pixel) and standardize notation
+			ASSUMES A SINGLE PIXEL IS ENABLED
+	Return: Cleaned dataframe
+			Original length of dataframe
+			Original number of row hits
+			Original number of column hits
+			Original number of triggered events"""
+	
 	df=pd.read_csv(f)
 	lenIn=len(df)
 	#Drop any hit from count 0 - FPGA dump
@@ -85,6 +95,9 @@ def getDF_singlePix_extraVars(f, pix=[0,0]):
 	return df.reset_index(), int(lenIn), int(lenR), int(lenC), int(lenTrigs)
 	
 def getDF_fullArr(f):
+	"""With input csv/dataframe, clean data to retain only "good hits" (matching timestamp and trigger) and standardize notation
+			allow hit in any pixel
+	Return: Cleaned dataframe"""
 	df=pd.read_csv(f)
 	print(f)
 	print(f'Input DF length: {len(df)}')
@@ -105,33 +118,18 @@ def getDF_fullArr(f):
 	df.drop_duplicates(subset=["tStamp", "NEvent"], keep=False, inplace=True, ignore_index=True)
 	return df.reset_index()
 		
-#visualize array
-def arrayVis(arrIn, barRange=None, barTitle:str=None, invert:bool=False):
 
-	#expecting 35x35 array for arrIn
-	#if invert=True, pixel r0c0 is NOT in bottom left (like in array). invert=True reconfigures arrIn for proper visualization
+def getRowCol(f):
+	"""Identify row and column of active pixel from input file name
+	Return: row and pixel value"""
 
-	if invert:
-		arrIn = np.flip(arrIn,0)
-
-	fig = plt.figure()
-	ax = fig.add_subplot(111)
-	cax=ax.matshow(arrIn)#,cmap=plt.cm.YlOrRd)
-	#redisplay y axis to match proper labeling
-	ylabels=[34-2*i for i in range(18)]
-	ax.set_xticks([2*i for i in range(18)])
-	ax.set_yticks([2*i for i in range(18)])
-	ax.set_yticklabels(ylabels)
-	ax.tick_params(axis="x", bottom=True, top=True, labelbottom=True, labeltop=True)
-	cbar = plt.colorbar(cax)
-	if barRange is not None:
-		cax.set_clim(vmin=barRange[0], vmax=barRange[1])
-	if barTitle is not None:
-		cbar.set_label(barTitle) 	
-	else:
-		cbar.set_label('Counts') 	
-	plt.tight_layout() #reduce margin space	
+	r,c = -1, -1
 	
-	return cax
+	parts=f.split('_')
+	rStr = [p for p in parts if "row" in p]
+	cStr = [p for p in parts if "col" in p]
+	r = rStr[0][3:] #eliminate 'row'
+	c = cStr[0][3:] #eliminate 'col'
 	
+	return r,c
 
