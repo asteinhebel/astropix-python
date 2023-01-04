@@ -41,7 +41,7 @@ def get_deadPix(arr, sve):
 	dpix = np.argwhere(np.flip(totArr,0)==maxThresholdsTested)
 	return(dpix)
 	
-def get_noisyPix(arr, sve, noiseCount:float=0):
+def get_noisyPix(arr, sve):
 	"""Identify pixels that are noisy - have more counts than allowed noiseCount value
 	Return: list of noisy pixels as coordinate pairs
 			maximum allowed noise counts"""
@@ -50,10 +50,10 @@ def get_noisyPix(arr, sve, noiseCount:float=0):
 	arr=np.flip(np.array(arr),0)
 	
 	#Identify which/how many pixels are noisy, where "noise" is counts>noiseCount
-	npix = np.argwhere(arr>noiseCount)
-	return(npix, noiseCount)
+	npix = np.argwhere(arr>args.noiseThresh)
+	return npix
 	
-def get_optThreshold(plots, x, sve, noiseCount:float=0, perc:float=99):
+def get_optThreshold(plots, x, sve):
 	"""Identify optimal threshold for each pixel
 			Identify what threshold is necessary for each pixel individually to be above allowed noise count
 			Scan across threshold values and find % of pixels with optimal threshold below the given threshold
@@ -62,12 +62,12 @@ def get_optThreshold(plots, x, sve, noiseCount:float=0, perc:float=99):
 			Calculate minimum threshold with given percent of the array passing
 	Return: Minimum threshold with given percent of array passing """
 
-	goodPix = int((35*35) * perc / 100.) #number of pixels that should remain good (counts>noiseCount)
+	goodPix = int((35*35) * args.percOn / 100.) #number of pixels that should remain good (counts>noiseCount)
 	#Identify what threshold value is necessary for each pixel to be above noiseCount
 	idealThresh = np.full([35, 35], np.nan)
 	for r,row in enumerate(plots):
 		for c,cols in enumerate(row):
-			ind = np.argwhere(cols>noiseCount)
+			ind = np.argwhere(cols>args.noiseThresh)
 			try:
 				idealThresh[r][c] = x[max(ind)]
 			except ValueError: #if dead pixel, insert zero
@@ -79,7 +79,7 @@ def get_optThreshold(plots, x, sve, noiseCount:float=0, perc:float=99):
 
 	mapFig=plth.arrayVis(idealThresh, barTitle=f'Ideal Threshold [mV]')
 	if sve:
-		saveName = f"idealThreshold"
+		saveName = f"idealThreshold_{args.noiseThresh}noise"
 		print(f"Saving {saveDir}{saveName}.png")
 		plt.savefig(f"{saveDir}{saveName}.png")
 		plt.clf()
@@ -90,7 +90,7 @@ def get_optThreshold(plots, x, sve, noiseCount:float=0, perc:float=99):
 	plt.ylabel("% of active pixels")		
 	plt.tight_layout() #reduce margin space	
 	if sve:
-		saveName = f"percActivePixelsVsThreshold"
+		saveName = f"percActivePixelsVsThreshold_{args.noiseThresh}noise"
 		print(f"Saving {saveDir}{saveName}.png")
 		plt.savefig(f"{saveDir}{saveName}.png")
 		plt.clf()
@@ -106,7 +106,6 @@ def get_optThreshold(plots, x, sve, noiseCount:float=0, perc:float=99):
 
 def main(args):
 
-	threshold = [25, 50, 75, 100,110, 120, 130, 140, 150, 160, 200]
 	dataDirs = [f"{i}mV/" for i in threshold]
 	mapArr=[]
 	
@@ -148,8 +147,6 @@ def main(args):
 	for c in range(35):
 		for r in range(35):
 			curvePts = [m[r][c] for m in mapArr]
-			#plt.plot(threshold,curvePts, marker='o', label=f"r{r} c{c}")
-
 			#INTERPOLATE BETWEEN POINTS FOR SMOOTH CURVE
 			#PCHIP (Piecewise Cubic Hermite Interpolating Polynomial) INTERPOLATION - not twice differentiable like spline
 			interp_x = np.linspace(threshold[0], threshold[-1], xpts)
@@ -178,28 +175,31 @@ def main(args):
 		deadDF.to_csv(f"{saveDir}deadPixels.csv")
 		
 	#Estimate noisy pixels with highest threshold scan
-	npix, nc = get_noisyPix(mapArr[-1], args.savePlot) #get all pixels with more counts than 0 from highest threshold scan
-	print(f"{len(npix)} noisy pixels (counts> {nc})")
+	npix = get_noisyPix(mapArr[-1], args.savePlot) #get all pixels with more counts than args.noiseThresh from highest threshold scan
+	print(f"{len(npix)} noisy pixels (counts> {args.noiseThresh})")
 	if args.saveCSV:
 		noisyDF = pd.DataFrame(npix, columns = ['Rows', 'Cols'])
 		noisyDF = noisyDF.append(deadDF,ignore_index=True)
-		print(f"Saving {saveDir}noisyPixels_{threshold[-1]}mV_above{nc}.csv")
-		noisyDF.to_csv(f"{saveDir}noisyPixels_{threshold[-1]}mV_above{nc}.csv")
+		print(f"Saving {saveDir}noisyPixels_{threshold[-1]}mV_above{args.noiseThresh}.csv")
+		noisyDF.to_csv(f"{saveDir}noisyPixels_{threshold[-1]}mV_above{args.noiseThresh}.csv")
 		
 	#Calculate some interesting/relevant values
 	plots=np.array(plots)
 	#get_optThreshold(plots,threshold)#returns ideal threshold value for `perc` percent of pixels to be above `noiseCounts` noise level
-	perc=50 #percentage of pixels you want activated on array
-	opt=get_optThreshold(plots,interp_x,args.savePlot, perc=perc)
-	print(f"For {perc}% of the array to be active, a threshold of at least {opt[0]:.1f} mV must be set")
+	opt=get_optThreshold(plots,interp_x,args.savePlot)
+	print(f"For {args.percOn}% of the array to be active, a threshold of at least {opt[0]:.1f} mV must be set")
 	
 #################################################################
 # call main
 #################################################################
 if __name__ == "__main__":
 
-	saveDir = os.getcwd()+"/plotsOut/thresholdScan/chip604/" #hardcode location of dir for saving output plots
+	saveDir = os.getcwd()+"/plotsOut/thresholdScan/HR3/" #hardcode location of dir for saving output plots
 	dirPath = os.getcwd()[:-15] #go one directory above the current one where only scripts are held
+	threshold = [25, 50, 75, 100,110, 120, 130, 140, 150, 160, 200]
+	#threshold = [20, 70, 100, 120, 150, 200]
+	#threshold = [10, 25, 50, 75, 100, 150, 200]
+
 
 	parser = argparse.ArgumentParser(description='Plot array data comparing default and optimized comparator DACs')
 	parser.add_argument('-i', '--inputDir', default='../thresholdScan604/', required=False,  
@@ -210,6 +210,10 @@ if __name__ == "__main__":
 		help='Save all plots (no display) to plotsOut/dacOptimization/arrayScan. Default: None (only displays, does not save)')
 	parser.add_argument('-c', '--saveCSV', action='store_true', default=False, required=False, 
 		help='Save CSV of dead/noisy pixel maps to plotsOut/dacOptimization/arrayScan. Default: False')
+	parser.add_argument('-n', '--noiseThresh', default=0, required=False, type=float, 
+        help='Noise threshold - pixels with more than this considered noisy. Default: 0')
+	parser.add_argument('-p', '--percOn', default=50, required=False,  type=float,
+        help='Percent of pixels you want activated in the array - will tell minimum threshold. Default: 50')
 
 	parser.add_argument
 	args = parser.parse_args()
