@@ -46,7 +46,7 @@ def fitSaveGauss(data,title,extraArgs,nmbBins=50, fit=True):
 
 	if fit:
 		#Plot fit
-		xspace = np.linspace(0, max(hist[1]),100)
+		xspace = np.linspace(min(hist[1]), max(hist[1]),100)
 		plt.plot(xspace, clch.Gauss(xspace, amp,mean,sig)) 	
 		plt.plot([], [], ' ', label=f"Amp={amp:.2f}, $\mu$={mean:.3f}, $\sigma$={sig:.3f}")
 		plt.plot([], [], ' ', label=f"R$^2$={r2:.3f}")
@@ -122,6 +122,21 @@ def main(args):
 	os.chdir(args.inputDir)	
 	files_in = sorted(glob.glob(f"*.csv")) #look for csv
 	
+	#variables for plot saving/naming/labling
+	rnge=21.
+	lbel="totMean"
+	ttle="mean ToT [us]"
+	rnge_sig=10.
+	lbel_sig="totSig"
+	ttle_sig="ToT sigma [us]"
+	if args.peaksAnalog:
+		rnge=0.4
+		lbel="peakMean"
+		ttle="mean peak height[V]"
+		rnge_sig=0.05
+		lbel_sig="peakSig"
+		ttle_sig="peak height sigma [V]"
+	
 	#digital data
 	if len(files_in)>0: 
 		for f in files_in: 
@@ -146,15 +161,13 @@ def main(args):
 		anaDF = adh.getDF(anaFile[0])
 		if args.peaksAnalog:
 			analogData = adh.spliced_analog_data(anaDF['Peaks'], anaDF['Time'])
-			binning=50
 		else:
 			analogData = adh.spliced_analog_data(anaDF['AnalogToT'], anaDF['Time'])
-			binning=25
 		#Fit distributions and get mean/sigma
 		#all analog values from row 0
 		rVal=0
 		for cVal,dat in enumerate(analogData):
-			mean,sig,r2 = fitSaveGauss(dat,f"row{rVal},col{cVal}",[rVal,cVal],nmbBins=binning)
+			mean,sig,r2 = fitSaveGauss(dat,f"row{rVal},col{cVal}",[rVal,cVal])
 			totArr[rVal][cVal] = mean
 			sigArr[rVal][cVal] = sig
 			r2Arr[rVal][cVal] = r2
@@ -162,12 +175,11 @@ def main(args):
 	#Make plots - array map and histogram
 	makePlots(r2Arr, 1., "goodness of fit R$^2$", "r2", extraname, fit=False)
 	if args.cleanData is not None:
-		makePlots(totArr, 21., "mean ToT [us]", "totMean", extraname, r2cleaning=[float(args.cleanData),r2Arr])
-		makePlots(sigArr, 1.5, "ToT sigma [us]", "totSig", extraname, bins=80, r2cleaning=[float(args.cleanData),r2Arr])
-
+		makePlots(totArr, rnge, ttle, lbel, extraname, r2cleaning=[float(args.cleanData),r2Arr])
+		makePlots(sigArr, rnge_sig/15., ttle_sig, lbel_sig, extraname, bins=80, r2cleaning=[float(args.cleanData),r2Arr])
 	else:
-		makePlots(totArr, 21., "mean ToT [us]", "totMean", extraname)
-		makePlots(sigArr, 10., "ToT sigma [us]", "totSig", extraname, bins=80)
+		makePlots(totArr, rnge, ttle, lbel, extraname)
+		makePlots(sigArr, rnge_sig, ttle_sig, lbel_sig, extraname, bins=80)
 
 
 #################################################################
@@ -175,7 +187,7 @@ def main(args):
 #################################################################
 if __name__ == "__main__":
 
-	saveDir = os.getcwd()+"/plotsOut/pixelScan_0.3Vinjection/chip602/" #hardcode location of dir for saving output plots
+	saveDir = os.getcwd()+"/plotsOut/pixelScan_0.3Vinjection/chipHR3/analog/" #hardcode location of dir for saving output plots
 	dirPath = os.getcwd()[:-15] #go one directory above the current one where only scripts are held
 
 	parser = argparse.ArgumentParser(description='Consider scans of every pixel in array - look at individual and bulk properties of digital data')
