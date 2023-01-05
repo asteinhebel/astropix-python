@@ -105,15 +105,18 @@ def get_optThreshold(plots, x, sve):
 #################################################################
 
 def main(args):
-
-	dataDirs = [f"{i}mV/" for i in threshold]
-	mapArr=[]
 	
-	#Get data from txt files and store in 35x35 arrays - one array for each threshold value
+	#Find thresholds used by looking at directory names
 	os.chdir(args.inputDir)	
+	dataDirs = os.listdir()
+	threshold=[int(x[:-2]) for x in dataDirs]
+	threshold.sort() #interpolation requires sorted array
+	
+	mapArr=[]
+	#Get data from txt files and store in 35x35 arrays - one array for each threshold value
 	for i,t in enumerate(threshold):
 		counts = np.full([35, 35], np.nan)
-		for f in sorted(glob.glob(f"{dataDirs[i]}/count*{t}mVThresh*.txt")): #get all txt files in datadir in alphabetic order ('sorted' alphabatizes)
+		for f in sorted(glob.glob(f"{t}mV/count*{t}mVThresh*.txt")): #get all txt files in datadir in alphabetic order ('sorted' alphabatizes)
 			parts=f.split('_')
 			cStr = [p for p in parts if "col" in p]
 			colVal = cStr[0][3:] #eliminate 'col'
@@ -196,10 +199,6 @@ if __name__ == "__main__":
 
 	saveDir = os.getcwd()+"/plotsOut/thresholdScan/HR3/" #hardcode location of dir for saving output plots
 	dirPath = os.getcwd()[:-15] #go one directory above the current one where only scripts are held
-	threshold = [25, 50, 75, 100,110, 120, 130, 140, 150, 160, 200]
-	#threshold = [20, 70, 100, 120, 150, 200]
-	#threshold = [10, 25, 50, 75, 100, 150, 200]
-
 
 	parser = argparse.ArgumentParser(description='Plot array data comparing default and optimized comparator DACs')
 	parser.add_argument('-i', '--inputDir', default='../thresholdScan604/', required=False,  
