@@ -195,7 +195,10 @@ def main(chip):
 	
 	#Analog injection plot
 	if analogIn:
-		analogRuns = separateRuns(dfDict['analog']['Time'],dfDict['analog']['Peaks']) if analogPulseHeight else separateRuns(dfDict['analog']['Time'],dfDict['analog']['ToT'])
+		if analogPulseHeight:
+			analogRuns = adh.spliced_analog_data(dfDict['analog']['Peaks'], dfDict['analog']['Time'])
+		else:
+			analogRuns = adh.spliced_analog_data(dfDict['analog']['ToT'], dfDict['analog']['Time'])
 		analogMeans = []
 		analogSigs = []
 		print("Create analog plots")
@@ -226,11 +229,12 @@ def main(chip):
 		
 	#Compare scans
 	if analogIn and analogPulseHeight: #compare analog pulse vs analog ToT	
-		analogToTRuns = separateRuns(dfDict['analog']['Time'],dfDict['analog']['ToT'])
+		#analogToTRuns = separateRuns(dfDict['analog']['Time'],dfDict['analog']['ToT'])
+		analogToTRuns = adh.spliced_analog_data(dfDict['analog']['ToT'],dfDict['analog']['Time'])
 		analogToTMeans = []
 		analogToTSigs = []
 		for i,injV in enumerate(analogToTRuns):
-			mean,sig = fitGauss(injV, (i+1)*0.001, analog=True, compare=True)
+			mean,sig = fitSaveGauss(injV,(i+1)*0.001, analog=True, compare=True)
 			analogToTMeans.append(mean)
 			analogToTSigs.append(sig)
 		print("Comparing analog data")

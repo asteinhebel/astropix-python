@@ -26,11 +26,21 @@ def getDF(f):
 def new_i(arr):
 	"""Identify each different setting in run
 		if more than 1s between triggers, then it's a new setting
+		Requires input `arr` to be timing array
 	Return: array of array indices where new setting begins"""
 	diffArr=np.diff(arr)
 	indexArray=np.where(diffArr>1)
 	indexArray=np.insert(indexArray,0,0)
 	return indexArray
+	
+def spliced_analog_data(arr, time):
+	"""Splice analog data file into separate parts dependent on setting changes
+	Return: 2d list containing the data points (not timing) for each different setting"""
+
+	splice_i = new_i(time)
+	arr = np.array(arr)
+	splice_arr = [arr[splice_i[i]:splice_i[i+1]] for i in range(len(splice_i)-1)]
+	return splice_arr
 
 def get_average_traces( filename , smoothing:int=50):
 	"""Average traces together to find average response
