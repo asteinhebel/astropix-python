@@ -25,11 +25,11 @@ def getDF(f):
 
 def new_i(arr):
 	"""Identify each different setting in run
-		if more than 1s between triggers, then it's a new setting
+		if more than 1.25s between triggers, then it's a new setting
 		Requires input `arr` to be timing array
 	Return: array of array indices where new setting begins"""
 	diffArr=np.diff(arr)
-	indexArray=np.where(diffArr>1)
+	indexArray=np.where(diffArr>1.25)
 	indexArray=np.insert(indexArray,0,0)
 	return indexArray
 	
