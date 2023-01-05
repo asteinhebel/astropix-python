@@ -25,8 +25,8 @@ def fitSaveGauss(data,title,extraArgs,nmbBins=50, fit=True):
 
 	if len(extraArgs)==2:
 		pix=True
-		c=extraArgs[0]
-		r=extraArgs[1]
+		r=extraArgs[0]
+		c=extraArgs[1]
 		pltRange=None
 		normH=False		
 		saveName = f"tot_hist_chip{chip}_col{c}_row{r}"
@@ -53,7 +53,15 @@ def fitSaveGauss(data,title,extraArgs,nmbBins=50, fit=True):
 		plt.legend(loc='best')
 
 	#label plots
-	plt.xlabel("Digital ToT [us]")
+	if not analog:
+		plt.xlabel("Digital ToT [us]")
+	elif args.peaksAnalog:
+		plt.xlabel("Analog Pulse Height [V]")
+		saveName+="_analogPeak"
+	else:
+		plt.xlabel("Analog ToT [us]")
+		saveName+="_analogToT"
+		
 	plt.ylabel("Counts")
 	plt.title(title)
 
@@ -82,8 +90,12 @@ def makePlots(data, rangeMax, title, namestr, extraname, fit=True, bins=40, r2cl
 		data[data == 0] = np.nan
 		print(f"{len(r2[r2<r2min]):.2f} pixels ({len(r2[r2<r2min])/1225*100.:.2f}%) did not pass r2 requirement")
 	
-	plt.clf()
 	mapFigMean=plth.arrayVis(data, barRange=[0.,rangeMax], barTitle=title, invert=True)
+	if analog and args.peaksAnalog:
+		extraname+="_analogPeak"
+	elif analog:
+		extraname+="_analogToT"
+		
 	if args.savePlot:
 		saveName = f"{namestr}_map_chip{str(chip)}{extraname}"
 		print(f"Saving {saveDir}{saveName}.png")
@@ -91,8 +103,7 @@ def makePlots(data, rangeMax, title, namestr, extraname, fit=True, bins=40, r2cl
 		plt.clf()
 	else:
 		plt.show()
-	plt.clf()
-	
+
 	fitSaveGauss(data,title,[rangeMax,bins,namestr,extraname],fit=fit)	
 	
 	
@@ -109,26 +120,50 @@ def main(args):
 
 	#Get data from txt files and store in 35x35 arrays - one array for each threshold value
 	os.chdir(args.inputDir)	
-	for f in sorted(glob.glob(f"*.csv")): #get all txt files in datadir in alphabetic order ('sorted' alphabatizes)
-		parts=f.split('_')
-		cStr = [p for p in parts if "col" in p]
-		cVal = int(cStr[0][3:]) #eliminate 'col'
-		rStr = [p for p in parts if "row" in p]
-		rVal = int(rStr[0][3:]) #eliminate 'row'
-		#Get hits
-		df = ddh.getDF_singlePix(f, pix=[rVal,cVal])
-		#Fit distributions and get ToT mean/sigma
-		mean,sig,r2 = fitSaveGauss(df['ToT(us)_row'],f"row{rVal},col{cVal}",[cVal,rVal])	
+	files_in = sorted(glob.glob(f"*.csv")) #look for csv
+	
+	#digital data
+	if len(files_in)>0: 
+		for f in files_in: 
+			#get all txt files in datadir in alphabetic order ('sorted' alphabatizes)
+			parts=f.split('_')
+			cStr = [p for p in parts if "col" in p]
+			cVal = int(cStr[0][3:]) #eliminate 'col'
+			rStr = [p for p in parts if "row" in p]
+			rVal = int(rStr[0][3:]) #eliminate 'row'
+			#Get hits
+			df = ddh.getDF_singlePix(f, pix=[rVal,cVal])
+			#Fit distributions and get ToT mean/sigma
+			mean,sig,r2 = fitSaveGauss(df['ToT(us)_row'],f"row{rVal},col{cVal}",[rVal,cVal])	
 
-		totArr[cVal][rVal] = mean
-		sigArr[cVal][rVal] = sig
-		r2Arr[cVal][rVal] = r2
-				
+			totArr[rVal][cVal] = mean
+			sigArr[rVal][cVal] = sig
+			r2Arr[rVal][cVal] = r2
+	#no csv files - must be analog data
+	else: 
+		#get analog file and clean hits
+		anaFile = glob.glob(f"*pixelScan*.h5py")
+		anaDF = adh.getDF(anaFile[0])
+		if args.peaksAnalog:
+			analogData = adh.spliced_analog_data(anaDF['Peaks'], anaDF['Time'])
+			binning=50
+		else:
+			analogData = adh.spliced_analog_data(anaDF['AnalogToT'], anaDF['Time'])
+			binning=25
+		#Fit distributions and get mean/sigma
+		#all analog values from row 0
+		rVal=0
+		for cVal,dat in enumerate(analogData):
+			mean,sig,r2 = fitSaveGauss(dat,f"row{rVal},col{cVal}",[rVal,cVal],nmbBins=binning)
+			totArr[rVal][cVal] = mean
+			sigArr[rVal][cVal] = sig
+			r2Arr[rVal][cVal] = r2
+			
 	#Make plots - array map and histogram
 	makePlots(r2Arr, 1., "goodness of fit R$^2$", "r2", extraname, fit=False)
 	if args.cleanData is not None:
 		makePlots(totArr, 21., "mean ToT [us]", "totMean", extraname, r2cleaning=[float(args.cleanData),r2Arr])
-		makePlots(sigArr, 1.5., "ToT sigma [us]", "totSig", extraname, bins=80, r2cleaning=[float(args.cleanData),r2Arr])
+		makePlots(sigArr, 1.5, "ToT sigma [us]", "totSig", extraname, bins=80, r2cleaning=[float(args.cleanData),r2Arr])
 
 	else:
 		makePlots(totArr, 21., "mean ToT [us]", "totMean", extraname)
@@ -143,7 +178,7 @@ if __name__ == "__main__":
 	saveDir = os.getcwd()+"/plotsOut/pixelScan_0.3Vinjection/chip602/" #hardcode location of dir for saving output plots
 	dirPath = os.getcwd()[:-15] #go one directory above the current one where only scripts are held
 
-	parser = argparse.ArgumentParser(description='Plot array data comparing default and optimized comparator DACs')
+	parser = argparse.ArgumentParser(description='Consider scans of every pixel in array - look at individual and bulk properties of digital data')
 	parser.add_argument('-i', '--inputDir', default='../logInj/chip602_pixelScan_0.3Vinj/', required=False,  
         help='Directory containing repos of data files, from main git repo space.')
 	parser.add_argument('-m', '--masks', action='store_true', default=False, required=False, 
@@ -151,17 +186,26 @@ if __name__ == "__main__":
 	parser.add_argument('-s', '--savePlot', action='store_true', default=False, required=False, 
 		help='Save all plots (no display) to plotsOut/dacOptimization/arrayScan. Default: None (only displays, does not save)')
 	parser.add_argument('-c', '--cleanData', default=None, required=False, 
-		help='Plot only bluk values that pass an R2 requirement. Give min r2 value as input here. Default: None')
-		
+		help='Plot only bulk values that pass an R2 requirement. Give min r2 value as input here. Default: None')
+	parser.add_argument('-p', '--peaksAnalog', action='store_true', default=False, required=False, 
+		help='If analog data provided, consider pulse height values. If False, consider analog ToT proxy. Default:False')
+	
 
 	parser.add_argument
 	args = parser.parse_args()
 	
 	#find chip number from file name
+	analog=False
 	strToSplit=args.inputDir.replace("/","_")
 	parts=strToSplit.split('_')
-	chipname = [p for p in parts if "chip" in p]
+	if 'v2' in parts: #input analog files - isolate which are relevant and get chip from file name
+		analog=True
+		f_in = glob.glob(f"{args.inputDir}/*pixelScan*.h5py")
+		strToSplit=f_in[0].replace("/","_")
+		parts=strToSplit.split('_')
+		chipname = [p for p in parts if "chip" in p]
+	else: #input digital files - one directory where all contained datasets are used, get chip from dir name
+		chipname = [p for p in parts if "chip" in p]
 	chip=chipname[0][4:]
-	
  	
 	main(args)
