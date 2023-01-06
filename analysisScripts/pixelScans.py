@@ -15,7 +15,25 @@ import plotHelpers as plth
 #################################################################
 # helper functions
 #################################################################   
+def find_nearest(array, value):
+	"""Find closest element in array to an input value
+	Return: value of array element that is closest to the input value"""
+	array = np.asarray(array)
+	idx = (np.abs(array - value)).argmin()
+	return idx
+    
+def spliced_analog_hr(arr, time, window=1050):
+	"""Splice high res analog data file into separate parts dependent on setting changes
+			Define by time value where setting changes
+	Return: 2d list containing the data points (not timing) for each different setting"""
 
+	splice_val=np.array([window*i+time[0] for i in range(36)])
+	splice_i=[find_nearest(time,s) for s in splice_val]
+	arr = np.array(arr)
+	splice_arr = [arr[splice_i[i]:splice_i[i+1]] for i in range(len(splice_i)-1)]
+	
+	return splice_arr
+	
 def fitSaveGauss(data,title,extraArgs,nmbBins=50, fit=True):
 	"""Clean data and fit to a Gaussian. Plot (save, if applicable) histogram and associated Gaussian
 		If extraArgs=[colNumb, rowNmb], considers data from one pixel (defines cleaning and naming)
@@ -159,10 +177,17 @@ def main(args):
 		#get analog file and clean hits
 		anaFile = glob.glob(f"*pixelScan*.h5py")
 		anaDF = adh.getDF(anaFile[0])
+		"""
 		if args.peaksAnalog:
 			analogData = adh.spliced_analog_data(anaDF['Peaks'], anaDF['Time'])
 		else:
 			analogData = adh.spliced_analog_data(anaDF['AnalogToT'], anaDF['Time'])
+		"""
+		dfseries = "Peaks" if args.peaksAnalog else "AnalogToT"
+		if args.highresAnalog:
+			analogData = spliced_analog_hr(anaDF[dfseries], anaDF['Time'])
+		else:
+			analogData = adh.spliced_analog_data(anaDF[dfseries], anaDF['Time'])
 		#Fit distributions and get mean/sigma
 		#all analog values from row 0
 		rVal=0
@@ -187,7 +212,7 @@ def main(args):
 #################################################################
 if __name__ == "__main__":
 
-	saveDir = os.getcwd()+"/plotsOut/pixelScan_0.3Vinjection/chipHR3/analog/" #hardcode location of dir for saving output plots
+	saveDir = os.getcwd()+"/plotsOut/pixelScan_0.3Vinjection/chipHR3/digital_onlyRow0/" #hardcode location of dir for saving output plots
 	dirPath = os.getcwd()[:-15] #go one directory above the current one where only scripts are held
 
 	parser = argparse.ArgumentParser(description='Consider scans of every pixel in array - look at individual and bulk properties of digital data')
@@ -201,6 +226,8 @@ if __name__ == "__main__":
 		help='Plot only bulk values that pass an R2 requirement. Give min r2 value as input here. Default: None')
 	parser.add_argument('-p', '--peaksAnalog', action='store_true', default=False, required=False, 
 		help='If analog data provided, consider pulse height values. If False, consider analog ToT proxy. Default:False')
+	parser.add_argument('-hr', '--highresAnalog', action='store_true', default=False, required=False, 
+		help='File 120722_amp1/chipHR3_20V_pixelScan_0.3Vinj_row0_combined_0.3Vinj_720min.h5py was taken in conjunction with digital data and loops over every pixel by column. This option indicates that long periods of crosstalk should be avoided (when injection is not into row0) and requires conditions on subsequent data points ot identify new row0 pixels rather than a time difference. If False, separate analog data from pixels by looking for difference in triggers of 1.25s. Default:False')
 	
 
 	parser.add_argument
