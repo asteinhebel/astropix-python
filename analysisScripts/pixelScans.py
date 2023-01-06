@@ -19,7 +19,7 @@ def find_nearest(array, value):
 	"""Find closest element in array to an input value
 	Return: value of array element that is closest to the input value"""
 	array = np.asarray(array)
-	idx = (np.abs(array - value)).argmin()
+	idx = (np.abs(array - value)).argmin()+1
 	return idx
     
 def spliced_analog_hr(arr, time, window=1050):
@@ -28,10 +28,16 @@ def spliced_analog_hr(arr, time, window=1050):
 	Return: 2d list containing the data points (not timing) for each different setting"""
 
 	splice_val=np.array([window*i+time[0] for i in range(36)])
-	splice_i=[find_nearest(time,s) for s in splice_val]
-	arr = np.array(arr)
-	splice_arr = [arr[splice_i[i]:splice_i[i+1]] for i in range(len(splice_i)-1)]
+	splice_i=[find_nearest(time,s)+5 for s in splice_val] #try to get just the data run - cuts into the ideal 30s
 	
+	splice_end=[s+100 for s in splice_i]#try to get just the data run - cuts into the ideal 30s
+	splice_end[0]=splice_i[0]+245 #longer wait
+	splice_end=np.delete(splice_end,-1)
+	splice_end[-1]=len(time)-1
+	
+	arr = np.array(arr)
+	splice_arr = [arr[splice_i[i]:splice_end[i]] for i in range(len(splice_i)-1)] #keep dattime worth of seconds of data for each setting
+
 	return splice_arr
 	
 def fitSaveGauss(data,title,extraArgs,nmbBins=50, fit=True):
@@ -212,7 +218,7 @@ def main(args):
 #################################################################
 if __name__ == "__main__":
 
-	saveDir = os.getcwd()+"/plotsOut/pixelScan_0.3Vinjection/chipHR3/digital_onlyRow0/" #hardcode location of dir for saving output plots
+	saveDir = os.getcwd()+"/plotsOut/pixelScan_0.3Vinjection/chipHR3/analog/" #hardcode location of dir for saving output plots
 	dirPath = os.getcwd()[:-15] #go one directory above the current one where only scripts are held
 
 	parser = argparse.ArgumentParser(description='Consider scans of every pixel in array - look at individual and bulk properties of digital data')
