@@ -140,6 +140,7 @@ def main(args):
 	totArr = np.full([35, 35], np.nan)
 	sigArr = np.full([35, 35], np.nan)
 	r2Arr = np.full([35, 35], np.nan)
+	hitsArr = np.full([35, 35], np.nan)
 	extraname = "_masked" if args.masks else ""
 
 	#Get data from txt files and store in 35x35 arrays - one array for each threshold value
@@ -172,23 +173,19 @@ def main(args):
 			rVal = int(rStr[0][3:]) #eliminate 'row'
 			#Get hits
 			df = ddh.getDF_singlePix(f, pix=[rVal,cVal])
+			hits=len(df)
 			#Fit distributions and get ToT mean/sigma
 			mean,sig,r2 = fitSaveGauss(df['ToT(us)_row'],f"row{rVal},col{cVal}",[rVal,cVal])	
 
 			totArr[rVal][cVal] = mean
 			sigArr[rVal][cVal] = sig
 			r2Arr[rVal][cVal] = r2
+			hitsArr[rVal][cVal] = hits
 	#no csv files - must be analog data
 	else: 
 		#get analog file and clean hits
 		anaFile = glob.glob(f"*pixelScan*.h5py")
 		anaDF = adh.getDF(anaFile[0])
-		"""
-		if args.peaksAnalog:
-			analogData = adh.spliced_analog_data(anaDF['Peaks'], anaDF['Time'])
-		else:
-			analogData = adh.spliced_analog_data(anaDF['AnalogToT'], anaDF['Time'])
-		"""
 		dfseries = "Peaks" if args.peaksAnalog else "AnalogToT"
 		if args.highresAnalog:
 			analogData = spliced_analog_hr(anaDF[dfseries], anaDF['Time'])
@@ -205,6 +202,7 @@ def main(args):
 			
 	#Make plots - array map and histogram
 	makePlots(r2Arr, 1., "goodness of fit R$^2$", "r2", extraname, fit=False)
+	makePlots(hitsArr, 500, "number of triggers", "nmbHits", extraname, fit=False, bins=250)
 	if args.cleanData is not None:
 		makePlots(totArr, rnge, ttle, lbel, extraname, r2cleaning=[float(args.cleanData),r2Arr])
 		makePlots(sigArr, rnge_sig/15., ttle_sig, lbel_sig, extraname, bins=80, r2cleaning=[float(args.cleanData),r2Arr])
@@ -218,7 +216,7 @@ def main(args):
 #################################################################
 if __name__ == "__main__":
 
-	saveDir = os.getcwd()+"/plotsOut/pixelScan_0.3Vinjection/chipHR3/analog/" #hardcode location of dir for saving output plots
+	saveDir = os.getcwd()+"/plotsOut/pixelScan_Am241/chip604/" #hardcode location of dir for saving output plots
 	dirPath = os.getcwd()[:-15] #go one directory above the current one where only scripts are held
 
 	parser = argparse.ArgumentParser(description='Consider scans of every pixel in array - look at individual and bulk properties of digital data')
