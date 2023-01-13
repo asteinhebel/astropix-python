@@ -39,7 +39,7 @@ def get_deadPix(arr, sve):
 		
 	#invert rows to fit array origin, identify indices of pixels that are dead
 	dpix = np.argwhere(np.flip(totArr,0)==maxThresholdsTested)
-	return(dpix)
+	return dpix
 	
 def get_noisyPix(arr, sve):
 	"""Identify pixels that are noisy - have more counts than allowed noiseCount value
@@ -78,6 +78,8 @@ def get_optThreshold(plots, x, sve):
 	optThreshInd = min(np.argwhere(np.array(passingpix)>=goodPix)) #smallest value where the optimal threshold for at least `perc` percent of pixels 
 
 	mapFig=plth.arrayVis(idealThresh, barTitle=f'Ideal Threshold [mV]')
+	
+	#make/save plots
 	if sve:
 		saveName = f"idealThreshold_{args.noiseThresh}noise"
 		print(f"Saving {saveDir}{saveName}.png")
@@ -96,7 +98,14 @@ def get_optThreshold(plots, x, sve):
 		plt.clf()
 	else:
 		plt.show()	
-			
+		
+	#if sent arg to save csv, make/save csv of ideal thresholds
+	if args.saveCSV:
+		colNames=[f"col{i}" for i in range(35)]
+		threshDF = pd.DataFrame(idealThresh, columns = colNames)
+		print(f"Saving {saveDir}idealThresholds.csv")
+		threshDF.to_csv(f"{saveDir}idealThresholds.csv")
+	
 	return(x[optThreshInd])
 	
 
@@ -197,7 +206,7 @@ def main(args):
 #################################################################
 if __name__ == "__main__":
 
-	saveDir = os.getcwd()+"/plotsOut/thresholdScan/HR3/" #hardcode location of dir for saving output plots
+	saveDir = os.getcwd()+"/plotsOut/thresholdScan/HR3/test/" #hardcode location of dir for saving output plots
 	dirPath = os.getcwd()[:-15] #go one directory above the current one where only scripts are held
 
 	parser = argparse.ArgumentParser(description='Plot array data comparing default and optimized comparator DACs')
@@ -208,7 +217,7 @@ if __name__ == "__main__":
 	parser.add_argument('-s', '--savePlot', action='store_true', default=False, required=False, 
 		help='Save all plots (no display) to plotsOut/dacOptimization/arrayScan. Default: None (only displays, does not save)')
 	parser.add_argument('-c', '--saveCSV', action='store_true', default=False, required=False, 
-		help='Save CSV of dead/noisy pixel maps to plotsOut/dacOptimization/arrayScan. Default: False')
+		help='Save CSV of dead/noisy pixel maps and pixel ideal thresholds. Default: False')
 	parser.add_argument('-n', '--noiseThresh', default=0, required=False, type=float, 
         help='Noise threshold - pixels with more than this considered noisy. Default: 0')
 	parser.add_argument('-p', '--percOn', default=50, required=False,  type=float,
