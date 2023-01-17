@@ -32,15 +32,3 @@ def arrayVis(arrIn, barRange=None, barTitle:str=None, invert:bool=False):
 	return cax
 	
 	
-	
-	
-	
-	
-"""
-AMANDA
-
-You were working on getting all scripts to use these common helper functions
-Completed scripts are staged in git
-After this procrastination effort, you have to do the analog variation analysis for 
-	chip 604 and chip HR3
-"""
