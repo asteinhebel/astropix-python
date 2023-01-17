@@ -115,18 +115,26 @@ def makePlots(data, rangeMax, title, namestr, extraname, fit=True, bins=40, r2cl
 		print(f"{len(r2[r2<r2min]):.2f} pixels ({len(r2[r2<r2min])/1225*100.:.2f}%) did not pass r2 requirement")
 	
 	mapFigMean=plth.arrayVis(data, barRange=[0.,rangeMax], barTitle=title, invert=True)
+	
+	saveName = f"{namestr}_map_chip{str(chip)}{extraname}"
 	if analog and args.peaksAnalog:
 		extraname+="_analogPeak"
 	elif analog:
 		extraname+="_analogToT"
 		
 	if args.savePlot:
-		saveName = f"{namestr}_map_chip{str(chip)}{extraname}"
 		print(f"Saving {saveDir}{saveName}.png")
 		plt.savefig(f"{saveDir}{saveName}.png")
 		plt.clf()
 	else:
 		plt.show()
+		
+	if args.saveCSV:	
+		colNames=[f"col{i}" for i in range(35)]
+		df = pd.DataFrame(data, columns = colNames)
+		print(f"Saving {saveDir}{saveName}.csv")
+		df.to_csv(f"{saveDir}{saveName}.csv")
+		
 
 	fitSaveGauss(data,title,[rangeMax,bins,namestr,extraname],fit=fit)	
 	
@@ -216,7 +224,7 @@ def main(args):
 #################################################################
 if __name__ == "__main__":
 
-	saveDir = os.getcwd()+"/plotsOut/pixelScan_Am241/chip604/" #hardcode location of dir for saving output plots
+	saveDir = os.getcwd()+"/plotsOut/pixelScan_Am241/chip604/test/" #hardcode location of dir for saving output plots
 	dirPath = os.getcwd()[:-15] #go one directory above the current one where only scripts are held
 
 	parser = argparse.ArgumentParser(description='Consider scans of every pixel in array - look at individual and bulk properties of digital data')
@@ -225,14 +233,16 @@ if __name__ == "__main__":
 	parser.add_argument('-m', '--masks', action='store_true', default=False, required=False, 
 		help='WIP - Disregard plotting pixels that should be masked. Input a csv file of row/col values of masked pixels. Default: None')
 	parser.add_argument('-s', '--savePlot', action='store_true', default=False, required=False, 
-		help='Save all plots (no display) to plotsOut/dacOptimization/arrayScan. Default: None (only displays, does not save)')
-	parser.add_argument('-c', '--cleanData', default=None, required=False, 
+		help='Save all plots (no display) to saveDir. Default: None (only displays, does not save)')
+	parser.add_argument('-r', '--cleanData', default=None, required=False, 
 		help='Plot only bulk values that pass an R2 requirement. Give min r2 value as input here. Default: None')
 	parser.add_argument('-p', '--peaksAnalog', action='store_true', default=False, required=False, 
 		help='If analog data provided, consider pulse height values. If False, consider analog ToT proxy. Default:False')
 	parser.add_argument('-hr', '--highresAnalog', action='store_true', default=False, required=False, 
 		help='File 120722_amp1/chipHR3_20V_pixelScan_0.3Vinj_row0_combined_0.3Vinj_720min.h5py was taken in conjunction with digital data and loops over every pixel by column. This option indicates that long periods of crosstalk should be avoided (when injection is not into row0) and requires conditions on subsequent data points ot identify new row0 pixels rather than a time difference. If False, separate analog data from pixels by looking for difference in triggers of 1.25s. Default:False')
-	
+	parser.add_argument('-c', '--saveCSV', action='store_true', default=False, required=False, 
+		help='Save CSV files of R2, ToT, sigma, hits values to saveDir. Default: False')
+
 
 	parser.add_argument
 	args = parser.parse_args()
