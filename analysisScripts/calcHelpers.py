@@ -71,3 +71,16 @@ def calcR2(y, y_fit):
 	r2 = 1 - (ss_res / ss_tot)
 	
 	return r2
+	
+def calcCorrCoeff(x,y):
+	"""Calculate Pearson correlation coefficient r value to quantify whether arrays x and y are correlated
+	Return: r, error"""
+	
+	#returns full correlation matrix
+	r = np.corrcoef(x,y)
+	
+	#error - https://psyarxiv.com/uts98/	
+	#use off-diagonal element as r
+	err = (1 - (r[0,1]**2)) / np.sqrt(x.size-3)
+	
+	return r[0,1], err
