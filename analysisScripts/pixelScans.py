@@ -202,7 +202,7 @@ def main(args):
 			
 	#Make plots - array map and histogram
 	makePlots(r2Arr, 1., "goodness of fit R$^2$", "r2", extraname, fit=False)
-	makePlots(hitsArr, 500, "number of triggers", "nmbHits", extraname, fit=False, bins=250)
+	makePlots(hitsArr, hitsArr.max(), "number of triggers", "nmbHits", extraname, fit=False, bins=int(hitsArr.max()/2.))
 	if args.cleanData is not None:
 		makePlots(totArr, rnge, ttle, lbel, extraname, r2cleaning=[float(args.cleanData),r2Arr])
 		makePlots(sigArr, rnge_sig/15., ttle_sig, lbel_sig, extraname, bins=80, r2cleaning=[float(args.cleanData),r2Arr])
