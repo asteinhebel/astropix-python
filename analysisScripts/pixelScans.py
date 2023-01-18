@@ -106,8 +106,8 @@ def makePlots(data, rangeMax, title, namestr, extraname, fit=True, bins=40, r2cl
 	
 	#if r2 cleaning used, update naming and clean data set
 	if r2cleaning[0]>0:
-		r2min=r2cleaning[0]
-		r2=r2cleaning[1]
+		r2min=r2cleaning[0] #minimum value
+		r2=r2cleaning[1] #array of r2 values
 		namestr+=f"_{str(r2min)}r2"
 		r2mask = np.reshape((r2>r2min),(35,35))
 		data=data*r2mask
