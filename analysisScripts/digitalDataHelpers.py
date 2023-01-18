@@ -27,7 +27,6 @@ def getDF_singlePix(f, pix=[0,0]):
 			ASSUMES A SINGLE PIXEL IS ENABLED
 	Return: Cleaned dataframe"""
 	df=pd.read_csv(f)
-	print(f)
 	print(f'Input DF length: {len(df)}')
 	#Drop any hit from count 0 - FPGA dump
 	try:
