@@ -72,6 +72,7 @@ def calcR2(y, y_fit):
 	
 	return r2
 	
+	
 def calcCorrCoeff(x,y):
 	"""Calculate Pearson correlation coefficient r value to quantify whether arrays x and y are correlated
 	Return: r, error"""
