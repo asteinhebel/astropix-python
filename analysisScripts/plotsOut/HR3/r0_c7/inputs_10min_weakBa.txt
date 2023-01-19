@@ -1,0 +1,2 @@
+../../githubCollab_GSFCdata/data/digital/noise/chipHR3/chipHR3_13V_30mV_10min_row0_col7_20230118-142259.csv ; noise
+../../githubCollab_GSFCdata/data/digital/source/chipHR3/chipHR3_13V_30mV_10min_weakBa133_row0_col7_20230113-112408.csv ; Ba

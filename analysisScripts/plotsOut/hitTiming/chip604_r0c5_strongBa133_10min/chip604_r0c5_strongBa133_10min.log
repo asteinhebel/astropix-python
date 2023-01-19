@@ -1,0 +1,21 @@
+INFO:Note: NumExpr detected 12 cores but "NUMEXPR_MAX_THREADS" not set, so enforcing safe limit of 8.
+INFO:NumExpr defaulting to 8 threads.
+INFO:1492 analog hits, 2822 digital paired hits
+INFO:Analog hit rate = 2.488; digital hit rate = 4.670
+INFO:digital array is longer than analog array
+INFO:Optimizing the time window for matching
+INFO:Saving plotsOut/hitTiming/chip604_r0c5_strongBa133_10min/chip604_r0c5_strongBa133_10min_matchingDeltaT.png
+INFO:Saving plotsOut/hitTiming/chip604_r0c5_strongBa133_10min/chip604_r0c5_strongBa133_10min_timingWindowOpt.png
+INFO:Leftover digital events = 1383 (49.01)%
+INFO:Optimized window size is 0.065
+INFO:0 elements of digital array have multiple matches - retain only pair with smallest deltaT
+INFO:Saving plotsOut/hitTiming/chip604_r0c5_strongBa133_10min/chip604_r0c5_strongBa133_10min_hist_pairs_ToT.png
+INFO:Saving plotsOut/hitTiming/chip604_r0c5_strongBa133_10min/chip604_r0c5_strongBa133_10min_scatter_pairs_timeToT.png
+INFO:Saving plotsOut/hitTiming/chip604_r0c5_strongBa133_10min/chip604_r0c5_strongBa133_10min_hist_pairs_deltaT.png
+INFO:Saving plotsOut/hitTiming/chip604_r0c5_strongBa133_10min/chip604_r0c5_strongBa133_10min_scatter_pairs_compToT.png
+INFO:Saving plotsOut/hitTiming/chip604_r0c5_strongBa133_10min/chip604_r0c5_strongBa133_10min_hist2d_pairs_compToT.png
+INFO:Saving plotsOut/hitTiming/chip604_r0c5_strongBa133_10min/chip604_r0c5_strongBa133_10min_hist_pairs_deltaToT.png
+INFO:Saving plotsOut/hitTiming/chip604_r0c5_strongBa133_10min/chip604_r0c5_strongBa133_10min_hist_pairs_deltaToTBinned.png
+INFO:Saving plotsOut/hitTiming/chip604_r0c5_strongBa133_10min/chip604_r0c5_strongBa133_10min_hist_pairs_ToTratio.png
+INFO:Saving plotsOut/hitTiming/chip604_r0c5_strongBa133_10min/chip604_r0c5_strongBa133_10min_hist_pairs_ToTratioBinned.png
+INFO:Saving plotsOut/hitTiming/chip604_r0c5_strongBa133_10min/chip604_r0c5_strongBa133_10min_hist2d_pairs_deltaTVStotratio.png
