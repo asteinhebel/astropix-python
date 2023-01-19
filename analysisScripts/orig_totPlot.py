@@ -23,8 +23,12 @@ def fitHist(data,label,nmbBins):
 	binCenters=binCenters[:-1]
 	muGuess = np.mean(np.array(ydata))
 	p0=[200,muGuess,muGuess/2] #amp, mu, sig
-	popt, pcov = curve_fit(Gauss, xdata=binCenters, ydata=ydata, p0=p0, absolute_sigma=True)
+	try:
+		popt, pcov = curve_fit(Gauss, xdata=binCenters, ydata=ydata, p0=p0, absolute_sigma=True)
+	except RuntimeError:
+		popt = [np.NaN, np.NaN, np.NaN]
 	return hist, popt
+
 
 #################################################################
 # main
@@ -54,10 +58,10 @@ def main(args):
 
 	#plots involving ToT
 	#plot and fit ToT for all input files
-	nmbBins=int(40.96/args.binSize)
 	
 	mean=[]
 	for key in dfDict.keys():
+		nmbBins=int(max(dfDict[key]['ToT(us)_row'])/args.binSize)
 		hist, fit = fitHist(dfDict[key]['ToT(us)_row'].append(dfDict[key]['ToT(us)_col']),key+" "+args.legend, nmbBins)
 		mean.append(fit[1])
 		xspace=np.linspace(hist[1][0],hist[1][-1], len(hist[1])*10)
@@ -168,7 +172,7 @@ def main(args):
 #################################################################
 if __name__ == "__main__":
 
-	saveDir = os.getcwd()+"/plotsOut/dacOptimization/" #hardcode location of dir for saving output plots
+	saveDir = os.getcwd()+"/plotsOut/HR3/r0_c7/" #hardcode location of dir for saving output plots
 	dirPath = os.getcwd()[:-15] #go one directory above the current one where only scripts are held
 
 	parser = argparse.ArgumentParser(description='Plot Digital Data')
